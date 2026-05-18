@@ -1,0 +1,255 @@
+---
+name: triple-review
+description: Run a triple-reviewer code review (Gemini CLI + Claude Code on a secondary endpoint + Codex CLI) on an open PR, triage findings with severity calibration, apply TDD fix cycle, archive all three reviews as docs/ artifacts, and auto-merge if green.
+argument-hint: "<PR# | branch name | (empty for current branch)>"
+---
+
+# /triple-review — three-reviewer PR review with TDD fix loop
+
+Three independent reviewers beat two. Each model class catches a different bug class — a single missing reviewer means a whole bug class is invisible. This skill orchestrates Gemini, Claude Code on a secondary endpoint (e.g. MiniMax), and a Codex CLI in parallel, then triages and applies fixes in TDD order.
+
+## When to use
+
+- A code PR has been pushed and is ready for review
+- Caller runs `/triple-review <PR#>` or just `/triple-review` (current branch)
+- **Not for**: docs-only PRs, WIP / draft PRs, unpushed branches, config/lock-file-only diffs
+
+## Prerequisites
+
+- `gemini` CLI installed + Google OAuth signed in
+- A second Claude Code CLI on a different endpoint (e.g. MiniMax) usable via shell wrapper / alias — must run with `Read / Grep / Glob / Bash` available so it can verify findings against actual file contents
+- `codex` CLI from a separate account (so it does not burn the primary Codex quota); installed via the Codex Claude Code plugin or vendored binary
+- `gh` CLI authenticated
+- The project has a `CLAUDE.md` / SPEC file that names invariants (without it the reviewers have no anchor and report quality collapses)
+- PR base branch is typically `develop` or `main`
+
+## Workflow
+
+### Step 1 — Resolve the PR from `$ARGUMENTS`
+
+- If numeric → PR number
+- If branch name → `gh pr view --json number,headRefName,baseRefName --branch <name>`
+- If empty → `gh pr view --json ...` for the current branch
+
+Extract: `pr_number`, `head_branch`, `base_branch`, `head_sha`.
+
+### Step 2 — Build the review prompt
+
+Write to `/tmp/pr<n>_review_prompt.txt` with **four sections**:
+
+**(0) Preamble — reviewer constraints (always include)**:
+
+```
+You are a code reviewer. Your only output is a markdown review of the PR diff below.
+
+Do NOT spawn other reviewers (no nested gemini / claude / codex calls).
+Do NOT call gh CLI or run scripts.
+Do NOT delegate to other skills or agents.
+You MAY use Read / Grep / Glob to verify findings against actual file contents
+(verify before flagging).
+
+Format the review as:
+1. Verdict: APPROVE / REQUEST CHANGES / BLOCK
+2. Findings grouped by severity (CRITICAL / HIGH / MEDIUM / LOW), each with file:line + recommended fix
+3. Specific risk callouts for the focus points listed below
+```
+
+Avoid trigger phrases that re-invoke the same skill: do not title the prompt "Triple PR Review"; use `## Context / ## Invariants / ## Focus / ## Diff` (not `(a)(b)(c)`).
+
+**(a) Context**: what this PR does, what it builds on, which track / phase it belongs to.
+
+**(b) Project invariants**: pull relevant rules from `CLAUDE.md` / SPEC — e.g. numeric precision discipline (Decimal vs float), type-check strictness, layer dependency rules, phase gates, anything project memory says is load-bearing.
+
+**(c) Focus**: PR-specific concerns — algorithm correctness, edge cases at thresholds (`==` / `>` / `>=`), forward-compat with the next PR in series, coverage gaps, SPEC alignment on concrete values.
+
+Append the diff:
+
+```bash
+git diff origin/<base_branch>...HEAD >> /tmp/pr<n>_review_prompt.txt
+```
+
+### Step 3 — Run three reviewers in parallel (single message, three tool calls)
+
+All three use `run_in_background: true` so the assistant is not blocked.
+
+**Reviewer 1 — Gemini**:
+```bash
+gemini --skip-trust -p "$(cat /tmp/pr<n>_review_prompt.txt)" -m gemini-3.1-pro-preview \
+  > /tmp/pr<n>_review_gemini.out 2>&1
+```
+
+**Reviewer 2 — Claude Code via secondary endpoint** (e.g. MiniMax):
+```bash
+cd <repo-or-worktree-path>
+cat /tmp/pr<n>_review_prompt.txt | env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \
+  -u ANTHROPIC_MODEL -u ANTHROPIC_DEFAULT_SONNET_MODEL \
+  -u ANTHROPIC_DEFAULT_OPUS_MODEL -u ANTHROPIC_DEFAULT_HAIKU_MODEL \
+  CLAUDE_CONFIG_DIR=$HOME/.claude-<endpoint> claude -p \
+  > /tmp/pr<n>_review_secondary.out 2>&1
+```
+
+This reviewer runs full Claude Code tooling (Read / Grep / Glob / Bash) on the actual files, so it tends to catch the bugs that need file-context verification (collaborator function signatures, cross-file invariants).
+
+**Reviewer 3 — Codex CLI from a secondary account**:
+```bash
+cd <repo-or-worktree-path>
+cat /tmp/pr<n>_review_prompt.txt | CODEX_HOME=$HOME/.codex-secondary \
+  $HOME/.nvm/versions/node/v22.18.0/bin/codex exec \
+  --sandbox read-only \
+  --skip-git-repo-check \
+  - > /tmp/pr<n>_review_codex.out 2>&1
+```
+
+The `read-only` sandbox lets Codex use `Read / Grep / Glob` to verify findings but blocks writes. `--skip-git-repo-check` lets it run inside worktrees.
+
+All three run in background. Do not poll — wait for completion notifications.
+
+### Step 4 — Triage (start only when all three reports are in)
+
+For every finding, fill this table:
+
+| Finding | Source | Severity | Action |
+|---|---|---|---|
+| ... | Gemini / Secondary / Codex / multi | CRITICAL/HIGH/MEDIUM/LOW | Fix / Fold / Skip + reason |
+
+**Severity-calibration heuristics** when the three reviewers disagree on the same finding:
+
+- **Gemini** tends toward **invariant-first** (cites project rules)
+- **Secondary Claude Code** tends toward **operational-first** (does this work at realistic scale)
+- **Codex** tends toward **diff-correctness + cross-reference** (ADR vs implementation, untested call sites)
+- **Three agree** → use the consensus
+- **Two vs one** → majority wins; **but if the dissenter is Gemini citing a specific invariant, invariant-first wins**
+- **Three-way split** → invariant-first wins; document in the fix-log: "Secondary LOW + Codex MEDIUM reclassified HIGH per Gemini — violates invariant X"
+
+Common patterns observed across many reviews:
+
+- Secondary Claude Code (or any operational-first reviewer) labels real bugs as LOW because they "work at realistic scale"
+- Gemini reclassifies the same finding HIGH/CRITICAL because it violates `CLAUDE.md` / SPEC
+- Codex adds a layer the other two miss — coverage gaps, ADR-vs-impl drift, untested call sites
+
+**⚠ Reviewer hallucination — verify factual claims**:
+
+"Invariant-first wins" does **not** mean "reviewer-always-right". Any reviewer can hallucinate facts about external APIs, stdlib behavior, or what the SPEC actually says. Before accepting a finding whose premise is a factual claim:
+
+1. Grep / Read the cited file:line yourself
+2. Confirm collaborator function signatures with `grep -n`
+3. Read stdlib docs for the exact return type / behavior
+4. Find the SPEC value, do not accept the reviewer's quote of it
+
+If the reviewer's premise was wrong but the fix direction is still correct, take the fix and note in the fix-log: "reviewer's premise was wrong; fix direction still correct".
+
+**Severity patterns worth knowing**:
+
+- **Hardcoded literal in production code** → usually calibrates to CRITICAL (most projects' CLAUDE.md says "no hardcoded thresholds")
+- **Wiring gap** (component A and B each unit-tested, but the hand-off untested) → unit tests green + dual review green but prod behavior broken; **the most dangerous class**, only e2e / integration coverage catches it
+- **Soft-degrade on missing config that gates a downstream invariant** → use `log.error` + invariant-blocking message (not `raise`, so other ticks of the same daemon survive)
+- **List operations on prod data without LIMIT / ORDER BY** → always HIGH (scaling cliff is certain)
+- **Tier mapping / config dict without test for every member** → Codex usually catches; MEDIUM but cheap to test
+
+**Skip judgment**:
+
+- Pure cosmetic / style choices that match the codebase pattern
+- Defensive coding for impossible scenarios (CLAUDE.md "trust internal guarantees")
+- Forward-compat speculation with no concrete consumer
+- `is` vs `==` and similar pattern-conformance choices the codebase already made
+- Findings whose factual premise turned out to be wrong (after verification)
+
+### Step 5 — TDD fix cycle (per `Fix` row)
+
+**Test commit**:
+- Write the failing test pinning the contract
+- Run the single file: red for the **right reason** (assertion failure, not import error)
+- Commit: `test: failing tests for PR #<n> triple review fixes` — include the triage table in the body
+
+**Fix commit**:
+- Smallest change that turns the test green
+- Run the project's full check suite — tests, type-checker, lints, formatters
+- Commit: `fix: address PR #<n> triple review (...)` — body references the three review artefacts by filename
+
+### Step 6 — Archive the reviews
+
+Write all three to `docs/PR_REVIEW_<YYYY-MM-DD>_PR<n>_{GEMINI,SECONDARY,CODEX}.md`, each with:
+
+- Title, PR URL, base/head, head SHA, review date, reviewer identifier (model + invocation command)
+- Findings grouped by severity
+- Each finding: `file:line`, description, recommended fix, actual disposition (Fixed / Skipped + reason)
+- Verdict (APPROVE / REQUEST CHANGES / BLOCK) and whether resolved this round
+
+Optionally collapse into one file with three sections.
+
+### Step 7 — PR comment
+
+```bash
+gh pr comment <n> --body "$(cat <<'EOF'
+## Triple code review — fix round
+
+Three reviews ran; artefacts archived in this branch:
+- docs/PR_REVIEW_<date>_PR<n>_GEMINI.md — <verdict + counts>
+- docs/PR_REVIEW_<date>_PR<n>_SECONDARY.md — <verdict + counts>
+- docs/PR_REVIEW_<date>_PR<n>_CODEX.md — <verdict + counts>
+
+### Triage
+<table>
+
+### Notable
+<severity disagreements, complementary catches, three-way ship-blockers>
+
+### Commits
+- <test commit SHA>
+- <fix commit SHA>
+
+### Verification
+- tests → N passed
+- type-check → clean
+- lints + formatters clean
+EOF
+)"
+```
+
+### Step 8 — Auto-merge if green
+
+Five-item gate:
+
+1. All three reviews archived
+2. Triage table posted to PR comment
+3. Every HIGH and MEDIUM is either fixed or explicitly skipped with reason
+4. Full check suite green (tests, type-check, lints, formatters)
+5. `gh pr view <n> --json mergeable -q '.mergeable'` → `MERGEABLE`
+
+All green → merge:
+
+```bash
+gh pr merge <n> --merge --delete-branch
+git checkout <base_branch>
+git pull --ff-only
+```
+
+If the project has a "human merges only" rule (e.g. for production-branch promotion), stop at step 7 and let the user decide.
+
+## End-of-cycle summary
+
+Five-to-ten lines back to the user:
+
+- PR # merged (commit SHA)
+- Real bugs caught — especially the ones a single or dual reviewer would have missed
+- Net diff: lines / tests added
+- What's next
+
+## Troubleshooting
+
+- **Gemini 429 / no capacity**: retry once with ≥30s gap; if still failing, run secondary + Codex only and explicitly tell the user that the invariant-first calibration heuristic does not fully apply this round
+- **Secondary Claude Code hangs**: full-tool runs of 10+ min are normal for complex reviews. Check `ps aux | grep CLAUDE_CONFIG_DIR=<endpoint-dir>` for an active process and watch output file size for growth. Only kill after 15 min of no output.
+- **Recursion (reviewer output starts with the secondary's identity banner + "Skill ...")**: the prompt is missing the Step 2 §0 preamble, or the title is too close to "Triple PR Review". Rebuild the prompt with the literal preamble.
+- **Codex auth missing**: verify `CODEX_HOME=<secondary> codex login status` shows logged-in; if not, the user must run the login interactively. If the secondary Codex is unavailable, fall back to the primary Codex (note the cost), and only as a last resort run with two reviewers and tell the user a whole reviewer slice is missing.
+- **Reviewer hallucinates a factual claim** (collaborator API, stdlib return type, SPEC value): always verify with `grep` / `Read` / official docs before accepting. Take fixes whose direction is right even if the premise was wrong; note both in the fix-log.
+- **Reviewers strongly disagree**: invariant-first wins, **but verify the invariant is real** — reviewers sometimes invent invariants.
+- **Diff > ~1000 lines**: split the prompt into focused slices, or ask the user to split the PR.
+- **All three approve but a real wiring-gap bug ships**: add a focus item to future prompts: "verify there is a test that calls A then asserts on what B returns".
+
+## What NOT to use this for
+
+- Docs-only PRs (plan files, runbooks, ADRs) — these are taste calls; show them to the user
+- Risky operations (force-push, prod-chain promotion, prod schema migrations) — should not bypass a human gate
+- Config-only / lock-file PRs — no review surface to speak of
+
+$ARGUMENTS

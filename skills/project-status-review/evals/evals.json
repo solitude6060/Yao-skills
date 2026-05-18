@@ -1,0 +1,23 @@
+{
+  "skill_name": "project-status-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "幫我確認 VitaForge 這個專案的開發進度和狀況還有後續規劃",
+      "expected_output": "Comprehensive status report with milestone diagram, code statistics, git branch analysis showing develop vs main divergence, completed features inventory, technology stack table, blocker list with P0 priorities, roadmap for future versions, risk assessment, and prioritized action items",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "看一下我現在這個專案做到哪裡了，上次commit是什麼時候，還有哪些功能沒做完",
+      "expected_output": "Status report covering last commit date, staleness calculation, completed vs pending features, git branch status, and clear next steps",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "我這個 Node.js 專案有好幾個分支，develop 落後 main 很多，怎麼回事？要怎麼處理？",
+      "expected_output": "Analysis of branch divergence with commit count, file changes, staleness, and recommended merge strategy with prioritized actions",
+      "files": []
+    }
+  ]
+}
