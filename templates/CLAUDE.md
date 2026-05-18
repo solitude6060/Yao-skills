@@ -61,60 +61,25 @@ Behavioral guidelines for Claude Code, intended as a global `~/.claude/CLAUDE.md
 - Small commits showing the TDD pair history (`test:` then `feat:`); `--merge` (no-ff) at PR merge so the red-green pair history survives in `git log`.
 - Deploy ritual = `develop → main → production` chain via PRs only. The lag between `main` and `production` is intentional (soak window). Risky / destructive operations (force-push to a shared branch, schema drop, account-band promotion) require explicit user sign-off — never inferred from "auto mode" or generic prior approval.
 
-## 7. First-Principles When You Hit a Blocker
+## 7. First-Principles Discipline
 
-**When something blocks progress, your first proposed fix is usually a workaround. Stop. Re-derive from the fundamental observation, not from analogy to past similar fixes.**
+**Default to fundamental observation, not analogy. Applies to building, planning, AND fixing — first-principles is the standing approach, not just incident-time discipline.**
 
-### What "first principles" means here
+**Trigger** = whenever you're about to act on an inherited assumption (a pattern, a "last time", a convention, a marketing claim, a proposed fix). The action could be a feature decision, a tool / library choice, a refactor — not only a bug fix.
 
-Break the problem down to assumptions you cannot reduce further — the raw log line, the exact failing assertion, observed system behavior, the ground-truth data on disk — then build the fix from those. Don't reason by analogy ("last time I saw X I did Y, so do Y again"). Each assumption needs fresh verification, even ones that "felt obvious".
+Invoke the `first-principles` skill on:
 
-### The 5-question audit
+- Prod incidents / hotfixes / repeated blockers (the original use)
+- Feature requests where the user's stated "solution" may not match their underlying need
+- Tool / library / pattern adoption ("everyone uses X" — verify YOUR constraint matches)
+- Refactor / abstraction decisions (verify the coupling you assume exists)
+- **"Result too good to be true" findings — audit the pipeline before celebrating.** Outsized improvements have a high prior of being a data-leak / aggregation bug.
 
-Run this BEFORE proposing any fix on a prod incident, hotfix, or repeated blocker. (Also lives in the `first-principles-fix` skill.)
+### Red flag phrases (yours) — run the skill BEFORE writing code
 
-1. **What is the actual observation?** — the raw log / failing assertion / user-visible symptom. NOT your interpretation of it.
-2. **What assumption am I relying on for the proposed fix?** — state it explicitly, in one sentence.
-3. **Is that assumption verified now, or inherited from a past similar problem?** — if inherited, go verify it. Past similarity is not current evidence.
-4. **If the assumption were wrong, what would change?** — does the proposed fix still make sense? If yes, the assumption isn't load-bearing (fine). If no, verify the assumption before shipping.
-5. **Does the fix address the cause, or just the symptom?** — a fix that only mutes the symptom is a workaround. Acceptable if explicitly logged + cleanup-tracked; NOT acceptable if shipped silently.
+"lower the threshold", "skip the check", "disable the test", "override via env to unblock", "hardcode it for now", "just retry on failure", "wrap in try/except and continue", "everyone does X so we should too", "this is how we did it last time".
 
-### When to invoke
-
-- Production incident triage.
-- Hotfix proposal — especially time-pressured ones. Pressure is precisely when shortcuts feel justified, and precisely when they bite hardest.
-- A test fails repeatedly and you're tempted to disable it.
-- A build flakes on CI and you're tempted to add a retry.
-- A threshold catches "too many" alerts and you're tempted to raise it.
-- A check rejects a "legitimate" input and you're tempted to bypass it.
-- **User pushback with "first principles?" / "is this a workaround?" → re-derive, don't defend.** The pushback means I jumped to a fix without understanding the constraint.
-
-### Red flag phrases (yours)
-
-If about to write or say any of these, run the 5-question audit FIRST:
-
-"lower the threshold", "skip the check", "disable the test", "override via env to unblock", "hardcode it for the soak / demo / now", "just retry on failure", "wrap it in try/except and continue", "it usually works, ship it".
-
-### The right answer is usually one of
-
-- **Accept honestly + write an ADR redefining the constraint.** The threshold was set assuming X; X is no longer true; here's the new threshold and why. The ADR is the audit trail that turns a workaround into a deliberate decision.
-- **Reframe the test.** Separate what's verified (the assertion) from what triggers it (timing / order / setup). A flaky test usually means the trigger is wrong, not the assertion.
-- **Widen the input rather than the boundary.** If code rejects inputs that are actually valid, the validation is wrong — fix it, don't bypass case-by-case.
-- **Wait — sometimes the system is correctly reporting "nothing to do".** A check that "fails" on empty input often means an upstream stage didn't run, not that the check is broken.
-
-### Concrete examples
-
-- **"The test times out at 5s, raise the timeout to 30s."** → workaround. First principle: WHY does it take 5s+? A sync bug? A retry storm? A blocking call that should be async? Raise the timeout only after you know — otherwise you're hiding a scaling problem that will return at higher load.
-- **"CI fails 1-in-10 runs, add a retry."** → workaround. First principle: what's the race? Network flake → retry is fine, but log it. Code-level race → fix the race; retry hides it and lets it bite production where retry doesn't exist.
-- **"The alert fires too often, raise the threshold from 5% to 10%."** → maybe right, maybe wrong. First principle: are the alerts correct (real signal, threshold too tight) or noisy (signal is wrong, more data won't help)? Raise the threshold after deciding which.
-- **"Validation rejects this user input, bypass validation for this case."** → workaround. First principle: is the input actually invalid (validation correct, user needs different input) or unexpectedly valid (validation too narrow, widen the rule)? Bypassing trades a known bug for a hidden one.
-
-### Anti-patterns
-
-- **Defending the workaround when challenged ("but it works").** "Works" ≠ "is correct" — a fix that only mutes the symptom can mask a worse bug downstream.
-- **Treating LLM agreement as verification.** If the LLM summarises 50 files and says "all clean", that's a summary, not a check. Read the 3-5 files load-bearing to your fix by hand. Summaries are wrong often enough to bite you when it matters.
-- **Bulk-reading via summary instead of per-item ground truth.** When a bug spans N items (rows / files / configs / runs), spot-check 2-3 by raw read. Don't rely on aggregated "looks fine" output that could be hiding one bad case.
-- **Skipping dual review on a hotfix because time-pressured.** Pressure is exactly when you most need a second pair of eyes. A wrong hotfix costs more than a slow one — both in cleanup time and in trust.
+**User pushback with "first principles?" / "is this a workaround?" → re-derive, don't defend.** The pushback means I jumped to a fix without understanding the constraint. The 5-question audit, real cases (Knight Capital / Mars Climate Orbiter / Heartbleed plus anonymised internal incidents), and anti-patterns all live in the skill.
 
 ## 8. When in doubt
 
