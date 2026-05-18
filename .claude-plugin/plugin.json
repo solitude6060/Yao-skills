@@ -1,0 +1,10 @@
+{
+  "name": "yao-skills",
+  "version": "0.1.0",
+  "description": "Code review, incident triage, workflow routing, and project status skills (triple-review, first-principles-fix, workflow-routing, project-status-review) + curated OMC orchestration skills (ralph, plan, deep-interview, deep-dive, learner, skillify, sciomc, autoresearch, ralplan, ai-slop-cleaner, team, release, autopilot, ultrawork).",
+  "author": {
+    "name": "Yao Ma"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/solitude6060/Yao-skills"
+}

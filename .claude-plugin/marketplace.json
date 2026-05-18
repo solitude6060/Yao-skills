@@ -1,0 +1,13 @@
+{
+  "name": "yao-skills",
+  "owner": {
+    "name": "Yao Ma"
+  },
+  "plugins": [
+    {
+      "name": "yao-skills",
+      "source": ".",
+      "description": "Code review, incident triage, workflow routing, and project health skills + curated OMC orchestration skills"
+    }
+  ]
+}
