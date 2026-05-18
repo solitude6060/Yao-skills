@@ -17,7 +17,7 @@ This is the **public, sanitized** version of a private personal toolkit. Example
 
 ### Curated from oh-my-claudecode (MIT, see `NOTICE.md`)
 
-`ralph`, `plan`, `deep-interview`, `deep-dive`, `learner`, `skillify`, `sciomc`, `autoresearch`, `ralplan`, `ai-slop-cleaner`, `team`, `release`.
+`ralph`, `plan`, `deep-interview`, `deep-dive`, `learner`, `skillify`, `sciomc`, `autoresearch`, `ralplan`, `ai-slop-cleaner`, `team`, `release`, `autopilot`, `ultrawork`.
 
 ## Install
 

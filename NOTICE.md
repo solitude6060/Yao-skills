@@ -21,6 +21,8 @@ Yeachan Heo, under MIT License:
 - `ai-slop-cleaner` — regression-safe AI-code cleanup
 - `team` — N coordinated agents on a shared task list
 - `release` — generic release-flow assistant
+- `autopilot` — full autonomous execution from idea to working code
+- `ultrawork` — parallel execution engine for high-throughput tasks
 
 These skills are bundled verbatim; the full MIT license terms apply.
 
