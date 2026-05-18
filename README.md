@@ -65,6 +65,22 @@ cp templates/CLAUDE.md ~/.claude/CLAUDE.md   # only if you don't already have on
 
 Then edit to your needs.
 
+#### Core concepts in the template
+
+`templates/CLAUDE.md` is a global behavioral contract for Claude Code, biased toward rigor + audit-trail over speed. Nine sections:
+
+1. **Spec Before Code** — read SPEC/README first; ADR before deviating. Code ≠ spec.
+2. **Test Before Implementation** — Red → Green → Refactor. Bug fix = regression test + fix, never just the fix.
+3. **Surgical Changes + Audit Trail** — touch only what the task requires. `what` in commit subject; `why + SPEC/ADR/issue link` in body. Observability events over inline comments.
+4. **Plan in Files, Not Chat** — non-trivial work starts with a plan file committed to the repo (`docs/<TRACK>_PLAN.md`). Reviews land as `docs/<REVIEWER>_<DATE>_<SCOPE>.md` _before_ fixes; matching `_FIX_LOG.md` ships with the fix PR.
+5. **Code-Review Handling** — verify each finding against code; triage by severity; TDD-order fixes; ship `_FIX_LOG.md` with the PR.
+6. **Branch + PR Discipline** — feature branch off integration; merge via PR with `--no-ff`; deploy chain `develop → main → production`; destructive ops require explicit sign-off.
+7. **First-Principles When Blocked** — first proposed fix is usually a workaround; stop and re-derive. Red flags: "lower threshold", "skip check", "disable test", "hardcode for now". User pushback "first principles?" → re-derive, don't defend.
+8. **When in Doubt** — ask, don't guess. Reversible-default: paper before live, staging before prod, dry-run before apply, archive before delete.
+9. **Writing Style for Chat** — plain language, no mid-sentence English jargon (when the default language is non-English), no figurative imagery substituting for clarity, concrete numbers + tables over claims. Repo artefacts (code, commits, PR descriptions) stay English.
+
+**Working signal:** plan-files exist before the diff lands, reviews have matching fix-logs, git history reads like a TDD cycle (`test:` → `feat:`), and clarifying questions come before mistakes rather than after them.
+
 ### Codex CLI (OpenAI)
 
 Codex has no plugin marketplace; the equivalent is referencing skills from `~/.codex/AGENTS.md`.
@@ -157,6 +173,21 @@ git clone https://github.com/solitude6060/Yao-skills /tmp/yao-skills
 ```
 
 The skills assume a chat-driven CLI agent with shell + git access. Antigravity's IDE/browser-automation paradigm is largely orthogonal — `workflow-routing` and `project-status-review` are the only ones that translate cleanly; the others lose most of their value.
+
+## Update (after upstream changes)
+
+After the upstream repo gets new commits, refresh on each install path:
+
+| Install path | Update command |
+|---|---|
+| Claude Code (marketplace) | `/plugin marketplace update yao-skills` then `/plugin update yao-skills@yao-skills` |
+| Codex CLI | `git -C ~/.codex/yao-skills pull` |
+| Gemini CLI | `git -C ~/.gemini/yao-skills pull` |
+| opencode | `git -C ~/.config/opencode/yao-skills pull` |
+| Per-skill copy (`~/.claude/skills/<name>`) | re-clone + `cp -r` again, or `git -C` if you originally clone'd |
+| CLAUDE.md template (already deployed) | `cp templates/CLAUDE.md ~/.claude/CLAUDE.md` (overwrites — merge by hand if you edited locally) |
+
+After a Claude Code marketplace update, restart your CC session (or `--resume`) for the new skill set to load. `AGENTS.md` / `GEMINI.md` references re-read on each new CLI session — no extra step.
 
 ## Adapting to your setup
 
