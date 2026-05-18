@@ -19,6 +19,18 @@ This is the **public, sanitized** version of a private personal toolkit. Example
 
 `ralph`, `plan`, `deep-interview`, `deep-dive`, `learner`, `skillify`, `sciomc`, `autoresearch`, `ralplan`, `ai-slop-cleaner`, `team`, `release`, `autopilot`, `ultrawork`.
 
+#### When to use which orchestration mode
+
+| Mode | Operating style | Best for |
+|---|---|---|
+| `autopilot` | Independent autonomous single-lead agent | Fast independent feature dev / prototyping from a 2–3 line idea |
+| `team` | 5-stage pipeline (plan → prd → exec → verify → fix) | Multi-file changes needing peer architecture review |
+| `ralph` | Persistent self-referential strict-verification loop | Critical prod bug fixes that must be fully resolved |
+| `ultrawork` | Max-parallel non-team agent operation | Large-scale refactor across unrelated codebases |
+| `ralplan` | Consensus planning gate before execution | Vague / ambiguous "ralph this" / "autopilot this" requests |
+
+Picker order: vague request → `ralplan` first. Independent prototype → `autopilot`. Multi-file design-sensitive change → `team`. Must-fix prod bug → `ralph`. Parallel-friendly bulk refactor → `ultrawork`.
+
 ## Install
 
 ### Per-skill (user-level)
