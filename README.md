@@ -1,6 +1,6 @@
 # yao-skills
 
-A small, opinionated set of Claude Code skills for code review, incident triage, workflow routing, and project health checks — plus a curated subset of [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) skills for planning and orchestration.
+A small, opinionated set of Claude Code skills for code review, incident triage, workflow routing, and project health checks — plus a curated subset of [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) skills for planning and orchestration, and behavioral guidelines from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills).
 
 This is the **public, sanitized** version of a private personal toolkit. Examples that referenced specific projects / PRs / business details have been replaced with generic placeholders so the methodology is preserved without leaking internal context.
 
@@ -19,6 +19,12 @@ This is the **public, sanitized** version of a private personal toolkit. Example
 ### Curated from oh-my-claudecode (MIT, see `NOTICE.md`)
 
 `ralph`, `plan`, `deep-interview`, `deep-dive`, `learner`, `skillify`, `sciomc`, `autoresearch`, `ralplan`, `ai-slop-cleaner`, `team`, `release`, `autopilot`, `ultrawork`.
+
+### Curated from andrej-karpathy-skills (MIT, see `NOTICE.md`)
+
+| Skill | What it does |
+|---|---|
+| `karpathy-guidelines` | Behavioral guidelines distilled from Andrej Karpathy's observations on LLM coding pitfalls: think before coding, simplicity first, surgical changes, goal-driven execution |
 
 #### When to use which orchestration mode
 
@@ -45,7 +51,7 @@ Two paths:
 /plugin install yao-skills@yao-skills
 ```
 
-Open a new Claude Code session and all 18 skills become invocable via the `Skill` tool / `/yao-skills:<skill-name>`.
+Open a new Claude Code session and all 20 skills become invocable via the `Skill` tool / `/yao-skills:<skill-name>`.
 
 **B. Per-skill copy (if you only want some)**
 

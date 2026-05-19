@@ -50,6 +50,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## Skills derived from andrej-karpathy-skills
+
+The following skill is copied from
+[andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills),
+authored by forrestchang and derived from
+[Andrej Karpathy's public observations](https://x.com/karpathy/status/2015883857489522876)
+on LLM coding pitfalls. Distributed under MIT License:
+
+- `karpathy-guidelines` — behavioral guidelines to reduce common LLM coding
+  mistakes (think before coding, simplicity first, surgical changes,
+  goal-driven execution)
+
+This skill is bundled verbatim; the MIT license terms above apply.
+
 ## Author-original skills
 
 The following skills are original to this repo, under MIT License (see
