@@ -14,6 +14,7 @@ This is the **public, sanitized** version of a private personal toolkit. Example
 | `first-principles-fix` | Incident triage discipline: 5-question audit, ground-truth verification, mandatory dual/triple review on hotfixes |
 | `workflow-routing` | Pick A/B/C/D/Mini workflow per task type, risk level, and current Opus / Codex quota |
 | `project-status-review` | Generate a comprehensive project status report — code stats, branch divergence, blockers, prioritized next steps |
+| `context-hygiene` | Manage session context cost: when to `/compact` vs handover-doc + `/clear`, the cache cost math (cached input is 0.1x not zero; output never cached), handover template, loop session checkpointing, and task-to-tool routing (Sonnet/Opus/codex/gemini-cli/claude-mm) |
 
 ### Curated from oh-my-claudecode (MIT, see `NOTICE.md`)
 
@@ -99,6 +100,7 @@ When the user's request matches a skill below, read the corresponding SKILL.md a
 - "first principles" / "incident triage" → ~/.codex/yao-skills/skills/first-principles-fix/SKILL.md
 - "workflow routing" / "which workflow" → ~/.codex/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" / "health check" → ~/.codex/yao-skills/skills/project-status-review/SKILL.md
+- "context hygiene" / "compact" / "clear" / "handover" → ~/.codex/yao-skills/skills/context-hygiene/SKILL.md
 EOF
 ```
 
@@ -126,6 +128,7 @@ If the user's request matches these keywords, read the SKILL.md before respondin
 - "first principles" → ~/.gemini/yao-skills/skills/first-principles-fix/SKILL.md
 - "workflow routing" → ~/.gemini/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.gemini/yao-skills/skills/project-status-review/SKILL.md
+- "context hygiene" / "compact" / "handover" → ~/.gemini/yao-skills/skills/context-hygiene/SKILL.md
 EOF
 ```
 
@@ -152,6 +155,7 @@ When the user's request matches a skill below, read the SKILL.md and follow it:
 - "first principles" → ~/.config/opencode/yao-skills/skills/first-principles-fix/SKILL.md
 - "workflow routing" → ~/.config/opencode/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.config/opencode/yao-skills/skills/project-status-review/SKILL.md
+- "context hygiene" / "compact" / "handover" → ~/.config/opencode/yao-skills/skills/context-hygiene/SKILL.md
 EOF
 ```
 
