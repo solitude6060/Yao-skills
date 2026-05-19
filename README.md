@@ -1,5 +1,7 @@
 # yao-skills
 
+English | [繁體中文](./README.zh.md)
+
 A small, opinionated set of Claude Code skills for code review, incident triage, workflow routing, and project health checks — plus a curated subset of [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) skills for planning and orchestration, and behavioral guidelines from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills).
 
 This is the **public, sanitized** version of a private personal toolkit. Examples that referenced specific projects / PRs / business details have been replaced with generic placeholders so the methodology is preserved without leaking internal context.
