@@ -1,6 +1,6 @@
 ---
 name: triple-review
-description: Run a triple-reviewer code review (Gemini CLI + Claude Code on a secondary endpoint + Codex CLI) on an open PR, triage findings with severity calibration, apply TDD fix cycle, archive all three reviews as docs/ artifacts, and auto-merge if green.
+description: Run a triple-reviewer code review (Gemini-class via agy/antigravity-cli (primary) or gemini-cli (legacy) + Claude Code on a secondary endpoint + Codex CLI) on an open PR, triage findings with severity calibration, apply TDD fix cycle, archive all three reviews as docs/ artifacts, and auto-merge if green.
 argument-hint: "<PR# | branch name | (empty for current branch)>"
 ---
 
@@ -16,7 +16,10 @@ Three independent reviewers beat two. Each model class catches a different bug c
 
 ## Prerequisites
 
-- `gemini` CLI installed + Google OAuth signed in
+- **Reviewer 1 (Gemini-class) — pick one of these two CLIs**:
+  - **Primary (2026-05+): `agy` (antigravity-cli)** — install + Google OAuth. Model is fixed at the Gemini 3.x Pro class internally; no `-m` flag.
+  - **Legacy: `gemini` CLI** — still works until Google retires it. `npm install -g @google/gemini-cli`. Keeps the explicit `-m <model>` flag (e.g. `-m gemini-3.1-pro-preview`) if you need to pin a specific Pro snapshot.
+  - Only one is required. Both produce a Gemini-class review.
 - A second Claude Code CLI on a different endpoint (e.g. MiniMax) usable via shell wrapper / alias — must run with `Read / Grep / Glob / Bash` available so it can verify findings against actual file contents
 - `codex` CLI from a separate account (so it does not burn the primary Codex quota); installed via the Codex Claude Code plugin or vendored binary
 - `gh` CLI authenticated
@@ -42,7 +45,7 @@ Write to `/tmp/pr<n>_review_prompt.txt` with **four sections**:
 ```
 You are a code reviewer. Your only output is a markdown review of the PR diff below.
 
-Do NOT spawn other reviewers (no nested gemini / claude / codex calls).
+Do NOT spawn other reviewers (no nested agy / gemini / claude / codex calls).
 Do NOT call gh CLI or run scripts.
 Do NOT delegate to other skills or agents.
 You MAY use Read / Grep / Glob to verify findings against actual file contents
@@ -72,11 +75,24 @@ git diff origin/<base_branch>...HEAD >> /tmp/pr<n>_review_prompt.txt
 
 All three use `run_in_background: true` so the assistant is not blocked.
 
-**Reviewer 1 — Gemini**:
+**Reviewer 1 — Gemini-class** (pick one):
+
 ```bash
+# Primary — agy (antigravity-cli)
+agy --print-timeout 15m --dangerously-skip-permissions \
+  -p "$(cat /tmp/pr<n>_review_prompt.txt)" \
+  > /tmp/pr<n>_review_gemini.out 2>&1
+```
+
+⚠ **agy flag-order is load-bearing**: every flag (`--print-timeout`, `--dangerously-skip-permissions`, `--sandbox`, …) must come **before** `-p`. A flag placed after the prompt is absorbed into the prompt and the call hangs silently (observed: `agy -p "<prompt>" --print-timeout 10m` hung >14 min with no output). The default `--print-timeout` is 5 m; raise it for full-PR review prompts.
+
+```bash
+# Legacy — gemini-cli (still works until Google retires it)
 gemini --skip-trust -p "$(cat /tmp/pr<n>_review_prompt.txt)" -m gemini-3.1-pro-preview \
   > /tmp/pr<n>_review_gemini.out 2>&1
 ```
+
+Both CLIs share the output filename `_gemini.out` because Reviewer 1's **identity is the model class, not the CLI**. Record the actual CLI + version inside the archived review file body.
 
 **Reviewer 2 — Claude Code via secondary endpoint** (e.g. MiniMax):
 ```bash
@@ -237,7 +253,10 @@ Five-to-ten lines back to the user:
 
 ## Troubleshooting
 
-- **Gemini 429 / no capacity**: retry once with ≥30s gap; if still failing, run secondary + Codex only and explicitly tell the user that the invariant-first calibration heuristic does not fully apply this round
+- **Reviewer 1 (Gemini-class) 429 / quota / model unavailable**:
+  - **agy path**: retry once with ≥30 s gap; agy has no `-m` flag to swap models, so if the quota is gone, fall back to `gemini` CLI (if installed) or drop the Reviewer 1 slice.
+  - **gemini-cli path**: retry once; fall back to `agy` (if installed) or drop the slice. If both fail, run Reviewer 2 (secondary Claude Code) + Codex only and tell the user that the invariant-first calibration heuristic does not fully apply this round.
+- **`agy` hangs with no output for >10 min**: 99% likely the flag-order rule was broken. Inspect the running command — every CLI flag must come before `-p`. `agy -p "<prompt>" --print-timeout 10m` parses `--print-timeout 10m` as prompt content and waits forever for the continuation. Fix: re-order to `agy --print-timeout 10m -p "<prompt>"`.
 - **Secondary Claude Code hangs**: full-tool runs of 10+ min are normal for complex reviews. Check `ps aux | grep CLAUDE_CONFIG_DIR=<endpoint-dir>` for an active process and watch output file size for growth. Only kill after 15 min of no output.
 - **Recursion (reviewer output starts with the secondary's identity banner + "Skill ...")**: the prompt is missing the Step 2 §0 preamble, or the title is too close to "Triple PR Review". Rebuild the prompt with the literal preamble.
 - **Codex auth missing**: verify `CODEX_HOME=<secondary> codex login status` shows logged-in; if not, the user must run the login interactively. If the secondary Codex is unavailable, fall back to the primary Codex (note the cost), and only as a last resort run with two reviewers and tell the user a whole reviewer slice is missing.
