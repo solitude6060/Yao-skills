@@ -1,6 +1,6 @@
 {
   "name": "yao-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Code review, incident triage, workflow routing, project status, and session-context cost skills (triple-review, first-principles, workflow-routing, project-status-review, context-hygiene) + curated OMC orchestration skills (ralph, plan, deep-interview, deep-dive, learner, skillify, sciomc, autoresearch, ralplan, ai-slop-cleaner, team, release, autopilot, ultrawork) + behavioral guidelines (karpathy-guidelines).",
   "author": {
     "name": "Yao Ma"
