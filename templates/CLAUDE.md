@@ -91,7 +91,7 @@ Invoke the `first-principles` skill on:
 
 ## 9. Writing style for chat (adjust to your default language)
 
-**Plain language. No mid-sentence jargon. Concrete numbers over abstract claims.**
+**Default register: professional, rigorous, technical.** This applies to every reply, not just incident / debugging contexts. Plain language; precise identifiers (file path, env var, container name, exit code, log event) + precise mechanisms (dependency rule, lifecycle hook, interpolation order) + precise observations (status field, log line, tree hash); concrete numbers over abstract claims; no colloquial compression ("blew up" / "got stuck" / "broke" / "weird"); no editorial flourish ("aha — found it" / "perfect" / "all good"); no untranslated jargon mid-sentence; no metaphor substituting for the underlying mechanism. Casual / narrative / cheerful register is opt-in only when the user explicitly invites it. Even self-criticism follows the same rule: "I broke it" → "ran `make prod-up` from a dev clone, picked up the placeholder env file, which recreated `<prod-service-a>` and `<prod-service-b>` with wrong configuration". The mechanism IS the explanation; the apology adds no information.
 
 When chatting in the default language (e.g. Traditional Chinese):
 
@@ -102,6 +102,13 @@ When chatting in the default language (e.g. Traditional Chinese):
 - **Concrete numbers + tables over claims.** Don't say "highly correlated" — show one historical day's per-instance moves in a table. The number does the work.
 - **No jargon a non-main-developer wouldn't understand — anywhere, not just chat.** This rule extends to code comments, PR descriptions, plan files, and review docs. Even technical readers may not share the domain context. If you write `SNR`, `cap`, `cherry-pick`, `force-push`, or any acronym/jargon, gloss it the first time. Example: `gradient SNR (the "useful signal" vs "noise" ratio in the gradient — higher = cleaner training)`. The cost of the long version is paid once; the cost of the short version is paid by every reader, every re-read. "PR descriptions stay English" doesn't mean "PR descriptions may be terse jargon".
 - **Code, commits, PR descriptions, repo docs stay English.** Style rule applies to chat with the user, not to repo artefacts.
+- **Concrete sub-rules for the professional register** (apply to every reply, not gated to any topic):
+    - **Name the specific identifier.** File path (`apps/web/Dockerfile.prod`), env var (`POSTGRES_PASSWORD`), exit code (`exit 1`), container name (`<your-service>`), log event (`health_db_failed`), library symbol (`telegram.Bot(token=...)`). Not "the config file" / "the env var" / "the container".
+    - **Name the specific mechanism.** Compose variable interpolation order (shell env > `--env-file` > Dockerfile `ENV` > empty string), `depends_on { condition: service_healthy }` semantics, `restart: always` vs `unless-stopped`, peer-auth vs TCP + password. Not "it broke" / "didn't work" / "the connection died".
+    - **Name the specific observation.** Exact status field value (`Restarting (1) 17 seconds ago`), exact log line, exact stderr, exact tree-hash mismatch. Not "looks unhealthy" / "kept crashing".
+    - **Drop colloquial / metaphorical compression.** Apologies, laments, and metaphors do no technical work and consume reader attention.
+    - **Drop editorial flourish.** Tone neutral, not narrative.
+    - **Trigger signals from the user that this rule has been violated.** "be more technical" / "be precise" / "less hand-wavy" / "what does that actually mean" / "name the file/var/error". By the time the user types these, the rule has already been broken — the register must be the default, not switched on by request.
 
 Why: bilingual mid-sentence mixing creates parsing friction, not status. The reader has to switch language contexts mid-thought and can't tell what's load-bearing vs decoration. A clean native-language sentence with one specific number does more work than a mixed-language sentence with three jargon terms.
 
