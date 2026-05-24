@@ -80,7 +80,7 @@ cp templates/CLAUDE.md ~/.claude/CLAUDE.md   # 僅在你還沒有 CLAUDE.md 時�
 
 #### 範本的核心九條
 
-`templates/CLAUDE.md` 是給 Claude Code 用的全域行為合約，偏好「嚴謹 + 稽核軌跡」勝於「速度」。九個段落：
+`templates/CLAUDE.md` 是給 Claude Code 用的全域行為合約，偏好「嚴謹 + 稽核軌跡」勝於「速度」。十一個段落：
 
 1. **Spec Before Code** — 先讀 SPEC / README；偏離要先寫 ADR。code ≠ spec。
 2. **Test Before Implementation** — Red → Green → Refactor。Bug fix = 重現測試 + 修正，不能只有修正。
@@ -91,6 +91,8 @@ cp templates/CLAUDE.md ~/.claude/CLAUDE.md   # 僅在你還沒有 CLAUDE.md 時�
 7. **First-Principles When Blocked** — 第一個冒出來的修法通常是 workaround；停下來重推。紅旗詞：「降低 threshold」「跳過檢查」「停用測試」「先 hardcode」。使用者反問「first principles?」→ 重推，不要辯護。
 8. **When in Doubt** — 不確定就問，不要猜。可逆優先：先模擬再實單；先 staging 再 prod；先 dry-run 再 apply；先封存再刪除。
 9. **Writing Style for Chat** — 自然語言、不在句中夾雜英文縮寫（當主要語言不是英文時）、不用比喻替代清晰描述、用具體數字 / 表格而非抽象論述。Repo 產物（程式碼、commit、PR description）保留英文。
+10. **OMC Tooling Reference** — 安裝 OMC plugin 時適用：tier-0 skill 觸發詞、模型路由（haiku / sonnet / opus）、委派提示、hooks 與持久化、worktree 狀態路徑。工具而非覆寫 — §1–§8 永遠優先。
+11. **Reduce Hallucinations** — 每個斷言都要有提供的脈絡佐證；不確定時明確表示；長文件先提取原文引用再分析；每個事實聲明要能追溯到來源；逐步推理驗證；交叉比對一致性。依據 [Anthropic 官方指引](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations)。
 
 **運作良好的訊號：** plan 檔案在 diff 之前先 land、review 都有對應的 fix-log、git history 看起來像 TDD 循環（`test:` → `feat:`）、釐清式的提問出現在錯誤之前而非之後。
 

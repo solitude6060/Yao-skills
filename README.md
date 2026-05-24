@@ -78,7 +78,7 @@ Then edit to your needs.
 
 #### Core concepts in the template
 
-`templates/CLAUDE.md` is a global behavioral contract for Claude Code, biased toward rigor + audit-trail over speed. Nine sections:
+`templates/CLAUDE.md` is a global behavioral contract for Claude Code, biased toward rigor + audit-trail over speed. Eleven sections:
 
 1. **Spec Before Code** — read SPEC/README first; ADR before deviating. Code ≠ spec.
 2. **Test Before Implementation** — Red → Green → Refactor. Bug fix = regression test + fix, never just the fix.
@@ -89,6 +89,8 @@ Then edit to your needs.
 7. **First-Principles When Blocked** — first proposed fix is usually a workaround; stop and re-derive. Red flags: "lower threshold", "skip check", "disable test", "hardcode for now". User pushback "first principles?" → re-derive, don't defend.
 8. **When in Doubt** — ask, don't guess. Reversible-default: paper before live, staging before prod, dry-run before apply, archive before delete.
 9. **Writing Style for Chat** — plain language, no mid-sentence English jargon (when the default language is non-English), no figurative imagery substituting for clarity, concrete numbers + tables over claims. Repo artefacts (code, commits, PR descriptions) stay English.
+10. **OMC Tooling Reference** — when the OMC plugin is installed: tier-0 skill triggers, model routing (haiku/sonnet/opus), delegation hints, hooks & persistence, worktree state paths. Tools, not overrides — §1–§8 always win.
+11. **Reduce Hallucinations** — ground claims in provided context; admit uncertainty; direct-quote grounding for long documents; citation-backed claims; chain-of-thought verification; cross-reference consistency. Based on [Anthropic's official guidance](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations).
 
 **Working signal:** plan-files exist before the diff lands, reviews have matching fix-logs, git history reads like a TDD cycle (`test:` → `feat:`), and clarifying questions come before mistakes rather than after them.
 
