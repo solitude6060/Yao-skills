@@ -12,8 +12,8 @@
 
 | Skill | 用途 |
 |---|---|
-| `triple-review` | 三審 PR review（Gemini + 次要端點的 Claude Code + Codex CLI），含 severity triage、TDD 修復循環、自動 merge gate |
-| `first-principles-fix` | Incident triage 紀律：5 題稽核、ground-truth 驗證、hotfix 強制雙 / 三審 |
+| `triple-review` | 三審 PR review（Gemini 類 CLI + 次要端點的 Claude Code + 主要 Claude Code），含 severity triage、TDD 修復循環、自動 merge gate |
+| `first-principles` | 假設稽核與 incident triage 紀律：5 題稽核、ground-truth 驗證、hotfix 強制雙 / 三審 |
 | `workflow-routing` | 依 task 類型、風險等級、Opus / Codex 剩餘配額挑 A / B / C / D / Mini 工作流程 |
 | `project-status-review` | 產生完整專案健康報告：code stats、branch 偏離度、blockers、依優先序排定的下一步建議 |
 | `context-hygiene` | 管理 session context 成本：何時 `/compact`、何時改用 handover-doc + `/clear`；快取成本算式（cached input 是 0.1 倍而非零；output 不會被快取）；handover 範本；loop session checkpointing；以及 task → 工具的對應路由（Sonnet / Opus / codex / gemini-cli / claude-mm） |
@@ -63,7 +63,7 @@ OMC tier-0 編排類 skill，依任務形態挑選：
 ```bash
 git clone https://github.com/solitude6060/Yao-skills /tmp/yao-skills
 cp -r /tmp/yao-skills/skills/triple-review ~/.claude/skills/
-cp -r /tmp/yao-skills/skills/first-principles-fix ~/.claude/skills/
+cp -r /tmp/yao-skills/skills/first-principles ~/.claude/skills/
 # ...其他依需求
 ```
 
@@ -95,7 +95,7 @@ cp templates/CLAUDE.md ~/.claude/CLAUDE.md   # 僅在你還沒有 CLAUDE.md 時�
 
 ### Codex CLI（OpenAI）
 
-Codex 沒有 plugin marketplace；對應做法是從 `~/.codex/AGENTS.md` 引用 skills。
+Codex 沒有 Claude Code 形式的 plugin marketplace。要把 Codex 視為獨立執行環境：相容的技能放在 `~/.codex/skills/<name>/SKILL.md`，全域行為規範放在 `~/.codex/AGENTS.md`。
 
 ```bash
 mkdir -p ~/.codex
@@ -108,7 +108,7 @@ cat >> ~/.codex/AGENTS.md <<'EOF'
 When the user's request matches a skill below, read the corresponding SKILL.md and follow it:
 
 - "triple review" / "PR review" → ~/.codex/yao-skills/skills/triple-review/SKILL.md
-- "first principles" / "incident triage" → ~/.codex/yao-skills/skills/first-principles-fix/SKILL.md
+- "first principles" / "incident triage" → ~/.codex/yao-skills/skills/first-principles/SKILL.md
 - "workflow routing" / "which workflow" → ~/.codex/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" / "health check" → ~/.codex/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "clear" / "handover" → ~/.codex/yao-skills/skills/context-hygiene/SKILL.md
@@ -118,9 +118,12 @@ EOF
 
 **注意事項：**
 
-- 沒有 Claude Code 的關鍵字 hook 自動觸發；使用者必須明確提到 skill 名稱或符合的關鍵字。
-- `triple-review` 本身會把 Codex CLI 當成其中一個 reviewer。在 Codex 內跑等於 self-reference；可用但少見。
-- OMC 編排類 skills（`ralph`、`autopilot`、`ultrawork` 等）依賴 Claude Code 的 hooks 與背景任務；移植到 Codex 後價值有限。
+- 不要把整包 Claude Code plugin 直接覆蓋到 `~/.codex/skills`。部分技能假設 `/oh-my-claudecode`、Claude Code hooks 或 `.omc` 狀態，必須先改成 Codex 版。
+- 如果本機已經有同名 Codex/OMX 技能，預設保留 Codex 版；只有明確移植完成時才用 Claude Code 版取代。
+- 移除不相容技能時先移到 quarantine 目錄，不直接永久刪除；例如 `~/.codex/skills.quarantine.<date>/`，方便回復和比對。
+- 重疊入口只保留一個主入口。例如新版 `first-principles` 已包含修復情境，可取代 `first-principles-fix`；單一 `ask` wrapper 可取代 `ask-claude` / `ask-gemini`。
+- 在 Codex 內，`triple-review` 應由 Codex 編排，但 reviewer 要用其他模型。實務上可用 `agy`、`claude-mm`、`claude`；除非使用者明確要求，避免讓 Codex 自審。
+- OMC 編排類 skills（`ralph`、`autopilot`、`ultrawork` 等）只有在執行階段依賴已移植到 OMX/Codex 時才值得放進 Codex。
 
 ### Gemini CLI（Google）
 
@@ -137,7 +140,7 @@ cat >> ~/.gemini/GEMINI.md <<'EOF'
 If the user's request matches these keywords, read the SKILL.md before responding:
 
 - "triple review" → ~/.gemini/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.gemini/yao-skills/skills/first-principles-fix/SKILL.md
+- "first principles" → ~/.gemini/yao-skills/skills/first-principles/SKILL.md
 - "workflow routing" → ~/.gemini/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.gemini/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.gemini/yao-skills/skills/context-hygiene/SKILL.md
@@ -165,7 +168,7 @@ cat >> ~/.config/opencode/AGENTS.md <<'EOF'
 When the user's request matches a skill below, read the SKILL.md and follow it:
 
 - "triple review" → ~/.config/opencode/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.config/opencode/yao-skills/skills/first-principles-fix/SKILL.md
+- "first principles" → ~/.config/opencode/yao-skills/skills/first-principles/SKILL.md
 - "workflow routing" → ~/.config/opencode/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.config/opencode/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.config/opencode/yao-skills/skills/context-hygiene/SKILL.md
@@ -175,7 +178,7 @@ EOF
 
 **注意事項：**
 
-- opencode 支援多 provider；`triple-review` 預設的 reviewer 集合假設了 `gemini`、次要 CC、`codex` 這幾個 CLI。任一 reviewer 都可以換成指向其他 provider 的 opencode session，但 skill prompt 內提到的 provider 名稱要一起改。
+- opencode 支援多 provider；`triple-review` 的任一 reviewer 都可以換成指向其他 provider 的 opencode session，但 skill prompt 內提到的 provider 名稱要和實際指令一起改。
 - opencode 自己的 command / agent 系統（`.opencode/command/*.md`）是更原生的 slash command 暴露方式；想要一級整合的話，參考 opencode 文件把 SKILL.md 的內容移植成 command 檔。
 
 ### Antigravity（Google IDE）

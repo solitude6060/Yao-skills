@@ -12,8 +12,8 @@ This is the **public, sanitized** version of a private personal toolkit. Example
 
 | Skill | What it does |
 |---|---|
-| `triple-review` | Three-reviewer PR review (Gemini + Claude Code on a secondary endpoint + Codex CLI), severity triage, TDD fix cycle, auto-merge gate |
-| `first-principles-fix` | Incident triage discipline: 5-question audit, ground-truth verification, mandatory dual/triple review on hotfixes |
+| `triple-review` | Three-reviewer PR review (Gemini-class CLI + Claude Code on a secondary endpoint + primary Claude Code), severity triage, TDD fix cycle, auto-merge gate |
+| `first-principles` | Assumption-audit and incident triage discipline: 5-question audit, ground-truth verification, mandatory dual/triple review on hotfixes |
 | `workflow-routing` | Pick A/B/C/D/Mini workflow per task type, risk level, and current Opus / Codex quota |
 | `project-status-review` | Generate a comprehensive project status report — code stats, branch divergence, blockers, prioritized next steps |
 | `context-hygiene` | Manage session context cost: when to `/compact` vs handover-doc + `/clear`, the cache cost math (cached input is 0.1x not zero; output never cached), handover template, loop session checkpointing, and task-to-tool routing (Sonnet/Opus/codex/gemini-cli/claude-mm) |
@@ -61,7 +61,7 @@ Open a new Claude Code session and all 20 skills become invocable via the `Skill
 ```bash
 git clone https://github.com/solitude6060/Yao-skills /tmp/yao-skills
 cp -r /tmp/yao-skills/skills/triple-review ~/.claude/skills/
-cp -r /tmp/yao-skills/skills/first-principles-fix ~/.claude/skills/
+cp -r /tmp/yao-skills/skills/first-principles ~/.claude/skills/
 # ...etc
 ```
 
@@ -93,7 +93,9 @@ Then edit to your needs.
 
 ### Codex CLI (OpenAI)
 
-Codex has no plugin marketplace; the equivalent is referencing skills from `~/.codex/AGENTS.md`.
+Codex has no Claude Code-style plugin marketplace. Treat Codex as its own
+runtime: install compatible skills under `~/.codex/skills/<name>/SKILL.md` and
+put global behavioral guidance in `~/.codex/AGENTS.md`.
 
 ```bash
 mkdir -p ~/.codex
@@ -106,7 +108,7 @@ cat >> ~/.codex/AGENTS.md <<'EOF'
 When the user's request matches a skill below, read the corresponding SKILL.md and follow it:
 
 - "triple review" / "PR review" → ~/.codex/yao-skills/skills/triple-review/SKILL.md
-- "first principles" / "incident triage" → ~/.codex/yao-skills/skills/first-principles-fix/SKILL.md
+- "first principles" / "incident triage" → ~/.codex/yao-skills/skills/first-principles/SKILL.md
 - "workflow routing" / "which workflow" → ~/.codex/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" / "health check" → ~/.codex/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "clear" / "handover" → ~/.codex/yao-skills/skills/context-hygiene/SKILL.md
@@ -116,9 +118,21 @@ EOF
 
 **Caveats:**
 
-- No auto-trigger via keyword hook (Claude Code feature). User must mention the skill name or matching phrase.
-- The `triple-review` skill itself calls Codex CLI as one of its reviewers. Running it _inside_ Codex creates self-reference; usable but unusual.
-- OMC orchestration skills (`ralph`, `autopilot`, `ultrawork`, etc.) rely on Claude Code hooks and background tasks; porting to Codex has limited value.
+- Do not bulk-copy the whole Claude Code plugin into `~/.codex/skills`. Some
+  skills assume `/oh-my-claudecode`, Claude Code hooks, or `.omc` state and need
+  a Codex-specific rewrite.
+- If a same-name Codex/OMX skill already exists locally, keep the Codex version
+  unless you intentionally port the Claude Code version.
+- Quarantine removed or incompatible skills instead of deleting them outright;
+  a directory such as `~/.codex/skills.quarantine.<date>/` keeps rollback cheap.
+- Prefer one canonical entrypoint for overlapping skills. For example, the
+  broad `first-principles` skill supersedes `first-principles-fix`, and a single
+  `ask` wrapper should supersede separate `ask-claude` / `ask-gemini` entries.
+- In Codex, `triple-review` should be orchestrated by Codex but reviewed by
+  other models. A practical reviewer set is `agy`, `claude-mm`, and `claude`;
+  avoid making Codex review itself unless the user explicitly wants that.
+- OMC orchestration skills (`ralph`, `autopilot`, `ultrawork`, etc.) only make
+  sense on Codex if their runtime dependencies have been ported to OMX/Codex.
 
 ### Gemini CLI (Google)
 
@@ -135,7 +149,7 @@ cat >> ~/.gemini/GEMINI.md <<'EOF'
 If the user's request matches these keywords, read the SKILL.md before responding:
 
 - "triple review" → ~/.gemini/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.gemini/yao-skills/skills/first-principles-fix/SKILL.md
+- "first principles" → ~/.gemini/yao-skills/skills/first-principles/SKILL.md
 - "workflow routing" → ~/.gemini/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.gemini/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.gemini/yao-skills/skills/context-hygiene/SKILL.md
@@ -163,7 +177,7 @@ cat >> ~/.config/opencode/AGENTS.md <<'EOF'
 When the user's request matches a skill below, read the SKILL.md and follow it:
 
 - "triple review" → ~/.config/opencode/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.config/opencode/yao-skills/skills/first-principles-fix/SKILL.md
+- "first principles" → ~/.config/opencode/yao-skills/skills/first-principles/SKILL.md
 - "workflow routing" → ~/.config/opencode/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.config/opencode/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.config/opencode/yao-skills/skills/context-hygiene/SKILL.md
@@ -173,7 +187,7 @@ EOF
 
 **Caveats:**
 
-- opencode supports multiple providers; the `triple-review` reviewer set assumes specific CLIs (`gemini`, secondary CC, `codex`). You can swap any reviewer for an opencode session pointed at a different provider, but the skill prompt mentions provider names you'll want to edit.
+- opencode supports multiple providers. You can swap any `triple-review` reviewer for an opencode session pointed at a different provider, but keep the provider names in the skill prompt aligned with the actual commands.
 - opencode's own command/agent system (`.opencode/command/*.md`) is a more native way to expose these as slash commands — see the opencode docs to port the SKILL.md content to a command file if you want first-class integration.
 
 ### Antigravity (Google IDE)
