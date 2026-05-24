@@ -17,6 +17,7 @@
 | `workflow-routing` | 依 task 類型、風險等級、Opus / Codex 剩餘配額挑 A / B / C / D / Mini 工作流程 |
 | `project-status-review` | 產生完整專案健康報告：code stats、branch 偏離度、blockers、依優先序排定的下一步建議 |
 | `context-hygiene` | 管理 session context 成本：何時 `/compact`、何時改用 handover-doc + `/clear`；快取成本算式（cached input 是 0.1 倍而非零；output 不會被快取）；handover 範本；loop session checkpointing；以及 task → 工具的對應路由（Sonnet / Opus / codex / gemini-cli / claude-mm） |
+| `distilled-caveman-lite-accuracy` | Lite 回答壓縮 — 移除客套與贅詞，保留 100% 技術準確度。保留限定詞、程式碼識別字、版本、步驟順序、安全脈絡。破壞性操作、驗證、加密、合規等高風險情境自動展開。觸發詞："caveman-lite"、"lite mode"、"brief but accurate"、"less tokens"、"回答短一點，但不要犧牲技術準確度" |
 
 ### 自 oh-my-claudecode 整併（MIT，詳見 `NOTICE.md`）
 
@@ -111,6 +112,7 @@ When the user's request matches a skill below, read the corresponding SKILL.md a
 - "workflow routing" / "which workflow" → ~/.codex/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" / "health check" → ~/.codex/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "clear" / "handover" → ~/.codex/yao-skills/skills/context-hygiene/SKILL.md
+- "caveman-lite" / "lite mode" / "brief but accurate" / "less tokens" → ~/.codex/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
 EOF
 ```
 
@@ -139,6 +141,7 @@ If the user's request matches these keywords, read the SKILL.md before respondin
 - "workflow routing" → ~/.gemini/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.gemini/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.gemini/yao-skills/skills/context-hygiene/SKILL.md
+- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.gemini/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
 EOF
 ```
 
@@ -166,6 +169,7 @@ When the user's request matches a skill below, read the SKILL.md and follow it:
 - "workflow routing" → ~/.config/opencode/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.config/opencode/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.config/opencode/yao-skills/skills/context-hygiene/SKILL.md
+- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.config/opencode/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
 EOF
 ```
 

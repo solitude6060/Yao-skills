@@ -17,6 +17,7 @@ This is the **public, sanitized** version of a private personal toolkit. Example
 | `workflow-routing` | Pick A/B/C/D/Mini workflow per task type, risk level, and current Opus / Codex quota |
 | `project-status-review` | Generate a comprehensive project status report — code stats, branch divergence, blockers, prioritized next steps |
 | `context-hygiene` | Manage session context cost: when to `/compact` vs handover-doc + `/clear`, the cache cost math (cached input is 0.1x not zero; output never cached), handover template, loop session checkpointing, and task-to-tool routing (Sonnet/Opus/codex/gemini-cli/claude-mm) |
+| `distilled-caveman-lite-accuracy` | Lite response compression — removes filler and pleasantries while preserving 100% technical accuracy. Keeps qualifiers, code identifiers, versions, step order, safety context. Safety fallback auto-expands for destructive ops, auth, crypto, compliance. Trigger: "caveman-lite", "lite mode", "brief but accurate", "less tokens" |
 
 ### Curated from oh-my-claudecode (MIT, see `NOTICE.md`)
 
@@ -109,6 +110,7 @@ When the user's request matches a skill below, read the corresponding SKILL.md a
 - "workflow routing" / "which workflow" → ~/.codex/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" / "health check" → ~/.codex/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "clear" / "handover" → ~/.codex/yao-skills/skills/context-hygiene/SKILL.md
+- "caveman-lite" / "lite mode" / "brief but accurate" / "less tokens" → ~/.codex/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
 EOF
 ```
 
@@ -137,6 +139,7 @@ If the user's request matches these keywords, read the SKILL.md before respondin
 - "workflow routing" → ~/.gemini/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.gemini/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.gemini/yao-skills/skills/context-hygiene/SKILL.md
+- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.gemini/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
 EOF
 ```
 
@@ -164,6 +167,7 @@ When the user's request matches a skill below, read the SKILL.md and follow it:
 - "workflow routing" → ~/.config/opencode/yao-skills/skills/workflow-routing/SKILL.md
 - "project status" → ~/.config/opencode/yao-skills/skills/project-status-review/SKILL.md
 - "context hygiene" / "compact" / "handover" → ~/.config/opencode/yao-skills/skills/context-hygiene/SKILL.md
+- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.config/opencode/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
 EOF
 ```
 
