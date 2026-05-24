@@ -4,7 +4,7 @@
 
 一組精簡、有觀點的 Claude Code skills，涵蓋 code review、incident triage、workflow routing、專案健康檢查；另外整併了 [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) 的部分編排類 skills，以及 [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) 的行為準則。
 
-**這是社群共享版本。** 核心價值是方法論和決策框架 — 它們可以直接搬到不同的專案和技術棧。具體工具名稱（Codex、Gemini CLI 等）都是範例；請自行替換成你手上的 multi-model 工具組合。歡迎 fork、修改、變成你自己的版本。如果你在上面做出好用的東西，也歡迎開 PR 或 issue 回饋。
+**這是社群共享版本。** 核心價值是方法論和決策框架 — 可以直接搬到不同的專案和技術堆疊。具體工具名稱（Codex、Gemini CLI 等）都是範例，請自行替換成你手上的多模型工具組合。歡迎 fork、修改、變成你自己的版本。如果你在上面做出好用的東西，也歡迎開 PR 或 issue 回饋。
 
 ## Skills
 
@@ -12,11 +12,11 @@
 
 | Skill | 用途 |
 |---|---|
-| `triple-review` | 依 orchestrator 條件選 reviewer 的三審 PR review：Claude Code 用 `codex` + `agy`/`gemini` + `claude-mm`；Codex 用 `claude` + `agy`/`gemini` + `claude-mm`；含 severity triage、TDD 修復循環、自動 merge gate |
+| `triple-review` | 依 orchestrator 條件選 reviewer 的三審 PR review：Claude Code 編排時用 `codex` + `agy`/`gemini` + 次要端點；Codex 編排時用 `claude` + `agy`/`gemini` + 次要端點；含 severity triage、TDD 修復循環、自動 merge gate |
 | `first-principles` | 假設稽核與 incident triage 紀律：5 題稽核、ground-truth 驗證、hotfix 強制雙 / 三審 |
-| `workflow-routing` | 依 task 類型、風險等級、Opus / Codex 剩餘配額挑 A / B / C / D / Mini 工作流程 |
+| `workflow-routing` | 依任務類型、風險等級、Opus / Codex 剩餘配額挑 A / B / C / D / E / Mini 工作流程 |
 | `project-status-review` | 產生完整專案健康報告：code stats、branch 偏離度、blockers、依優先序排定的下一步建議 |
-| `context-hygiene` | 管理 session context 成本：何時 `/compact`、何時改用 handover-doc + `/clear`；快取成本算式（cached input 是 0.1 倍而非零；output 不會被快取）；handover 範本；loop session checkpointing；以及 task → 工具的對應路由（Sonnet / Opus / codex / gemini-cli / claude-mm） |
+| `context-hygiene` | 管理 session context 成本：何時 `/compact`、何時改用 handover-doc + `/clear`；快取成本算式（cached input 是 0.1 倍而非零；output 不會被快取）；handover 範本；loop session checkpointing；以及任務到工具的對應路由（Sonnet / Opus / Codex / Gemini CLI / 次要端點） |
 | `distilled-caveman-lite-accuracy` | Lite 回答壓縮 — 移除客套與贅詞，保留 100% 技術準確度。保留限定詞、程式碼識別字、版本、步驟順序、安全脈絡。破壞性操作、驗證、加密、合規等高風險情境自動展開。觸發詞："caveman-lite"、"lite mode"、"brief but accurate"、"less tokens"、"回答短一點，但不要犧牲技術準確度" |
 
 ### 自 oh-my-claudecode 整併（MIT，詳見 `NOTICE.md`）
@@ -56,7 +56,7 @@ OMC tier-0 編排類 skill，依任務形態挑選：
 /plugin install yao-skills@yao-skills
 ```
 
-開新 Claude Code session 後，全部 20 個 skill 都會透過 `Skill` tool 或 `/yao-skills:<skill-name>` 被叫起。
+開新 Claude Code session 後，全部 21 個 skill 都會透過 `Skill` tool 或 `/yao-skills:<skill-name>` 叫用。
 
 **B. 單一 skill 複製（只挑想要的）**
 
@@ -122,7 +122,7 @@ EOF
 - 如果本機已經有同名 Codex/OMX 技能，預設保留 Codex 版；只有明確移植完成時才用 Claude Code 版取代。
 - 移除不相容技能時先移到 quarantine 目錄，不直接永久刪除；例如 `~/.codex/skills.quarantine.<date>/`，方便回復和比對。
 - 重疊入口只保留一個主入口。例如新版 `first-principles` 已包含修復情境，可取代 `first-principles-fix`；單一 `ask` wrapper 可取代 `ask-claude` / `ask-gemini`。
-- `triple-review` 依目前 orchestrator 選 reviewer。Codex orchestrating 時用 `claude` + `agy`/`gemini` + `claude-mm`；Claude Code orchestrating 時用 `codex`/`codex-family` + `agy`/`gemini` + `claude-mm`。除非使用者明確要求 self-review，否則不要把目前 orchestrator 放進 reviewer lanes。
+- `triple-review` 依目前 orchestrator 選 reviewer。Codex 編排時用 `claude` + `agy`/`gemini` + 次要端點；Claude Code 編排時用 `codex`/`codex-family` + `agy`/`gemini` + 次要端點。除非使用者明確要求 self-review，否則不要把目前 orchestrator 放進 reviewer lanes。
 - OMC 編排類 skills（`ralph`、`autopilot`、`ultrawork` 等）只有在執行階段依賴已移植到 OMX/Codex 時才值得放進 Codex。
 
 ### Gemini CLI（Google）
@@ -212,15 +212,14 @@ Claude Code 的 marketplace 更新完，重啟 CC session（或 `--resume`）讓
 
 ## 對應你的環境
 
-這套 skills 假設：
+這套 skills 假設你有一個多模型 CLI 工具組合。完整設定範例：
 
-- 從 Claude Code 執行時：一個主要的 Claude Code（用 Anthropic OAuth）做編排
-- 從 Codex 執行時：一個主要的 Codex CLI 做編排
-- 一個次要的 Claude Code 端點（例如透過 `CLAUDE_CONFIG_DIR` 指向 MiniMax）提供 reviewer 多樣性
-- 一個 `gemini` CLI 接 Google OAuth
-- 一到兩個 `codex` CLI（不同帳號）做 reviewer 多樣性而不燒同一個額度
+- 一個主要的 Claude Code（Anthropic OAuth）或 Codex CLI 做編排
+- 一個次要的 Claude Code 端點（透過 `CLAUDE_CONFIG_DIR` 指向不同的 provider）提供 reviewer 多樣性
+- 一個 Gemini 系列 CLI（`agy` 或 `gemini`）接 Google OAuth
+- 一到兩個 Codex CLI（不同帳號）做 reviewer 多樣性，避免燒同一個額度
 
-少其中任何一個的話，各個 skill 的 Troubleshooting 段落會說明降級版本（例如改成兩個 reviewer，並指出哪一類 bug 會因此看不到）。
+不是每個都必須有。少了其中任何一個，各 skill 的 Troubleshooting 段落會說明降級方式（例如改成兩個 reviewer，並指出哪一類 bug 會因此變成盲區）。方法論（規劃者與實作者分離、三審多樣性、彈性降級路由）本身不綁定特定工具 — 替換成你手上有的 CLI 即可。
 
 ## 授權
 

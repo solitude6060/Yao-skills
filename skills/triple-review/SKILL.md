@@ -1,6 +1,6 @@
 ---
 name: triple-review
-description: Run an orchestrator-aware triple-reviewer code review. Claude Code orchestration uses codex/codex-family + agy/gemini + claude-mm; Codex orchestration uses claude + agy/gemini + claude-mm. Triage findings with severity calibration, apply TDD fixes, archive review artifacts, and auto-merge only if green.
+description: Run an orchestrator-aware triple-reviewer code review. Claude Code orchestration uses codex/codex-family + agy/gemini + secondary endpoint; Codex orchestration uses claude + agy/gemini + secondary endpoint. Triage findings with severity calibration, apply TDD fixes, archive review artifacts, and auto-merge only if green.
 argument-hint: "<PR# | branch name | (empty for current branch)>"
 ---
 
@@ -20,8 +20,8 @@ Pick reviewers from the current orchestrator:
 
 | Orchestrator | Reviewer lanes |
 |---|---|
-| Claude Code | `codex` / `codex-family` + `agy` / `gemini` + `claude-mm` |
-| Codex | `claude` + `agy` / `gemini` + `claude-mm` |
+| Claude Code | `codex` / `codex-family` + `agy` / `gemini` + secondary endpoint |
+| Codex | `claude` + `agy` / `gemini` + secondary endpoint |
 
 In both modes, `agy` is the preferred Gemini-class lane; `gemini` is the fallback. Do not include the current orchestrator as a reviewer unless the user explicitly asks for self-review.
 

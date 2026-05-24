@@ -12,11 +12,11 @@ A small, opinionated set of Claude Code skills for code review, incident triage,
 
 | Skill | What it does |
 |---|---|
-| `triple-review` | Orchestrator-aware three-reviewer PR review: Claude Code uses `codex` + `agy`/`gemini` + `claude-mm`; Codex uses `claude` + `agy`/`gemini` + `claude-mm`; includes severity triage, TDD fix cycle, auto-merge gate |
+| `triple-review` | Orchestrator-aware three-reviewer PR review: Claude Code uses `codex` + `agy`/`gemini` + secondary endpoint; Codex uses `claude` + `agy`/`gemini` + secondary endpoint; includes severity triage, TDD fix cycle, auto-merge gate |
 | `first-principles` | Assumption-audit and incident triage discipline: 5-question audit, ground-truth verification, mandatory dual/triple review on hotfixes |
-| `workflow-routing` | Pick A/B/C/D/Mini workflow per task type, risk level, and current Opus / Codex quota |
+| `workflow-routing` | Pick A/B/C/D/E/Mini workflow per task type, risk level, and current Opus / Codex quota |
 | `project-status-review` | Generate a comprehensive project status report — code stats, branch divergence, blockers, prioritized next steps |
-| `context-hygiene` | Manage session context cost: when to `/compact` vs handover-doc + `/clear`, the cache cost math (cached input is 0.1x not zero; output never cached), handover template, loop session checkpointing, and task-to-tool routing (Sonnet/Opus/codex/gemini-cli/claude-mm) |
+| `context-hygiene` | Manage session context cost: when to `/compact` vs handover-doc + `/clear`, the cache cost math (cached input is 0.1x not zero; output never cached), handover template, loop session checkpointing, and task-to-tool routing (Sonnet/Opus/Codex/Gemini CLI/secondary endpoint) |
 | `distilled-caveman-lite-accuracy` | Lite response compression — removes filler and pleasantries while preserving 100% technical accuracy. Keeps qualifiers, code identifiers, versions, step order, safety context. Safety fallback auto-expands for destructive ops, auth, crypto, compliance. Trigger: "caveman-lite", "lite mode", "brief but accurate", "less tokens" |
 
 ### Curated from oh-my-claudecode (MIT, see `NOTICE.md`)
@@ -54,7 +54,7 @@ Two paths:
 /plugin install yao-skills@yao-skills
 ```
 
-Open a new Claude Code session and all 20 skills become invocable via the `Skill` tool / `/yao-skills:<skill-name>`.
+Open a new Claude Code session and all 21 skills become invocable via the `Skill` tool / `/yao-skills:<skill-name>`.
 
 **B. Per-skill copy (if you only want some)**
 
@@ -129,8 +129,8 @@ EOF
   broad `first-principles` skill supersedes `first-principles-fix`, and a single
   `ask` wrapper should supersede separate `ask-claude` / `ask-gemini` entries.
 - `triple-review` is orchestrator-aware. If Codex is orchestrating, use
-  `claude` + `agy`/`gemini` + `claude-mm`. If Claude Code is orchestrating, use
-  `codex`/`codex-family` + `agy`/`gemini` + `claude-mm`. Do not include the
+  `claude` + `agy`/`gemini` + secondary endpoint. If Claude Code is orchestrating,
+  use `codex`/`codex-family` + `agy`/`gemini` + secondary endpoint. Do not include the
   current orchestrator as a reviewer unless the user explicitly asks for
   self-review.
 - OMC orchestration skills (`ralph`, `autopilot`, `ultrawork`, etc.) only make
@@ -227,7 +227,7 @@ The skills assume:
 
 - A primary Claude Code (Anthropic OAuth) for orchestration when running from Claude Code
 - A primary Codex CLI for orchestration when running from Codex
-- A secondary Claude Code endpoint (e.g. MiniMax via `CLAUDE_CONFIG_DIR`) for reviewer diversity
+- A secondary Claude Code endpoint (via `CLAUDE_CONFIG_DIR` pointing to a different provider) for reviewer diversity
 - A `gemini` CLI authenticated to Google OAuth
 - One or two `codex` CLIs (different accounts) for reviewer diversity without quota burn
 
