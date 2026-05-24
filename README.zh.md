@@ -12,7 +12,7 @@
 
 | Skill | 用途 |
 |---|---|
-| `triple-review` | 三審 PR review（Gemini 類 CLI + 次要端點的 Claude Code + 主要 Claude Code），含 severity triage、TDD 修復循環、自動 merge gate |
+| `triple-review` | 依 orchestrator 條件選 reviewer 的三審 PR review：Claude Code 用 `codex` + `agy`/`gemini` + `claude-mm`；Codex 用 `claude` + `agy`/`gemini` + `claude-mm`；含 severity triage、TDD 修復循環、自動 merge gate |
 | `first-principles` | 假設稽核與 incident triage 紀律：5 題稽核、ground-truth 驗證、hotfix 強制雙 / 三審 |
 | `workflow-routing` | 依 task 類型、風險等級、Opus / Codex 剩餘配額挑 A / B / C / D / Mini 工作流程 |
 | `project-status-review` | 產生完整專案健康報告：code stats、branch 偏離度、blockers、依優先序排定的下一步建議 |
@@ -122,7 +122,7 @@ EOF
 - 如果本機已經有同名 Codex/OMX 技能，預設保留 Codex 版；只有明確移植完成時才用 Claude Code 版取代。
 - 移除不相容技能時先移到 quarantine 目錄，不直接永久刪除；例如 `~/.codex/skills.quarantine.<date>/`，方便回復和比對。
 - 重疊入口只保留一個主入口。例如新版 `first-principles` 已包含修復情境，可取代 `first-principles-fix`；單一 `ask` wrapper 可取代 `ask-claude` / `ask-gemini`。
-- 在 Codex 內，`triple-review` 應由 Codex 編排，但 reviewer 要用其他模型。實務上可用 `agy`、`claude-mm`、`claude`；除非使用者明確要求，避免讓 Codex 自審。
+- `triple-review` 依目前 orchestrator 選 reviewer。Codex orchestrating 時用 `claude` + `agy`/`gemini` + `claude-mm`；Claude Code orchestrating 時用 `codex`/`codex-family` + `agy`/`gemini` + `claude-mm`。除非使用者明確要求 self-review，否則不要把目前 orchestrator 放進 reviewer lanes。
 - OMC 編排類 skills（`ralph`、`autopilot`、`ultrawork` 等）只有在執行階段依賴已移植到 OMX/Codex 時才值得放進 Codex。
 
 ### Gemini CLI（Google）
@@ -214,7 +214,8 @@ Claude Code 的 marketplace 更新完，重啟 CC session（或 `--resume`）讓
 
 這套 skills 假設：
 
-- 一個主要的 Claude Code（用 Anthropic OAuth）做編排
+- 從 Claude Code 執行時：一個主要的 Claude Code（用 Anthropic OAuth）做編排
+- 從 Codex 執行時：一個主要的 Codex CLI 做編排
 - 一個次要的 Claude Code 端點（例如透過 `CLAUDE_CONFIG_DIR` 指向 MiniMax）提供 reviewer 多樣性
 - 一個 `gemini` CLI 接 Google OAuth
 - 一到兩個 `codex` CLI（不同帳號）做 reviewer 多樣性而不燒同一個額度

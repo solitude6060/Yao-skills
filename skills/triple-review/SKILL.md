@@ -1,12 +1,12 @@
 ---
 name: triple-review
-description: Run a triple-reviewer code review (Gemini-class via agy/antigravity-cli (primary) or gemini-cli (legacy) + Claude Code on a secondary endpoint + Codex CLI) on an open PR, triage findings with severity calibration, apply TDD fix cycle, archive all three reviews as docs/ artifacts, and auto-merge if green.
+description: Run an orchestrator-aware triple-reviewer code review. Claude Code orchestration uses codex/codex-family + agy/gemini + claude-mm; Codex orchestration uses claude + agy/gemini + claude-mm. Triage findings with severity calibration, apply TDD fixes, archive review artifacts, and auto-merge only if green.
 argument-hint: "<PR# | branch name | (empty for current branch)>"
 ---
 
 # /triple-review — three-reviewer PR review with TDD fix loop
 
-Three independent reviewers beat two. Each model class catches a different bug class — a single missing reviewer means a whole bug class is invisible. This skill orchestrates Gemini, Claude Code on a secondary endpoint (e.g. MiniMax), and a Codex CLI in parallel, then triages and applies fixes in TDD order.
+Three independent reviewers beat two. Each model class catches a different bug class — a single missing reviewer means a whole bug class is invisible. This skill first identifies the current orchestrator, then selects three external reviewers so the orchestrator does not review its own work.
 
 ## When to use
 
@@ -14,14 +14,26 @@ Three independent reviewers beat two. Each model class catches a different bug c
 - Caller runs `/triple-review <PR#>` or just `/triple-review` (current branch)
 - **Not for**: docs-only PRs, WIP / draft PRs, unpushed branches, config/lock-file-only diffs
 
+## Reviewer selection
+
+Pick reviewers from the current orchestrator:
+
+| Orchestrator | Reviewer lanes |
+|---|---|
+| Claude Code | `codex` / `codex-family` + `agy` / `gemini` + `claude-mm` |
+| Codex | `claude` + `agy` / `gemini` + `claude-mm` |
+
+In both modes, `agy` is the preferred Gemini-class lane; `gemini` is the fallback. Do not include the current orchestrator as a reviewer unless the user explicitly asks for self-review.
+
 ## Prerequisites
 
 - **Reviewer 1 (Gemini-class) — pick one of these two CLIs**:
   - **Primary (2026-05+): `agy` (antigravity-cli)** — install + Google OAuth. Model is fixed at the Gemini 3.x Pro class internally; no `-m` flag.
   - **Legacy: `gemini` CLI** — still works until Google retires it. `npm install -g @google/gemini-cli`. Keeps the explicit `-m <model>` flag (e.g. `-m gemini-3.1-pro-preview`) if you need to pin a specific Pro snapshot.
   - Only one is required. Both produce a Gemini-class review.
-- A second Claude Code CLI on a different endpoint (e.g. MiniMax) usable via shell wrapper / alias — must run with `Read / Grep / Glob / Bash` available so it can verify findings against actual file contents
-- `codex` CLI from a separate account (so it does not burn the primary Codex quota); installed via the Codex Claude Code plugin or vendored binary
+- `claude-mm` or an equivalent second Claude Code CLI on a different endpoint (e.g. MiniMax) — must run with `Read / Grep / Glob / Bash` available so it can verify findings against actual file contents
+- If Claude Code is orchestrating: `codex` / `codex-family` CLI from a separate account if available, so it does not burn the primary Codex quota
+- If Codex is orchestrating: `claude` CLI through the user's normal Claude Code account
 - `gh` CLI authenticated
 - The project has a `CLAUDE.md` / SPEC file that names invariants (without it the reviewers have no anchor and report quality collapses)
 - PR base branch is typically `develop` or `main`
@@ -106,7 +118,7 @@ cat /tmp/pr<n>_review_prompt.txt | env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_T
 
 This reviewer runs full Claude Code tooling (Read / Grep / Glob / Bash) on the actual files, so it tends to catch the bugs that need file-context verification (collaborator function signatures, cross-file invariants).
 
-**Reviewer 3 — Codex CLI from a secondary account**:
+**Reviewer 3 when Claude Code is orchestrating — Codex CLI from a secondary account**:
 ```bash
 cd <repo-or-worktree-path>
 cat /tmp/pr<n>_review_prompt.txt | CODEX_HOME=$HOME/.codex-secondary \
@@ -118,6 +130,15 @@ cat /tmp/pr<n>_review_prompt.txt | CODEX_HOME=$HOME/.codex-secondary \
 
 The `read-only` sandbox lets Codex use `Read / Grep / Glob` to verify findings but blocks writes. `--skip-git-repo-check` lets it run inside worktrees.
 
+**Reviewer 3 when Codex is orchestrating — Claude Code CLI**:
+```bash
+cd <repo-or-worktree-path>
+cat /tmp/pr<n>_review_prompt.txt | claude -p \
+  > /tmp/pr<n>_review_claude.out 2>&1
+```
+
+This lane is only for Codex-orchestrated runs. Do not add it to Claude Code-orchestrated runs unless the user explicitly asks for self-review.
+
 All three run in background. Do not poll — wait for completion notifications.
 
 ### Step 4 — Triage (start only when all three reports are in)
@@ -126,13 +147,13 @@ For every finding, fill this table:
 
 | Finding | Source | Severity | Action |
 |---|---|---|---|
-| ... | Gemini / Secondary / Codex / multi | CRITICAL/HIGH/MEDIUM/LOW | Fix / Fold / Skip + reason |
+| ... | Gemini / Secondary / Claude-or-Codex / multi | CRITICAL/HIGH/MEDIUM/LOW | Fix / Fold / Skip + reason |
 
 **Severity-calibration heuristics** when the three reviewers disagree on the same finding:
 
 - **Gemini** tends toward **invariant-first** (cites project rules)
 - **Secondary Claude Code** tends toward **operational-first** (does this work at realistic scale)
-- **Codex** tends toward **diff-correctness + cross-reference** (ADR vs implementation, untested call sites)
+- **Claude-or-Codex lane** tends toward **diff-correctness + cross-reference** (ADR vs implementation, untested call sites)
 - **Three agree** → use the consensus
 - **Two vs one** → majority wins; **but if the dissenter is Gemini citing a specific invariant, invariant-first wins**
 - **Three-way split** → invariant-first wins; document in the fix-log: "Secondary LOW + Codex MEDIUM reclassified HIGH per Gemini — violates invariant X"
@@ -141,7 +162,7 @@ Common patterns observed across many reviews:
 
 - Secondary Claude Code (or any operational-first reviewer) labels real bugs as LOW because they "work at realistic scale"
 - Gemini reclassifies the same finding HIGH/CRITICAL because it violates `CLAUDE.md` / SPEC
-- Codex adds a layer the other two miss — coverage gaps, ADR-vs-impl drift, untested call sites
+- The third lane adds a layer the other two miss — coverage gaps, ADR-vs-impl drift, untested call sites
 
 **⚠ Reviewer hallucination — verify factual claims**:
 
@@ -259,7 +280,8 @@ Five-to-ten lines back to the user:
 - **`agy` hangs with no output for >10 min**: 99% likely the flag-order rule was broken. Inspect the running command — every CLI flag must come before `-p`. `agy -p "<prompt>" --print-timeout 10m` parses `--print-timeout 10m` as prompt content and waits forever for the continuation. Fix: re-order to `agy --print-timeout 10m -p "<prompt>"`.
 - **Secondary Claude Code hangs**: full-tool runs of 10+ min are normal for complex reviews. Check `ps aux | grep CLAUDE_CONFIG_DIR=<endpoint-dir>` for an active process and watch output file size for growth. Only kill after 15 min of no output.
 - **Recursion (reviewer output starts with the secondary's identity banner + "Skill ...")**: the prompt is missing the Step 2 §0 preamble, or the title is too close to "Triple PR Review". Rebuild the prompt with the literal preamble.
-- **Codex auth missing**: verify `CODEX_HOME=<secondary> codex login status` shows logged-in; if not, the user must run the login interactively. If the secondary Codex is unavailable, fall back to the primary Codex (note the cost), and only as a last resort run with two reviewers and tell the user a whole reviewer slice is missing.
+- **Codex auth missing in Claude Code orchestration**: verify `CODEX_HOME=<secondary> codex login status` shows logged-in; if not, the user must run the login interactively. If the secondary Codex is unavailable, fall back to the primary Codex (note the cost), and only as a last resort run with two reviewers and tell the user a whole reviewer slice is missing.
+- **Claude auth missing in Codex orchestration**: verify `claude -p "ping"` or the local equivalent works. If not, do not substitute Codex for itself; run two reviewers and tell the user the Claude slice is missing.
 - **Reviewer hallucinates a factual claim** (collaborator API, stdlib return type, SPEC value): always verify with `grep` / `Read` / official docs before accepting. Take fixes whose direction is right even if the premise was wrong; note both in the fix-log.
 - **Reviewers strongly disagree**: invariant-first wins, **but verify the invariant is real** — reviewers sometimes invent invariants.
 - **Diff > ~1000 lines**: split the prompt into focused slices, or ask the user to split the PR.

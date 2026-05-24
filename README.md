@@ -12,7 +12,7 @@ This is the **public, sanitized** version of a private personal toolkit. Example
 
 | Skill | What it does |
 |---|---|
-| `triple-review` | Three-reviewer PR review (Gemini-class CLI + Claude Code on a secondary endpoint + primary Claude Code), severity triage, TDD fix cycle, auto-merge gate |
+| `triple-review` | Orchestrator-aware three-reviewer PR review: Claude Code uses `codex` + `agy`/`gemini` + `claude-mm`; Codex uses `claude` + `agy`/`gemini` + `claude-mm`; includes severity triage, TDD fix cycle, auto-merge gate |
 | `first-principles` | Assumption-audit and incident triage discipline: 5-question audit, ground-truth verification, mandatory dual/triple review on hotfixes |
 | `workflow-routing` | Pick A/B/C/D/Mini workflow per task type, risk level, and current Opus / Codex quota |
 | `project-status-review` | Generate a comprehensive project status report — code stats, branch divergence, blockers, prioritized next steps |
@@ -128,9 +128,11 @@ EOF
 - Prefer one canonical entrypoint for overlapping skills. For example, the
   broad `first-principles` skill supersedes `first-principles-fix`, and a single
   `ask` wrapper should supersede separate `ask-claude` / `ask-gemini` entries.
-- In Codex, `triple-review` should be orchestrated by Codex but reviewed by
-  other models. A practical reviewer set is `agy`, `claude-mm`, and `claude`;
-  avoid making Codex review itself unless the user explicitly wants that.
+- `triple-review` is orchestrator-aware. If Codex is orchestrating, use
+  `claude` + `agy`/`gemini` + `claude-mm`. If Claude Code is orchestrating, use
+  `codex`/`codex-family` + `agy`/`gemini` + `claude-mm`. Do not include the
+  current orchestrator as a reviewer unless the user explicitly asks for
+  self-review.
 - OMC orchestration skills (`ralph`, `autopilot`, `ultrawork`, etc.) only make
   sense on Codex if their runtime dependencies have been ported to OMX/Codex.
 
@@ -223,7 +225,8 @@ After a Claude Code marketplace update, restart your CC session (or `--resume`) 
 
 The skills assume:
 
-- A primary Claude Code (Anthropic OAuth) for orchestration
+- A primary Claude Code (Anthropic OAuth) for orchestration when running from Claude Code
+- A primary Codex CLI for orchestration when running from Codex
 - A secondary Claude Code endpoint (e.g. MiniMax via `CLAUDE_CONFIG_DIR`) for reviewer diversity
 - A `gemini` CLI authenticated to Google OAuth
 - One or two `codex` CLIs (different accounts) for reviewer diversity without quota burn
