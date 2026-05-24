@@ -18,6 +18,7 @@ A small, opinionated set of Claude Code skills for code review, incident triage,
 | `project-status-review` | Generate a comprehensive project status report — code stats, branch divergence, blockers, prioritized next steps |
 | `context-hygiene` | Manage session context cost: when to `/compact` vs handover-doc + `/clear`, the cache cost math (cached input is 0.1x not zero; output never cached), handover template, loop session checkpointing, and task-to-tool routing (Sonnet/Opus/Codex/Gemini CLI/secondary endpoint) |
 | `distilled-caveman-lite-accuracy` | Lite response compression — removes filler and pleasantries while preserving 100% technical accuracy. Keeps qualifiers, code identifiers, versions, step order, safety context. Safety fallback auto-expands for destructive ops, auth, crypto, compliance. Trigger: "caveman-lite", "lite mode", "brief but accurate", "less tokens" |
+| `tc-review` | Review Traditional Chinese output as a Taiwan engineer — catches Simplified Chinese character/vocabulary leaks, mid-sentence English shortcuts, jargon without gloss. Preserves original technical terms. Trigger: "繁中檢視", "tc review", "台灣用語檢查" |
 
 ### Curated from oh-my-claudecode (MIT, see `NOTICE.md`)
 
@@ -54,7 +55,7 @@ Two paths:
 /plugin install yao-skills@yao-skills
 ```
 
-Open a new Claude Code session and all 21 skills become invocable via the `Skill` tool / `/yao-skills:<skill-name>`.
+Open a new Claude Code session and all 22 skills become invocable via the `Skill` tool / `/yao-skills:<skill-name>`.
 
 **B. Per-skill copy (if you only want some)**
 

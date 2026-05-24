@@ -18,6 +18,7 @@
 | `project-status-review` | 產生完整專案健康報告：code stats、branch 偏離度、blockers、依優先序排定的下一步建議 |
 | `context-hygiene` | 管理 session context 成本：何時 `/compact`、何時改用 handover-doc + `/clear`；快取成本算式（cached input 是 0.1 倍而非零；output 不會被快取）；handover 範本；loop session checkpointing；以及任務到工具的對應路由（Sonnet / Opus / Codex / Gemini CLI / 次要端點） |
 | `distilled-caveman-lite-accuracy` | Lite 回答壓縮 — 移除客套與贅詞，保留 100% 技術準確度。保留限定詞、程式碼識別字、版本、步驟順序、安全脈絡。破壞性操作、驗證、加密、合規等高風險情境自動展開。觸發詞："caveman-lite"、"lite mode"、"brief but accurate"、"less tokens"、"回答短一點，但不要犧牲技術準確度" |
+| `tc-review` | 繁體中文台灣用語檢視 — 抓簡中字形與詞彙滲漏、不自然的中英夾雜、缺少說明的專業術語。保留英文技術原詞不翻譯。觸發詞："繁中檢視"、"tc review"、"台灣用語檢查"、"幫我看繁中" |
 
 ### 自 oh-my-claudecode 整併（MIT，詳見 `NOTICE.md`）
 
@@ -56,7 +57,7 @@ OMC tier-0 編排類 skill，依任務形態挑選：
 /plugin install yao-skills@yao-skills
 ```
 
-開新 Claude Code session 後，全部 21 個 skill 都會透過 `Skill` tool 或 `/yao-skills:<skill-name>` 叫用。
+開新 Claude Code session 後，全部 22 個 skill 都會透過 `Skill` tool 或 `/yao-skills:<skill-name>` 叫用。
 
 **B. 單一 skill 複製（只挑想要的）**
 
