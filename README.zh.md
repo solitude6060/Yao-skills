@@ -4,7 +4,7 @@
 
 一組精簡、有觀點的 Claude Code skills，涵蓋 code review、incident triage、workflow routing、專案健康檢查；另外整併了 [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) 的部分編排類 skills，以及 [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) 的行為準則。
 
-這是一份私人工具集的**公開、去識別化**版本。原本引用具體專案 / PR / 業務細節的範例，已替換為通用範例 — 方法論保留，但不外洩內部脈絡。
+**這是社群共享版本。** 核心價值是方法論和決策框架 — 它們可以直接搬到不同的專案和技術棧。具體工具名稱（Codex、Gemini CLI 等）都是範例；請自行替換成你手上的 multi-model 工具組合。歡迎 fork、修改、變成你自己的版本。如果你在上面做出好用的東西，也歡迎開 PR 或 issue 回饋。
 
 ## Skills
 

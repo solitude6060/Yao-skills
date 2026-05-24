@@ -4,7 +4,7 @@ English | [繁體中文](./README.zh.md)
 
 A small, opinionated set of Claude Code skills for code review, incident triage, workflow routing, and project health checks — plus a curated subset of [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) skills for planning and orchestration, and behavioral guidelines from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills).
 
-This is the **public, sanitized** version of a private personal toolkit. Examples that referenced specific projects / PRs / business details have been replaced with generic placeholders so the methodology is preserved without leaking internal context.
+**This is a community-shared version.** The methodology and decision frameworks are the core value — they transfer across projects and tech stacks. Specific tool names (Codex, Gemini CLI, etc.) are examples; adapt them to your own multi-model setup. Fork it, modify it, make it yours. If you build something useful on top of it, PRs and issues are welcome.
 
 ## Skills
 

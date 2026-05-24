@@ -31,8 +31,8 @@ In both modes, `agy` is the preferred Gemini-class lane; `gemini` is the fallbac
   - **Primary (2026-05+): `agy` (antigravity-cli)** — install + Google OAuth. Model is fixed at the Gemini 3.x Pro class internally; no `-m` flag.
   - **Legacy: `gemini` CLI** — still works until Google retires it. `npm install -g @google/gemini-cli`. Keeps the explicit `-m <model>` flag (e.g. `-m gemini-3.1-pro-preview`) if you need to pin a specific Pro snapshot.
   - Only one is required. Both produce a Gemini-class review.
-- `claude-mm` or an equivalent second Claude Code CLI on a different endpoint (e.g. MiniMax) — must run with `Read / Grep / Glob / Bash` available so it can verify findings against actual file contents
-- If Claude Code is orchestrating: `codex` / `codex-family` CLI from a separate account if available, so it does not burn the primary Codex quota
+- A second Claude Code CLI on a different endpoint (e.g. a secondary provider configured via `CLAUDE_CONFIG_DIR`) — must run with `Read / Grep / Glob / Bash` available so it can verify findings against actual file contents
+- If Claude Code is orchestrating: `codex` / `codex-family` CLI (ideally from a separate account to avoid burning the primary Codex quota)
 - If Codex is orchestrating: `claude` CLI through the user's normal Claude Code account
 - `gh` CLI authenticated
 - The project has a `CLAUDE.md` / SPEC file that names invariants (without it the reviewers have no anchor and report quality collapses)
@@ -106,13 +106,15 @@ gemini --skip-trust -p "$(cat /tmp/pr<n>_review_prompt.txt)" -m gemini-3.1-pro-p
 
 Both CLIs share the output filename `_gemini.out` because Reviewer 1's **identity is the model class, not the CLI**. Record the actual CLI + version inside the archived review file body.
 
-**Reviewer 2 — Claude Code via secondary endpoint** (e.g. MiniMax):
+**Reviewer 2 — Claude Code via secondary endpoint**:
 ```bash
 cd <repo-or-worktree-path>
+# Point CLAUDE_CONFIG_DIR to a secondary config directory with different provider credentials.
+# Unset any ANTHROPIC_* env vars that might override the secondary config.
 cat /tmp/pr<n>_review_prompt.txt | env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \
   -u ANTHROPIC_MODEL -u ANTHROPIC_DEFAULT_SONNET_MODEL \
   -u ANTHROPIC_DEFAULT_OPUS_MODEL -u ANTHROPIC_DEFAULT_HAIKU_MODEL \
-  CLAUDE_CONFIG_DIR=$HOME/.claude-<endpoint> claude -p \
+  CLAUDE_CONFIG_DIR=$HOME/.claude-<your-secondary-endpoint> claude -p \
   > /tmp/pr<n>_review_secondary.out 2>&1
 ```
 
@@ -121,8 +123,10 @@ This reviewer runs full Claude Code tooling (Read / Grep / Glob / Bash) on the a
 **Reviewer 3 when Claude Code is orchestrating — Codex CLI from a secondary account**:
 ```bash
 cd <repo-or-worktree-path>
+# Use CODEX_HOME to point to a secondary Codex config if available.
+# Adjust the codex path to match your installation (e.g. via nvm, npx, or global install).
 cat /tmp/pr<n>_review_prompt.txt | CODEX_HOME=$HOME/.codex-secondary \
-  $HOME/.nvm/versions/node/v22.18.0/bin/codex exec \
+  codex exec \
   --sandbox read-only \
   --skip-git-repo-check \
   - > /tmp/pr<n>_review_codex.out 2>&1

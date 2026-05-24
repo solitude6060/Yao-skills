@@ -129,7 +129,7 @@ Long-running loops are the 8+ hour sessions that quietly eat budget. Three mitig
 
 1. **Checkpoint every N iterations** — write progress to `.omc/state/` or `docs/PROGRESS.md`. The loop reads the checkpoint on restart, not conversation history.
 2. **Restart with fresh context periodically** — kill the loop, `/clear`, restart from checkpoint. Loops should be designed to resume from disk, not memory.
-3. **Route inner work to the right tool** — see Subagent Cost Note below. Sonnet for routine implementation, Opus only for architecture/orchestrator decisions; for non-Claude options, complex impl → `codex`, search/long-scan → `gemini-cli`, simple/cheap work → `claude-mm`.
+3. **Route inner work to the right tool** — see Subagent Cost Note below. Sonnet for routine implementation, Opus only for architecture/orchestrator decisions; for non-Claude options, complex impl → `codex`, search/long-scan → `gemini-cli`, simple/cheap work → secondary LLM endpoint.
 
 Loop session that's been running 6 hours and "feels fine" is almost certainly accumulating. Check `/context` and usage.
 
@@ -151,7 +151,7 @@ For one-off subagent work (not full PR workflows — see `research-toolkit:workf
 | Routine implementation / refactor / well-spec'd code | Claude **Sonnet** | ~5x cheaper than Opus, fast, clean impl |
 | Complex implementation / algorithmic / multi-file | **codex** (`codex:codex-rescue`) | gpt-5.5 high-effort; OAuth-free if ChatGPT Plus quota available |
 | Search / long-context scan / retrieval across many files | **gemini-cli** | Long context window, cheap, good at "find references / summarize across N files" |
-| Simple / trivial / classification / cheap bulk work | **claude-mm** (MiniMax) | $0 marginal; saves Claude quota for triage-worthy work |
+| Simple / trivial / classification / cheap bulk work | Secondary LLM endpoint (e.g. a cheaper provider via `CLAUDE_CONFIG_DIR`) | $0 or near-$0 marginal; saves Claude quota for triage-worthy work |
 
 Default split when in doubt: **Sonnet for impl, Opus only for architecture decisions**. Don't reflex-pick Opus for every subagent — that's where the 30%-from-subagents cost lives.
 
