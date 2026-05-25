@@ -42,6 +42,16 @@ A small, opinionated set of Claude Code skills for code review, incident triage,
 
 Picker order: vague request → `ralplan` first. Independent prototype → `autopilot`. Multi-file design-sensitive change → `team`. Must-fix prod bug → `ralph`. Parallel-friendly bulk refactor → `ultrawork`.
 
+## Hooks
+
+Hooks are shell scripts that run automatically before or after Claude Code tool calls. Unlike skills (which guide LLM behavior through prompts), hooks enforce quality gates at the infrastructure level.
+
+| Hook | What it does |
+|---|---|
+| [`tc-quality-hook`](hooks/tc-quality-hook/) | PreToolUse gate for `AskUserQuestion` — blocks Chinese text and forces the model to self-review for Simplified Chinese leakage, hallucinated characters, and mainland vocabulary before the user sees it. No external dependencies (no OpenCC, no mapping tables). |
+
+See each hook's README for install instructions. Hooks require adding entries to `~/.claude/settings.json` and restarting Claude Code.
+
 ## Install
 
 ### Claude Code (native — recommended)

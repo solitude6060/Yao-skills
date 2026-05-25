@@ -44,6 +44,16 @@ OMC tier-0 編排類 skill，依任務形態挑選：
 
 選擇順序：模糊請求 → 先 `ralplan`。獨立原型 → `autopilot`。多檔案、設計敏感變更 → `team`。必修 prod bug → `ralph`。可平行的批次 refactor → `ultrawork`。
 
+## Hooks
+
+Hooks 是在 Claude Code tool call 執行前 / 後自動跑的 shell 腳本。與 skills（透過 prompt 引導 LLM 行為）不同，hooks 在基礎設施層面強制品質關卡。
+
+| Hook | 用途 |
+|---|---|
+| [`tc-quality-hook`](hooks/tc-quality-hook/) | `AskUserQuestion` 的 PreToolUse 關卡 — 攔截包含中文的問題，強制模型自我檢視簡體字滲漏、幻覺字、大陸用語後才放行。不需要外部相依套件（不用 OpenCC、不用映射表）。 |
+
+各 hook 的安裝說明見其 README。安裝需要在 `~/.claude/settings.json` 新增設定，並重啟 Claude Code。
+
 ## 安裝
 
 ### Claude Code（原生 — 建議用法）
