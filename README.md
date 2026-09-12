@@ -1,251 +1,225 @@
 # yao-skills
 
-English | [繁體中文](./README.zh.md)
+English | [繁體中文](README.zh.md)
 
-A small, opinionated set of Claude Code skills for code review, incident triage, workflow routing, and project health checks — plus a curated subset of [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) skills for planning and orchestration, and behavioral guidelines from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills).
+Reusable skills for evidence-based development, independent review, project memory,
+and clear technical explanations. **0.8.0** shares the current Yao-Garyu
+research-toolkit methodology, including the Taiwan adaptation of `wait-what`.
 
-**This is a community-shared version.** The methodology and decision frameworks are the core value — they transfer across projects and tech stacks. Specific tool names (Codex, Gemini CLI, etc.) are examples; adapt them to your own multi-model setup. Fork it, modify it, make it yours. If you build something useful on top of it, PRs and issues are welcome.
+## Why this repository exists
 
-## Skills
+Yao-Garyu maintains my personal workflow. Yao-skills is the community edition:
+people should be able to adopt the decision process with their own projects,
+models and tools. The reusable parts are how we define work, verify assumptions,
+test changes, handle review findings and preserve enough context to resume.
 
-### Author-original
+This repository contains instructions, supporting references, a behavioral template
+and an optional Claude Code hook. It does not provision model accounts or an
+orchestration service. Configure your own execution and review tools; keep project
+contracts authoritative. Fork it, adapt it, and contribute improvements grounded in
+actual use.
 
-| Skill | What it does |
+The [0.8.0 synchronization record](docs/2026-09-13-community-sync.md) records the
+source revision and community adaptations. English files are canonical instructions;
+Traditional Chinese companions support human reading and maintenance.
+
+## My development workflow
+
+The following is the workflow I use across software and research projects. The
+examples summarize inspected project records; they are anonymous and contain no
+private results or account configuration. Apply the steps required by the change.
+A small, well-defined edit can be completed and checked directly.
+
+```mermaid
+flowchart LR
+    A[Read contract and project memory] --> B[Record scope and acceptance checks]
+    B --> C[Failing check and minimal implementation]
+    C --> D[Verify results and independent review]
+    D --> E[Authorized pull request and merge]
+    E --> F[Update status, tracker and handover]
+```
+
+1. **Read before proposing.** Start with the specification or README, then
+   `status.md`, `tracker.md` and `handover.md`. Inspect the real input and current
+   implementation. Use `first-principles` when an inherited assumption controls the
+   next decision; ask only for material information that the records cannot resolve.
+2. **Make the work reviewable.** For non-trivial work, commit a short plan on a
+   feature branch from the project's integration branch. Record the goal, scope,
+   checks and stopping condition. An architecture or contract change gets a decision
+   record before implementation. Use `workflow-routing` when responsibility or
+   delegation needs a decision; a large file count alone does not require a team.
+3. **Implement the smallest verified change.** For a bug, reproduce it with a failing
+   regression test, make the minimal correction, then run the affected checks. Keep
+   the red/green commit history. Documentation-only changes use suitable validators.
+4. **Delegate bounded, independent work.** Keep one root responsible for integration.
+   Each child gets inputs, owned output paths, acceptance checks and an escalation
+   condition. Use qualified native subagents when available; external clients retain
+   their own permission and account boundaries. Model and effort choices live in one
+   local routing policy, with explicit fallbacks; availability does not justify
+   weakening the verification standard.
+5. **Review the exact change.** Use `triple-review` when the project requires three
+   independent reviews. Verify every finding against source and checks, record
+   accepted findings and false positives, repair accepted issues, and review the
+   affected diff again. A failed reviewer or an empty response is not approval.
+   Ordinary documentation needs validators; research-validity documents follow the
+   project's review gate. Merge and deployment stay within existing authorization.
+6. **Leave a usable continuation.** Update the three project files at relevant
+   milestones. Put changed operator instructions in the runbook. Use `context-hygiene`
+   before handing off a long session; preserve the next command and unresolved
+   condition before resetting context.
+
+| Project file | What I keep there |
 |---|---|
-| `triple-review` | Orchestrator-aware three-reviewer PR review: Claude Code uses `codex` + `agy`/`gemini` + secondary endpoint; Codex uses `claude` + `agy`/`gemini` + secondary endpoint; includes severity triage, TDD fix cycle, auto-merge gate |
-| `first-principles` | Assumption-audit and incident triage discipline: 5-question audit, ground-truth verification, mandatory dual/triple review on hotfixes |
-| `workflow-routing` | Pick A/B/C/D/E/Mini workflow per task type, risk level, and current Opus / Codex quota |
-| `project-status-review` | Generate a comprehensive project status report — code stats, branch divergence, blockers, prioritized next steps |
-| `context-hygiene` | Manage session context cost: when to `/compact` vs handover-doc + `/clear`, the cache cost math (cached input is 0.1x not zero; output never cached), handover template, loop session checkpointing, and task-to-tool routing (Sonnet/Opus/Codex/Gemini CLI/secondary endpoint) |
-| `distilled-caveman-lite-accuracy` | Lite response compression — removes filler and pleasantries while preserving 100% technical accuracy. Keeps qualifiers, code identifiers, versions, step order, safety context. Safety fallback auto-expands for destructive ops, auth, crypto, compliance. Trigger: "caveman-lite", "lite mode", "brief but accurate", "less tokens" |
-| `tc-review` | Review Traditional Chinese output as a Taiwan engineer — catches Simplified Chinese character/vocabulary leaks, mid-sentence English shortcuts, jargon without gloss. Preserves original technical terms. Trigger: "繁中檢視", "tc review", "台灣用語檢查" |
+| `status.md` | Current state, evidence, decisions and risks |
+| `tracker.md` | Active tasks, dependencies, completion and stopping conditions |
+| `handover.md` | What changed, exact continuation point, commands and open questions |
 
-### Curated from oh-my-claudecode (MIT, see `NOTICE.md`)
+### How this looks in actual work
 
-`ralph`, `plan`, `deep-interview`, `deep-dive`, `learner`, `skillify`, `sciomc`, `autoresearch`, `ralplan`, `ai-slop-cleaner`, `team`, `release`, `autopilot`, `ultrawork`.
-
-### Curated from andrej-karpathy-skills (MIT, see `NOTICE.md`)
-
-| Skill | What it does |
-|---|---|
-| `karpathy-guidelines` | Behavioral guidelines distilled from Andrej Karpathy's observations on LLM coding pitfalls: think before coding, simplicity first, surgical changes, goal-driven execution |
-
-#### When to use which orchestration mode
-
-| Mode | Operating style | Best for |
+| Situation | Practice reflected in inspected records | Relevant skill |
 |---|---|---|
-| `autopilot` | Independent autonomous single-lead agent | Fast independent feature dev / prototyping from a 2–3 line idea |
-| `team` | 5-stage pipeline (plan → prd → exec → verify → fix) | Multi-file changes needing peer architecture review |
-| `ralph` | Persistent self-referential strict-verification loop | Critical prod bug fixes that must be fully resolved |
-| `ultrawork` | Max-parallel non-team agent operation | Large-scale refactor across unrelated codebases |
-| `ralplan` | Consensus planning gate before execution | Vague / ambiguous "ralph this" / "autopilot this" requests |
+| Tests depend on configuration in the developer's home directory | Record an isolation plan, reproduce the ambient-setting failure, add a regression test and verify the correction | `first-principles`, `workflow-routing` |
+| A reviewer reports a blocking import problem | Check the actual import use and compiler result; record why a false positive is rejected | `triple-review` |
+| A feature is implemented but acceptance still needs an operator decision | Keep implementation status and the remaining acceptance condition separate in the three project files | `project-status-review` |
+| A research project could expand into a large experiment platform | Run the smallest valid real-data experiment that can decide continue, adjust or stop; inspect the result before expanding | `first-principles`, `workflow-routing` |
+| An explanation omits the premise behind a research or engineering decision | Explicitly invoke `wait-what` to restore context, mechanism, evidence and consequences | `wait-what` |
 
-Picker order: vague request → `ralplan` first. Independent prototype → `autopilot`. Multi-file design-sensitive change → `team`. Must-fix prod bug → `ralph`. Parallel-friendly bulk refactor → `ultrawork`.
+The first three rows summarize recorded development cases. The research row also
+reflects the current evidence-first policy; each project's own data, metric and
+approval rules determine what can run. The explanation row describes the newly
+added skill's intended use; it is not a measured improvement in comprehension.
 
-## Hooks
+For research, the first milestone is the earliest credible evidence that can change
+a decision. Preserve provenance, data identity, leakage boundaries, metric definitions
+and persistent outputs required by that project. Keep invalid or inconclusive runs
+visible. Passing a synthetic fixture alone does not establish a real-data result.
 
-Hooks are shell scripts that run automatically before or after Claude Code tool calls. Unlike skills (which guide LLM behavior through prompts), hooks enforce quality gates at the infrastructure level.
+Worktrees and full clones belong in persistent sibling directories, for example
+`../project-wt-fix`. The shipped `worktree-hygiene` policy puts experiment outputs in
+another persistent sibling, such as `../project-runs`, and inventories them before
+retirement. Never make temporary storage the only copy of work or evidence.
 
-| Hook | What it does |
-|---|---|
-| [`tc-quality-hook`](hooks/tc-quality-hook/) | PreToolUse gate for `AskUserQuestion` — blocks Chinese text and forces the model to self-review for Simplified Chinese leakage, hallucinated characters, and mainland vocabulary before the user sees it. No external dependencies (no OpenCC, no mapping tables). |
+## Which skill I use
 
-See each hook's README for install instructions. Hooks require adding entries to `~/.claude/settings.json` and restarting Claude Code.
+| Skill | Use it when | Expected result |
+|---|---|---|
+| [first-principles](skills/first-principles/SKILL.md) | A proposed fix, inherited convention or surprising result needs checking | Assumption audit tied to observable evidence |
+| [workflow-routing](skills/workflow-routing/SKILL.md) | Planning, implementation or review ownership is unclear | A workflow shape using your local routing policy |
+| [triple-review](skills/triple-review/SKILL.md) | The project requires independent multi-model review before merge | Revision-bound reviews, verified triage and a fix log |
+| [worktree-hygiene](skills/worktree-hygiene/SKILL.md) | Creating, auditing or retiring worktrees | Ownership and artifact checks before removal |
+| [project-status-review](skills/project-status-review/SKILL.md) | You need completed work, blockers and next decisions reconciled | A status report checked against repository evidence |
+| [context-hygiene](skills/context-hygiene/SKILL.md) | Context is large or work is moving to a new session | A focused compact or durable handover |
+| [wait-what](skills/wait-what/SKILL.md) | You explicitly request a clearer explanation | Taiwan Traditional Chinese explanation with the missing background and precise terms |
+| [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.md) | You want a shorter answer | Less filler while retaining conditions, identifiers and uncertainty |
+| [tc-review](skills/tc-review/SKILL.md) | Preparing Traditional Chinese text | Taiwan vocabulary and terminology checked in context |
+| [karpathy-guidelines](skills/karpathy-guidelines/SKILL.md) | Coding needs a reminder about assumptions and scope | Simple, surgical changes with observable completion criteria |
+
+Example requests after installing the corresponding skills:
+
+```text
+Use workflow-routing to choose how to implement this accepted plan.
+Use first-principles to verify the assumption behind this proposed fix.
+Use triple-review for this PR using the reviewers configured for this project.
+Use project-status-review to reconcile the current status and outstanding work.
+Use wait-what to explain the question, missing premise, mechanism and evidence again.
+Use distilled-caveman-lite-accuracy to shorten the answer without removing conditions.
+```
+
+`wait-what` is explicit-only: mentioning, installing or discussing it does not
+activate it. In Codex, invoke `$wait-what`; in Claude Code's plugin installation,
+invoke `/yao-skills:wait-what`. It changes the current explanation and preserves the
+ongoing task; it grants no permission to edit files or launch an experiment.
+
+OMC orchestration skills were removed from the source in 0.7.0 and from this
+community edition in 0.8.0. Get `plan`, `team`, `ralph`, `autopilot`, `ultrawork`
+and related workflows from [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode)
+or the runtime-specific distribution you use. Launch persistent workflows only
+through an explicit operator request with scope and a stopping condition. Reading
+a workflow name in documentation does not launch it.
 
 ## Install
 
-### Claude Code (native — recommended)
+### Claude Code
 
-Two paths:
-
-**A. One-shot marketplace install (easiest)**
-
-```
+```text
 /plugin marketplace add solitude6060/Yao-skills
 /plugin install yao-skills@yao-skills
 ```
 
-Open a new Claude Code session and all 22 skills become invocable via the `Skill` tool / `/yao-skills:<skill-name>`.
+The package exposes ten skills under `/yao-skills:<skill-name>`. Reload plugins or
+start a new session after installation. See the official
+[plugin installation guide](https://code.claude.com/docs/en/discover-plugins).
 
-**B. Per-skill copy (if you only want some)**
+### Codex and selective local installation
 
-```bash
-git clone https://github.com/solitude6060/Yao-skills /tmp/yao-skills
-cp -r /tmp/yao-skills/skills/triple-review ~/.claude/skills/
-cp -r /tmp/yao-skills/skills/first-principles ~/.claude/skills/
-# ...etc
-```
-
-Skill becomes invocable via the `Skill` tool / `/<skill-name>`.
-
-### `CLAUDE.md` template
+Keep the checkout in a persistent location. For example, these commands install
+only `wait-what` for Codex without replacing an existing same-name directory:
 
 ```bash
-cp templates/CLAUDE.md ~/.claude/CLAUDE.md   # only if you don't already have one
+mkdir -p "$HOME/Research" "$HOME/.agents/skills"
+git clone https://github.com/solitude6060/Yao-skills.git "$HOME/Research/Yao-skills"
+ln -s "$HOME/Research/Yao-skills/skills/wait-what" "$HOME/.agents/skills/wait-what"
 ```
 
-Then edit to your needs.
+If the checkout or destination already exists, inspect it and update the existing
+installation instead of overwriting it. Codex discovers user skills in
+`~/.agents/skills` and supports symlinked skill directories; restart if the skill
+has not appeared. `agents/openai.yaml` retains explicit-only invocation for
+`wait-what`. You can also ask the built-in `$skill-installer` to install selected
+folders from this repository. See [OpenAI's skill documentation](https://learn.chatgpt.com/docs/build-skills).
 
-#### Core concepts in the template
+For other agents, use their documented skill discovery directory or explicitly
+reference the selected `SKILL.md` in the agent's instruction file. Check tool
+availability and invocation semantics in that runtime. The Claude marketplace
+manifest and optional hook are specific to Claude Code.
 
-`templates/CLAUDE.md` is a global behavioral contract for Claude Code, biased toward rigor + audit-trail over speed. Eleven sections:
+### Local policy and behavioral template
 
-1. **Spec Before Code** — read SPEC/README first; ADR before deviating. Code ≠ spec.
-2. **Test Before Implementation** — Red → Green → Refactor. Bug fix = regression test + fix, never just the fix.
-3. **Surgical Changes + Audit Trail** — touch only what the task requires. `what` in commit subject; `why + SPEC/ADR/issue link` in body. Observability events over inline comments.
-4. **Plan in Files, Not Chat** — non-trivial work starts with a plan file committed to the repo (`docs/<TRACK>_PLAN.md`). Reviews land as `docs/<REVIEWER>_<DATE>_<SCOPE>.md` _before_ fixes; matching `_FIX_LOG.md` ships with the fix PR.
-5. **Code-Review Handling** — verify each finding against code; triage by severity; TDD-order fixes; ship `_FIX_LOG.md` with the PR.
-6. **Branch + PR Discipline** — feature branch off integration; merge via PR with `--no-ff`; deploy chain `develop → main → production`; destructive ops require explicit sign-off.
-7. **First-Principles When Blocked** — first proposed fix is usually a workaround; stop and re-derive. Red flags: "lower threshold", "skip check", "disable test", "hardcode for now". User pushback "first principles?" → re-derive, don't defend.
-8. **When in Doubt** — ask, don't guess. Reversible-default: paper before live, staging before prod, dry-run before apply, archive before delete.
-9. **Writing Style for Chat** — plain language, no mid-sentence English jargon (when the default language is non-English), no figurative imagery substituting for clarity, concrete numbers + tables over claims. Repo artefacts (code, commits, PR descriptions) stay English.
-10. **OMC Tooling Reference** — when the OMC plugin is installed: tier-0 skill triggers, model routing (haiku/sonnet/opus), delegation hints, hooks & persistence, worktree state paths. Tools, not overrides — §1–§8 always win.
-11. **Reduce Hallucinations** — ground claims in provided context; admit uncertainty; direct-quote grounding for long documents; citation-backed claims; chain-of-thought verification; cross-reference consistency. Based on [Anthropic's official guidance](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations).
+Merge the relevant parts of [templates/CLAUDE.md](templates/CLAUDE.md) into your
+existing project `CLAUDE.md` or `AGENTS.md`; it is an example, not an installer.
+Set the specification, integration branch, verification commands and deployment
+boundary for that project.
 
-**Working signal:** plan-files exist before the diff lands, reviews have matching fix-logs, git history reads like a TDD cycle (`test:` → `feat:`), and clarifying questions come before mistakes rather than after them.
+For delegation or independent review, point that instruction file to your routing
+policy (default example: `docs/MODEL_ROUTING.md`). Record allowed clients, actual
+model identifiers, supported effort, task qualifications, review lanes, account/data
+boundaries and permitted fallbacks there. Link task-packet guidance if you maintain
+it. These files are project configuration, not bundled model tables. Direct work
+can continue without a routing registry; a review that requires unconfigured lanes
+must wait for that specific setup.
 
-### Codex CLI (OpenAI)
+### Optional hook
 
-Codex has no Claude Code-style plugin marketplace. Treat Codex as its own
-runtime: install compatible skills under `~/.codex/skills/<name>/SKILL.md` and
-put global behavioral guidance in `~/.codex/AGENTS.md`.
+[tc-quality-hook](hooks/tc-quality-hook/README.md) is a separately configured
+Claude Code `PreToolUse` gate for `AskUserQuestion`. Follow its README to install
+it. Installing the skills does not automatically enable the hook; the prompt-based
+self-review gate does not prove linguistic correctness.
+
+## Update and validate
+
+For a Claude marketplace install, refresh the marketplace and use the plugin
+manager's update action. For a local clone:
 
 ```bash
-mkdir -p ~/.codex
-git clone https://github.com/solitude6060/Yao-skills ~/.codex/yao-skills
-
-cat >> ~/.codex/AGENTS.md <<'EOF'
-
-## Available skill references
-
-When the user's request matches a skill below, read the corresponding SKILL.md and follow it:
-
-- "triple review" / "PR review" → ~/.codex/yao-skills/skills/triple-review/SKILL.md
-- "first principles" / "incident triage" → ~/.codex/yao-skills/skills/first-principles/SKILL.md
-- "workflow routing" / "which workflow" → ~/.codex/yao-skills/skills/workflow-routing/SKILL.md
-- "project status" / "health check" → ~/.codex/yao-skills/skills/project-status-review/SKILL.md
-- "context hygiene" / "compact" / "clear" / "handover" → ~/.codex/yao-skills/skills/context-hygiene/SKILL.md
-- "caveman-lite" / "lite mode" / "brief but accurate" / "less tokens" → ~/.codex/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
-EOF
+git -C "$HOME/Research/Yao-skills" pull --ff-only
 ```
 
-**Caveats:**
+Symlink installations follow the updated checkout. Copies need a deliberate refresh;
+preserve local modifications and review the 0.8.0 removal list before replacing
+older skills. Keep the upstream OMC installation separate.
 
-- Do not bulk-copy the whole Claude Code plugin into `~/.codex/skills`. Some
-  skills assume `/oh-my-claudecode`, Claude Code hooks, or `.omc` state and need
-  a Codex-specific rewrite.
-- If a same-name Codex/OMX skill already exists locally, keep the Codex version
-  unless you intentionally port the Claude Code version.
-- Quarantine removed or incompatible skills instead of deleting them outright;
-  a directory such as `~/.codex/skills.quarantine.<date>/` keeps rollback cheap.
-- Prefer one canonical entrypoint for overlapping skills. For example, the
-  broad `first-principles` skill supersedes `first-principles-fix`, and a single
-  `ask` wrapper should supersede separate `ask-claude` / `ask-gemini` entries.
-- `triple-review` is orchestrator-aware. If Codex is orchestrating, use
-  `claude` + `agy`/`gemini` + secondary endpoint. If Claude Code is orchestrating,
-  use `codex`/`codex-family` + `agy`/`gemini` + secondary endpoint. Do not include the
-  current orchestrator as a reviewer unless the user explicitly asks for
-  self-review.
-- OMC orchestration skills (`ralph`, `autopilot`, `ultrawork`, etc.) only make
-  sense on Codex if their runtime dependencies have been ported to OMX/Codex.
-
-### Gemini CLI (Google)
-
-Same pattern as Codex — reference skills from `~/.gemini/GEMINI.md`.
+Maintainers can run the packaging check from the repository root:
 
 ```bash
-mkdir -p ~/.gemini
-git clone https://github.com/solitude6060/Yao-skills ~/.gemini/yao-skills
-
-cat >> ~/.gemini/GEMINI.md <<'EOF'
-
-## Skill references
-
-If the user's request matches these keywords, read the SKILL.md before responding:
-
-- "triple review" → ~/.gemini/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.gemini/yao-skills/skills/first-principles/SKILL.md
-- "workflow routing" → ~/.gemini/yao-skills/skills/workflow-routing/SKILL.md
-- "project status" → ~/.gemini/yao-skills/skills/project-status-review/SKILL.md
-- "context hygiene" / "compact" / "handover" → ~/.gemini/yao-skills/skills/context-hygiene/SKILL.md
-- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.gemini/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
-EOF
+claude plugin validate .
+git diff --check
 ```
 
-**Caveats:**
-
-- `triple-review` calls `gemini` CLI as one of its three reviewers. Running it _inside_ Gemini CLI is self-referential; either swap that reviewer for another secondary endpoint, or skip the skill on Gemini.
-- No auto-trigger via keyword hook.
-
-### opencode (sst/opencode)
-
-opencode reads `AGENTS.md` from project root and `~/.config/opencode/AGENTS.md` for global rules.
-
-```bash
-mkdir -p ~/.config/opencode
-git clone https://github.com/solitude6060/Yao-skills ~/.config/opencode/yao-skills
-
-cat >> ~/.config/opencode/AGENTS.md <<'EOF'
-
-## Skill references
-
-When the user's request matches a skill below, read the SKILL.md and follow it:
-
-- "triple review" → ~/.config/opencode/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.config/opencode/yao-skills/skills/first-principles/SKILL.md
-- "workflow routing" → ~/.config/opencode/yao-skills/skills/workflow-routing/SKILL.md
-- "project status" → ~/.config/opencode/yao-skills/skills/project-status-review/SKILL.md
-- "context hygiene" / "compact" / "handover" → ~/.config/opencode/yao-skills/skills/context-hygiene/SKILL.md
-- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.config/opencode/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
-EOF
-```
-
-**Caveats:**
-
-- opencode supports multiple providers. You can swap any `triple-review` reviewer for an opencode session pointed at a different provider, but keep the provider names in the skill prompt aligned with the actual commands.
-- opencode's own command/agent system (`.opencode/command/*.md`) is a more native way to expose these as slash commands — see the opencode docs to port the SKILL.md content to a command file if you want first-class integration.
-
-### Antigravity (Google IDE)
-
-**Not recommended.** Antigravity is an agent-first IDE with workspace-scoped agents (YAML), no global plugin marketplace, no CLI hook layer.
-
-If you really want to:
-
-```bash
-git clone https://github.com/solitude6060/Yao-skills /tmp/yao-skills
-# Then manually paste relevant SKILL.md content into Antigravity workspace prompts
-# or .agent.yaml files per workspace.
-```
-
-The skills assume a chat-driven CLI agent with shell + git access. Antigravity's IDE/browser-automation paradigm is largely orthogonal — `workflow-routing` and `project-status-review` are the only ones that translate cleanly; the others lose most of their value.
-
-## Update (after upstream changes)
-
-After the upstream repo gets new commits, refresh on each install path:
-
-| Install path | Update command |
-|---|---|
-| Claude Code (marketplace) | `/plugin marketplace update yao-skills` then `/plugin update yao-skills@yao-skills` |
-| Codex CLI | `git -C ~/.codex/yao-skills pull` |
-| Gemini CLI | `git -C ~/.gemini/yao-skills pull` |
-| opencode | `git -C ~/.config/opencode/yao-skills pull` |
-| Per-skill copy (`~/.claude/skills/<name>`) | re-clone + `cp -r` again, or `git -C` if you originally clone'd |
-| CLAUDE.md template (already deployed) | `cp templates/CLAUDE.md ~/.claude/CLAUDE.md` (overwrites — merge by hand if you edited locally) |
-
-After a Claude Code marketplace update, restart your CC session (or `--resume`) for the new skill set to load. `AGENTS.md` / `GEMINI.md` references re-read on each new CLI session — no extra step.
-
-## Adapting to your setup
-
-The skills assume:
-
-- A primary Claude Code (Anthropic OAuth) for orchestration when running from Claude Code
-- A primary Codex CLI for orchestration when running from Codex
-- A secondary Claude Code endpoint (via `CLAUDE_CONFIG_DIR` pointing to a different provider) for reviewer diversity
-- A `gemini` CLI authenticated to Google OAuth
-- One or two `codex` CLIs (different accounts) for reviewer diversity without quota burn
-
-If you do not have all of these, the skills' Troubleshooting sections describe graceful subsets (e.g. running with two reviewers and noting which bug class becomes invisible).
+The [synchronization record](docs/2026-09-13-community-sync.md) lists the inventory,
+portability and bilingual checks used for this release. These checks establish
+package consistency; they do not measure skill effectiveness or verify every host.
 
 ## License
 
-MIT (see `LICENSE`). Third-party attribution in `NOTICE.md`.
+MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md) for original skills,
+karpathy-guidelines, the wait-what adaptation and historical OMC attribution.

@@ -1,6 +1,6 @@
 ---
 name: tc-review
-description: Review any Traditional Chinese output (chat, README, plan file, review doc, code comment) as a Taiwan engineer. Catches 簡中 character/vocabulary leaks, unnatural phrasing, mid-sentence English shortcuts, and jargon without gloss. Preserves original technical terms (English identifiers, commands, paths, API names). Maximizes both information retention and fluency. Trigger on "繁中檢視", "tc review", "台灣用語檢查", or before publishing any 繁中-facing content.
+description: Use before sending or publishing any Traditional Chinese text (chat, README, plan file, review doc, code comment), or when the user says "繁中檢視", "tc review" or "台灣用語檢查". Also when a Simplified-Chinese character or mainland term appears in output.
 argument-hint: "<text to review | file path | empty to review last output>"
 ---
 

@@ -1,11 +1,12 @@
 # Third-party attribution
 
-This repo bundles skills derived from other open-source projects. Each
-contribution is preserved with its original license.
+This repository distributes eight author-original skills and two third-party
+skills or adaptations. License notices are retained below and alongside the
+wait-what skill.
 
-## Skills derived from oh-my-claudecode
+## Historical oh-my-claudecode attribution
 
-The following skills are copied from
+Before community release 0.8.0, the following skills were copied from
 [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) by
 Yeachan Heo, under MIT License:
 
@@ -24,7 +25,8 @@ Yeachan Heo, under MIT License:
 - `autopilot` — full autonomous execution from idea to working code
 - `ultrawork` — parallel execution engine for high-throughput tasks
 
-These skills are bundled verbatim; the full MIT license terms apply.
+These fourteen skills are no longer bundled. Their historical MIT notice is
+retained for earlier versions; install maintained copies from the upstream project.
 
 ```
 MIT License
@@ -62,16 +64,38 @@ on LLM coding pitfalls. Distributed under MIT License:
   mistakes (think before coding, simplicity first, surgical changes,
   goal-driven execution)
 
-This skill is bundled verbatim; the MIT license terms above apply.
+The English skill matches the upstream instructions and retains their `license: MIT`
+metadata. On 2026-09-13 the upstream repository supplied no separate root LICENSE
+file; this notice does not substitute the unrelated OMC copyright statement above.
+See the [upstream skill](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/skills/karpathy-guidelines/SKILL.md)
+for its license declaration and original attribution.
+
+## Taiwan wait-what adaptation
+
+[wait-what](skills/wait-what/SKILL.md) adapts
+[Matt Pocock's wait-what](https://github.com/mattpocock/skills/tree/main/skills/productivity/wait-what)
+for Taiwanese researchers and engineers. Copyright (c) 2026 Matt Pocock;
+MIT permission and warranty terms are preserved in
+[skills/wait-what/LICENSE](skills/wait-what/LICENSE).
+
+The adaptation restores missing context, uses Taiwan Traditional Chinese and
+preserves technical evidence and explicit invocation. Yao-Garyu is the maintained
+source of this adaptation; Yao-skills distributes its portable community copy.
 
 ## Author-original skills
 
-The following skills are original to this repo, under MIT License (see
-`LICENSE`):
+The following skills are authored by Yao and distributed under the repository's
+[MIT license](LICENSE):
 
 - `triple-review`
-- `first-principles-fix`
+- `first-principles`
 - `workflow-routing`
+- `worktree-hygiene`
 - `project-status-review`
+- `context-hygiene`
+- `distilled-caveman-lite-accuracy`
+- `tc-review`
 
-The `templates/CLAUDE.md` is also original. Inspiration credit in that file.
+The behavioral template is also original, informed by the author's project work
+and the attributed coding guidelines. Community adaptations preserve methodology
+while replacing private paths, incidents and personal model-account assumptions.

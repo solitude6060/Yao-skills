@@ -1,0 +1,6 @@
+interface:
+  display_name: "Wait What — Taiwan"
+  short_description: "Re-explain research and engineering in Taiwan Chinese"
+  default_prompt: "Use $wait-what to re-explain this with the missing context in Taiwan Traditional Chinese."
+policy:
+  allow_implicit_invocation: false
