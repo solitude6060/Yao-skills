@@ -1,239 +1,197 @@
 # yao-skills
 
-[English](./README.md) | 繁體中文
+[English](README.md) | 繁體中文
 
-一組精簡、有觀點的 Claude Code skills，涵蓋 code review、incident triage、workflow routing、專案健康檢查；另外整併了 [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) 的部分編排類 skills，以及 [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) 的行為準則。
+供開發、獨立審查、專案記憶及技術說明使用的可重用技能。**0.8.0** 分享目前
+Yao-Garyu research-toolkit 的方法，包含台灣版 `wait-what`。
 
-**這是社群共享版本。** 核心價值是方法論和決策框架 — 可以直接搬到不同的專案和技術堆疊。具體工具名稱（Codex、Gemini CLI 等）都是範例，請自行替換成你手上的多模型工具組合。歡迎 fork、修改、變成你自己的版本。如果你在上面做出好用的東西，也歡迎開 PR 或 issue 回饋。
+## 這個 repository 的存在意義
 
-## Skills
+Yao-Garyu 維護我的個人工作流程。Yao-skills 是社群分享版，讓其他人使用自己的
+專案、模型及工具，採用相同的決策方法：定義工作、驗證假設、測試修改、處理
+審查意見，並保存足以接續工作的背景。
 
-### 自製
+本 repository 提供技能指引、參考資料、行為範本及選用的 Claude Code hook
+（工具呼叫前後執行的檢查）。執行工具、模型帳號與調度服務由採用者自行設定，
+各專案的規格仍是工作依據。歡迎分支修改，並根據實際使用經驗提出改善。
 
-| Skill | 用途 |
+[0.8.0 同步紀錄](docs/2026-09-13-community-sync.zh.md) 記錄來源版本及社群版調整。
+英文檔案是技能的正典指引；繁體中文對照檔供閱讀與維護使用。
+
+## 我的開發流程
+
+以下整理我在軟體與研究專案使用的流程。範例來自已讀取的專案紀錄，經過匿名化，
+不包含私人結果或帳號設定。依修改需要採用步驟；範圍小、規格明確的修改可以
+直接完成並驗證。
+
+```mermaid
+flowchart LR
+    A[讀規格與專案紀錄] --> B[記錄範圍與驗收方式]
+    B --> C[失敗檢查與最小實作]
+    C --> D[驗證結果與獨立審查]
+    D --> E[授權範圍內建立與合併請求]
+    E --> F[更新狀態、任務與交接]
+```
+
+1. **提方案前先讀。** 從規格或 README 開始，再讀 `status.md`、`tracker.md`、
+   `handover.md`，核對真實輸入與現有實作。下一步依賴尚未確認的假設時，使用
+   `first-principles`。只有紀錄無法解決的重要資訊才需要向使用者確認。
+2. **先讓工作可以被檢查。** 非瑣碎工作從整合分支建立功能分支，先提交短計畫，
+   寫明目標、範圍、檢查及停止條件。架構或契約變更先留下決策紀錄。
+   規劃、實作或委派責任需要判斷時使用 `workflow-routing`；檔案多不直接代表需要團隊。
+3. **做最小且可驗證的修改。** Bug 先用 regression test（回歸測試：重現問題，
+   確認修正後不再發生）取得預期的失敗，再做最小修正、執行受影響的檢查。
+   保留失敗與通過的提交歷史；純文件修改使用適合的驗證工具。
+4. **委派有界線、可獨立完成的工作。** 由一個主代理負責整合。每個子代理都有
+   輸入、可修改路徑、驗收方式與回報條件。執行環境支援時使用合適的原生子代理；
+   外部工具保留自己的權限與帳號限制。模型、推理強度及備援集中在一份本機路由
+   政策中，不能因可用額度而降低驗證標準。
+5. **審查確切的修改版本。** 專案要求三個獨立審查時使用 `triple-review`。
+   每個問題都對照來源與檢查結果，記錄有效問題及誤報，修正後重新審查受影響的
+   差異。審查失敗或空白回覆不能算通過。一般文件採驗證工具；影響研究有效性的
+   文件依專案審查要求。合併與部署遵守已取得的授權。
+6. **留下能接續的紀錄。** 重要里程碑更新三個管理檔；操作方式變更則更新 runbook
+   （操作手冊）。長對話交接前使用 `context-hygiene`，先保存下一個指令與尚未解除
+   的條件，再清理對話背景。
+
+| 專案檔案 | 我保留的內容 |
 |---|---|
-| `triple-review` | 依 orchestrator 條件選 reviewer 的三審 PR review：Claude Code 編排時用 `codex` + `agy`/`gemini` + 次要端點；Codex 編排時用 `claude` + `agy`/`gemini` + 次要端點；含 severity triage、TDD 修復循環、自動 merge gate |
-| `first-principles` | 假設稽核與 incident triage 紀律：5 題稽核、ground-truth 驗證、hotfix 強制雙 / 三審 |
-| `workflow-routing` | 依任務類型、風險等級、Opus / Codex 剩餘配額挑 A / B / C / D / E / Mini 工作流程 |
-| `project-status-review` | 產生完整專案健康報告：code stats、branch 偏離度、blockers、依優先序排定的下一步建議 |
-| `context-hygiene` | 管理 session context 成本：何時 `/compact`、何時改用 handover-doc + `/clear`；快取成本算式（cached input 是 0.1 倍而非零；output 不會被快取）；handover 範本；loop session checkpointing；以及任務到工具的對應路由（Sonnet / Opus / Codex / Gemini CLI / 次要端點） |
-| `distilled-caveman-lite-accuracy` | Lite 回答壓縮 — 移除客套與贅詞，保留 100% 技術準確度。保留限定詞、程式碼識別字、版本、步驟順序、安全脈絡。破壞性操作、驗證、加密、合規等高風險情境自動展開。觸發詞："caveman-lite"、"lite mode"、"brief but accurate"、"less tokens"、"回答短一點，但不要犧牲技術準確度" |
-| `tc-review` | 繁體中文台灣用語檢視 — 抓簡中字形與詞彙滲漏、不自然的中英夾雜、缺少說明的專業術語。保留英文技術原詞不翻譯。觸發詞："繁中檢視"、"tc review"、"台灣用語檢查"、"幫我看繁中" |
+| `status.md` | 目前狀態、證據、決策與風險 |
+| `tracker.md` | 進行中任務、相依關係、完成與停止條件 |
+| `handover.md` | 本次修改、接續位置、指令及尚待回答的問題 |
 
-### 自 oh-my-claudecode 整併（MIT，詳見 `NOTICE.md`）
+### 實際工作中的使用方式
 
-`ralph`、`plan`、`deep-interview`、`deep-dive`、`learner`、`skillify`、`sciomc`、`autoresearch`、`ralplan`、`ai-slop-cleaner`、`team`、`release`、`autopilot`、`ultrawork`。
-
-### 自 andrej-karpathy-skills 整併（MIT，詳見 `NOTICE.md`）
-
-| Skill | 用途 |
-|---|---|
-| `karpathy-guidelines` | 由 Andrej Karpathy 對 LLM coding 常見錯誤的觀察萃取出的行為準則：先想再寫、優先簡單、外科手術式修改、目標導向執行 |
-
-#### 編排模式怎麼挑
-
-OMC tier-0 編排類 skill，依任務形態挑選：
-
-| 模式 | 運作方式 | 適用情境 |
+| 情況 | 已讀取紀錄呈現的做法 | 對應技能 |
 |---|---|---|
-| `autopilot` | 獨立自主的單一 lead agent | 從 2–3 行構想直接做出獨立功能 / 原型 |
-| `team` | 5 階段管線（plan → prd → exec → verify → fix） | 跨多檔案、需要同儕架構審查的變更 |
-| `ralph` | 持續性、自我參照、嚴格驗證的迴圈 | 必須徹底修好的關鍵 prod bug |
-| `ultrawork` | 最大平行度、非 team 模式 | 跨多個無關 codebase 的大規模 refactor |
-| `ralplan` | 執行前的共識規劃 gate | 模糊 / 不清楚的「ralph 一下」「autopilot 一下」請求 |
+| 測試依賴開發者家目錄的設定 | 記錄隔離計畫、重現外部設定造成的失敗、補回歸測試並驗證修正 | `first-principles`、`workflow-routing` |
+| Reviewer（審查者）認為匯入問題阻擋交付 | 核對實際使用位置與編譯結果，記錄拒絕誤報的依據 | `triple-review` |
+| 功能實作完成，驗收仍需操作者決定 | 在三個管理檔分別記錄實作狀態及未完成的驗收條件 | `project-status-review` |
+| 研究專案可能擴大成完整實驗平台 | 先執行能決定繼續、調整或停止的最小有效真實資料實驗，讀完結果再擴大 | `first-principles`、`workflow-routing` |
+| 研究或工程說明缺少決策前提 | 明確呼叫 `wait-what`，補回背景、機制、證據及實際影響 | `wait-what` |
 
-選擇順序：模糊請求 → 先 `ralplan`。獨立原型 → `autopilot`。多檔案、設計敏感變更 → `team`。必修 prod bug → `ralph`。可平行的批次 refactor → `ultrawork`。
+前三列整理已記錄的開發案例。研究列也反映目前「先取得證據」的政策；實際能執行
+哪些工作，仍由各專案的資料、指標及授權規定決定。說明列呈現新技能的預期用途，
+尚未量測理解成效是否改善。
 
-## Hooks
+研究工作的第一個里程碑，是取得能改變下一步決策的最早可信證據。保留專案要求
+的來源、資料識別、防止資料洩漏的邊界、指標定義與持久產物，無效或結論待定的
+執行也要保留。合成資料測試通過，尚不足以建立真實資料上的結果。
 
-Hooks 是在 Claude Code tool call 執行前 / 後自動跑的 shell 腳本。與 skills（透過 prompt 引導 LLM 行為）不同，hooks 在基礎設施層面強制品質關卡。
+Worktree（同一 repository 的獨立工作目錄）及完整複本放在持久的同層目錄，
+例如 `../project-wt-fix`。本套件的 `worktree-hygiene` 將實驗產物放在另一個持久
+同層目錄，例如 `../project-runs`，並要求移除工作目錄前先盤點。工作及證據的
+唯一副本不得放在暫存空間。
 
-| Hook | 用途 |
-|---|---|
-| [`tc-quality-hook`](hooks/tc-quality-hook/) | `AskUserQuestion` 的 PreToolUse 關卡 — 攔截包含中文的問題，強制模型自我檢視簡體字滲漏、幻覺字、大陸用語後才放行。不需要外部相依套件（不用 OpenCC、不用映射表）。 |
+## 我在什麼情況使用哪個 skill
 
-各 hook 的安裝說明見其 README。安裝需要在 `~/.claude/settings.json` 新增設定，並重啟 Claude Code。
+| 技能 | 使用時機 | 預期產物 |
+|---|---|---|
+| [first-principles](skills/first-principles/SKILL.zh.md) | 提議修正、既有慣例或異常結果需要確認 | 對照可觀察證據的假設檢查 |
+| [workflow-routing](skills/workflow-routing/SKILL.zh.md) | 規劃、實作或審查責任不明 | 依本機路由政策選出的工作方式 |
+| [triple-review](skills/triple-review/SKILL.zh.md) | 合併前需要多模型獨立審查 | 綁定版本的審查、核實後的分類與修正紀錄 |
+| [worktree-hygiene](skills/worktree-hygiene/SKILL.zh.md) | 建立、盤點或移除工作目錄 | 移除前的責任歸屬與產物檢查 |
+| [project-status-review](skills/project-status-review/SKILL.zh.md) | 需要核對完成項目、阻塞及下一個決策 | 依 repository 證據整理的狀態報告 |
+| [context-hygiene](skills/context-hygiene/SKILL.zh.md) | 對話背景過長，或要換 session（工作階段） | 聚焦的壓縮內容或持久交接檔 |
+| [wait-what](skills/wait-what/SKILL.zh.md) | 明確要求重新講清楚 | 補背景、精確術語的台灣繁體中文說明 |
+| [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.zh.md) | 希望回答短一點 | 保留條件、識別碼與不確定性，刪除贅語 |
+| [tc-review](skills/tc-review/SKILL.zh.md) | 準備繁體中文內容 | 依上下文檢查台灣用語及術語 |
+| [karpathy-guidelines](skills/karpathy-guidelines/SKILL.zh.md) | 寫程式時需要提醒假設與範圍 | 簡單、精準且有明確完成條件的修改 |
+
+安裝對應技能後，可以這樣提出要求：
+
+```text
+使用 workflow-routing，決定如何實作這份已接受的計畫。
+使用 first-principles，驗證這個修正方案依賴的假設。
+使用 triple-review，以專案設定的審查者檢查這個合併請求。
+使用 project-status-review，核對現況與未完成的工作。
+使用 wait-what，從問題、缺少的前提、機制與證據重新說明。
+使用 distilled-caveman-lite-accuracy，縮短回答但保留成立條件。
+```
+
+`wait-what` 只在明確呼叫時啟用，提到、安裝或討論名稱都不會自動啟動。
+Codex 使用 `$wait-what`；Claude Code 套件安裝後使用 `/yao-skills:wait-what`。
+它調整目前的說明，保留進行中的任務；不授權修改檔案或啟動實驗。
+
+來源在 0.7.0 移除了 OMC 調度技能，本社群版在 0.8.0 跟進。`plan`、`team`、
+`ralph`、`autopilot`、`ultrawork` 等工作流程請從
+[oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode)
+或對應執行環境的套件取得。持續執行的流程需要操作者明確提出範圍與停止條件；
+讀到文件裡的流程名稱不會啟動它。
 
 ## 安裝
 
-### Claude Code（原生 — 建議用法）
+### Claude Code
 
-兩條路：
-
-**A. 一次性 marketplace 安裝（最簡）**
-
-```
+```text
 /plugin marketplace add solitude6060/Yao-skills
 /plugin install yao-skills@yao-skills
 ```
 
-開新 Claude Code session 後，全部 22 個 skill 都會透過 `Skill` tool 或 `/yao-skills:<skill-name>` 叫用。
+套件提供十個技能，呼叫格式為 `/yao-skills:<skill-name>`。安裝後重新載入套件
+或開啟新對話。參考官方[套件安裝說明](https://code.claude.com/docs/en/discover-plugins)。
 
-**B. 單一 skill 複製（只挑想要的）**
+### Codex 與個別技能安裝
 
-```bash
-git clone https://github.com/solitude6060/Yao-skills /tmp/yao-skills
-cp -r /tmp/yao-skills/skills/triple-review ~/.claude/skills/
-cp -r /tmp/yao-skills/skills/first-principles ~/.claude/skills/
-# ...其他依需求
-```
-
-Skill 透過 `Skill` tool 或 `/<skill-name>` 被叫起。
-
-### `CLAUDE.md` 範本
+將 repository 放在持久位置。下列範例只為 Codex 安裝 `wait-what`，不取代
+既有的同名目錄：
 
 ```bash
-cp templates/CLAUDE.md ~/.claude/CLAUDE.md   # 僅在你還沒有 CLAUDE.md 時執行
+mkdir -p "$HOME/Research" "$HOME/.agents/skills"
+git clone https://github.com/solitude6060/Yao-skills.git "$HOME/Research/Yao-skills"
+ln -s "$HOME/Research/Yao-skills/skills/wait-what" "$HOME/.agents/skills/wait-what"
 ```
 
-拷貝完依自己需求調整。
+若來源或目標已存在，先確認其內容，再更新既有安裝。Codex 從 `~/.agents/skills`
+尋找使用者技能，支援符號連結；若尚未出現，重新啟動。`agents/openai.yaml`
+保留 `wait-what` 的明確呼叫設定。也可以請內建 `$skill-installer` 從本 repository
+安裝指定資料夾。參考 [OpenAI 官方技能文件](https://learn.chatgpt.com/docs/build-skills)。
 
-#### 範本的核心九條
+其他代理請使用官方說明的技能目錄，或在指引檔明確列出要讀取的 `SKILL.md`。
+確認該執行環境實際提供的工具及呼叫方式。Claude marketplace 設定與選用的 hook
+適用於 Claude Code。
 
-`templates/CLAUDE.md` 是給 Claude Code 用的全域行為合約，偏好「嚴謹 + 稽核軌跡」勝於「速度」。十一個段落：
+### 本機政策與行為範本
 
-1. **Spec Before Code** — 先讀 SPEC / README；偏離要先寫 ADR。code ≠ spec。
-2. **Test Before Implementation** — Red → Green → Refactor。Bug fix = 重現測試 + 修正，不能只有修正。
-3. **Surgical Changes + Audit Trail** — 只動任務需要的部分。Commit subject 寫「做了什麼」，body 寫「為什麼 + SPEC / ADR / issue 連結」。決策點放 observability event，不要塞 inline comment。
-4. **Plan in Files, Not Chat** — 非瑣碎工作先把 plan 寫成檔案 commit（例如 `docs/<TRACK>_PLAN.md`）。Review 報告先以 `docs/<REVIEWER>_<DATE>_<SCOPE>.md` 落地，配套的 `_FIX_LOG.md` 隨修復 PR 一起 ship。
-5. **Code-Review Handling** — 每條 finding 對著 code 驗證；依 severity triage；TDD 順序修；PR 一起帶 `_FIX_LOG.md`。
-6. **Branch + PR Discipline** — Feature branch 從整合分支切出；經 PR 並用 `--no-ff` merge；部署鏈 `develop → main → production`；破壞性操作需要明確的人為簽核。
-7. **First-Principles When Blocked** — 第一個冒出來的修法通常是 workaround；停下來重推。紅旗詞：「降低 threshold」「跳過檢查」「停用測試」「先 hardcode」。使用者反問「first principles?」→ 重推，不要辯護。
-8. **When in Doubt** — 不確定就問，不要猜。可逆優先：先模擬再實單；先 staging 再 prod；先 dry-run 再 apply；先封存再刪除。
-9. **Writing Style for Chat** — 自然語言、不在句中夾雜英文縮寫（當主要語言不是英文時）、不用比喻替代清晰描述、用具體數字 / 表格而非抽象論述。Repo 產物（程式碼、commit、PR description）保留英文。
-10. **OMC Tooling Reference** — 安裝 OMC plugin 時適用：tier-0 skill 觸發詞、模型路由（haiku / sonnet / opus）、委派提示、hooks 與持久化、worktree 狀態路徑。工具而非覆寫 — §1–§8 永遠優先。
-11. **Reduce Hallucinations** — 每個斷言都要有提供的脈絡佐證；不確定時明確表示；長文件先提取原文引用再分析；每個事實聲明要能追溯到來源；逐步推理驗證；交叉比對一致性。依據 [Anthropic 官方指引](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations)。
+將 [templates/CLAUDE.md](templates/CLAUDE.zh.md) 的適用部分合併至既有的
+`CLAUDE.md` 或 `AGENTS.md`。範本供採用者編輯，沒有安裝或覆寫功能；需設定
+專案規格、整合分支、驗證命令與部署界線。
 
-**運作良好的訊號：** plan 檔案在 diff 之前先 land、review 都有對應的 fix-log、git history 看起來像 TDD 循環（`test:` → `feat:`）、釐清式的提問出現在錯誤之前而非之後。
+需要委派或獨立審查時，在指引檔指定路由政策位置，例如 `docs/MODEL_ROUTING.md`。
+集中記錄允許的工具、實際模型名稱、支援的推理強度、任務資格、審查者、帳號與
+資料界線及可使用的備援；若有任務說明規範，也一併連結。這些是各專案設定，
+套件不內附固定模型表。沒有路由表時仍可直接完成授權範圍內的工作；需要但尚未
+設定的審查者，只阻擋該項審查。
 
-### Codex CLI（OpenAI）
+### 選用 hook
 
-Codex 沒有 Claude Code 形式的 plugin marketplace。要把 Codex 視為獨立執行環境：相容的技能放在 `~/.codex/skills/<name>/SKILL.md`，全域行為規範放在 `~/.codex/AGENTS.md`。
+[tc-quality-hook](hooks/tc-quality-hook/README.zh.md) 是需另外設定的 Claude Code
+`PreToolUse` 檢查，對象為 `AskUserQuestion`。依該目錄說明安裝；安裝技能本身
+不會啟用 hook。提示模型自我檢查的機制，尚不足以證明文字品質。
+
+## 更新與驗證
+
+Claude marketplace 安裝者先更新 marketplace，再使用套件管理介面的更新動作。
+本機複本可執行：
 
 ```bash
-mkdir -p ~/.codex
-git clone https://github.com/solitude6060/Yao-skills ~/.codex/yao-skills
-
-cat >> ~/.codex/AGENTS.md <<'EOF'
-
-## Available skill references
-
-When the user's request matches a skill below, read the corresponding SKILL.md and follow it:
-
-- "triple review" / "PR review" → ~/.codex/yao-skills/skills/triple-review/SKILL.md
-- "first principles" / "incident triage" → ~/.codex/yao-skills/skills/first-principles/SKILL.md
-- "workflow routing" / "which workflow" → ~/.codex/yao-skills/skills/workflow-routing/SKILL.md
-- "project status" / "health check" → ~/.codex/yao-skills/skills/project-status-review/SKILL.md
-- "context hygiene" / "compact" / "clear" / "handover" → ~/.codex/yao-skills/skills/context-hygiene/SKILL.md
-- "caveman-lite" / "lite mode" / "brief but accurate" / "less tokens" → ~/.codex/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
-EOF
+git -C "$HOME/Research/Yao-skills" pull --ff-only
 ```
 
-**注意事項：**
+符號連結會使用更新後的來源。複製安裝則需要另行同步，先保留本機修改並檢查
+0.8.0 的移除清單；OMC 上游安裝保持獨立。
 
-- 不要把整包 Claude Code plugin 直接覆蓋到 `~/.codex/skills`。部分技能假設 `/oh-my-claudecode`、Claude Code hooks 或 `.omc` 狀態，必須先改成 Codex 版。
-- 如果本機已經有同名 Codex/OMX 技能，預設保留 Codex 版；只有明確移植完成時才用 Claude Code 版取代。
-- 移除不相容技能時先移到 quarantine 目錄，不直接永久刪除；例如 `~/.codex/skills.quarantine.<date>/`，方便回復和比對。
-- 重疊入口只保留一個主入口。例如新版 `first-principles` 已包含修復情境，可取代 `first-principles-fix`；單一 `ask` wrapper 可取代 `ask-claude` / `ask-gemini`。
-- `triple-review` 依目前 orchestrator 選 reviewer。Codex 編排時用 `claude` + `agy`/`gemini` + 次要端點；Claude Code 編排時用 `codex`/`codex-family` + `agy`/`gemini` + 次要端點。除非使用者明確要求 self-review，否則不要把目前 orchestrator 放進 reviewer lanes。
-- OMC 編排類 skills（`ralph`、`autopilot`、`ultrawork` 等）只有在執行階段依賴已移植到 OMX/Codex 時才值得放進 Codex。
-
-### Gemini CLI（Google）
-
-跟 Codex 同模式 — 從 `~/.gemini/GEMINI.md` 引用 skills。
+維護者可在 repository 根目錄檢查套件：
 
 ```bash
-mkdir -p ~/.gemini
-git clone https://github.com/solitude6060/Yao-skills ~/.gemini/yao-skills
-
-cat >> ~/.gemini/GEMINI.md <<'EOF'
-
-## Skill references
-
-If the user's request matches these keywords, read the SKILL.md before responding:
-
-- "triple review" → ~/.gemini/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.gemini/yao-skills/skills/first-principles/SKILL.md
-- "workflow routing" → ~/.gemini/yao-skills/skills/workflow-routing/SKILL.md
-- "project status" → ~/.gemini/yao-skills/skills/project-status-review/SKILL.md
-- "context hygiene" / "compact" / "handover" → ~/.gemini/yao-skills/skills/context-hygiene/SKILL.md
-- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.gemini/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
-EOF
+claude plugin validate .
+git diff --check
 ```
 
-**注意事項：**
-
-- `triple-review` 三個 reviewer 中其中一個就是 `gemini` CLI；在 Gemini CLI 內跑會 self-reference — 要嘛換掉那個 reviewer，要嘛在 Gemini 那邊跳過這個 skill。
-- 沒有關鍵字 hook 自動觸發。
-
-### opencode（sst/opencode）
-
-opencode 會讀專案根目錄的 `AGENTS.md` 與 `~/.config/opencode/AGENTS.md` 兩處。
-
-```bash
-mkdir -p ~/.config/opencode
-git clone https://github.com/solitude6060/Yao-skills ~/.config/opencode/yao-skills
-
-cat >> ~/.config/opencode/AGENTS.md <<'EOF'
-
-## Skill references
-
-When the user's request matches a skill below, read the SKILL.md and follow it:
-
-- "triple review" → ~/.config/opencode/yao-skills/skills/triple-review/SKILL.md
-- "first principles" → ~/.config/opencode/yao-skills/skills/first-principles/SKILL.md
-- "workflow routing" → ~/.config/opencode/yao-skills/skills/workflow-routing/SKILL.md
-- "project status" → ~/.config/opencode/yao-skills/skills/project-status-review/SKILL.md
-- "context hygiene" / "compact" / "handover" → ~/.config/opencode/yao-skills/skills/context-hygiene/SKILL.md
-- "caveman-lite" / "lite mode" / "brief but accurate" → ~/.config/opencode/yao-skills/skills/distilled-caveman-lite-accuracy/SKILL.md
-EOF
-```
-
-**注意事項：**
-
-- opencode 支援多 provider；`triple-review` 的任一 reviewer 都可以換成指向其他 provider 的 opencode session，但 skill prompt 內提到的 provider 名稱要和實際指令一起改。
-- opencode 自己的 command / agent 系統（`.opencode/command/*.md`）是更原生的 slash command 暴露方式；想要一級整合的話，參考 opencode 文件把 SKILL.md 的內容移植成 command 檔。
-
-### Antigravity（Google IDE）
-
-**不建議。** Antigravity 是 agent-first 的 IDE，採 workspace-scoped 的 YAML agent，沒有全域 plugin marketplace、沒有 CLI hook 層。
-
-真的要用：
-
-```bash
-git clone https://github.com/solitude6060/Yao-skills /tmp/yao-skills
-# 然後手動把相關 SKILL.md 的內容貼進 Antigravity 的 workspace prompt
-# 或各 workspace 的 .agent.yaml
-```
-
-這套 skills 假設了 chat-driven 的 CLI agent + shell + git。Antigravity 的 IDE / browser-automation 模型大致正交 — 只有 `workflow-routing` 和 `project-status-review` 能完整轉譯，其餘多半失去價值。
-
-## 更新（上游有新 commit 之後）
-
-上游 repo 有新 commit 後，依各安裝路徑刷新：
-
-| 安裝路徑 | 更新指令 |
-|---|---|
-| Claude Code（marketplace） | `/plugin marketplace update yao-skills` 然後 `/plugin update yao-skills@yao-skills` |
-| Codex CLI | `git -C ~/.codex/yao-skills pull` |
-| Gemini CLI | `git -C ~/.gemini/yao-skills pull` |
-| opencode | `git -C ~/.config/opencode/yao-skills pull` |
-| 單一 skill 複製（`~/.claude/skills/<name>`） | 重新 clone + `cp -r`，或當初是 git clone 過來就直接 `git -C` pull |
-| 已部署的 CLAUDE.md 範本 | `cp templates/CLAUDE.md ~/.claude/CLAUDE.md`（會覆蓋；本地有改的話手動 merge） |
-
-Claude Code 的 marketplace 更新完，重啟 CC session（或 `--resume`）讓新的 skill set 載入。`AGENTS.md` / `GEMINI.md` 的引用每個新 CLI session 都會重讀，不用額外動作。
-
-## 對應你的環境
-
-這套 skills 假設你有一個多模型 CLI 工具組合。完整設定範例：
-
-- 一個主要的 Claude Code（Anthropic OAuth）或 Codex CLI 做編排
-- 一個次要的 Claude Code 端點（透過 `CLAUDE_CONFIG_DIR` 指向不同的 provider）提供 reviewer 多樣性
-- 一個 Gemini 系列 CLI（`agy` 或 `gemini`）接 Google OAuth
-- 一到兩個 Codex CLI（不同帳號）做 reviewer 多樣性，避免燒同一個額度
-
-不是每個都必須有。少了其中任何一個，各 skill 的 Troubleshooting 段落會說明降級方式（例如改成兩個 reviewer，並指出哪一類 bug 會因此變成盲區）。方法論（規劃者與實作者分離、三審多樣性、彈性降級路由）本身不綁定特定工具 — 替換成你手上有的 CLI 即可。
+[同步紀錄](docs/2026-09-13-community-sync.zh.md) 列出本次使用的清單、可移植性
+與雙語檢查。它們驗證套件一致性，尚未量測技能成效或驗證每個執行環境。
 
 ## 授權
 
-MIT（見 `LICENSE`）。第三方授權詳見 `NOTICE.md`。
+MIT。原創技能、karpathy-guidelines、wait-what 改寫及歷史 OMC 授權見
+[LICENSE](LICENSE) 與 [NOTICE.md](NOTICE.md)。

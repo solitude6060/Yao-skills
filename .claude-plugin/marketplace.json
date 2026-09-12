@@ -7,7 +7,10 @@
     {
       "name": "yao-skills",
       "source": ".",
-      "description": "Code review, incident triage, workflow routing, and project health skills + curated OMC orchestration skills"
+      "description": "Ten portable development, review, project-memory and explanation skills, including the Taiwan wait-what adaptation. Community edition of the Yao-Garyu research-toolkit methodology."
     }
-  ]
+  ],
+  "metadata": {
+    "description": "Portable development, review, project-memory and explanation skills."
+  }
 }

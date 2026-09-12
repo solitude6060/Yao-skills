@@ -1,0 +1,128 @@
+{
+  "date": "2026-09-13",
+  "source_revision": "38719bebcf2b5f67e7ce6dbdb14041a6b2495975",
+  "skills": [
+    "context-hygiene",
+    "distilled-caveman-lite-accuracy",
+    "first-principles",
+    "karpathy-guidelines",
+    "project-status-review",
+    "tc-review",
+    "triple-review",
+    "wait-what",
+    "workflow-routing",
+    "worktree-hygiene"
+  ],
+  "checks": {
+    "inventory": "PASS",
+    "skill_metadata_and_bilingual_companions": "PASS",
+    "wait_what_explicit_invocation": "PASS",
+    "upstream_wait_what_license_and_metadata_bytes": "PASS",
+    "private_absolute_paths": "PASS",
+    "relative_markdown_links": "PASS",
+    "readme_template_hook_heading_alignment": "PASS",
+    "unchanged_hook_executable": "PASS",
+    "manifest_identity_and_version": "PASS",
+    "whitespace": "PASS"
+  },
+  "content_hashes": {
+    ".claude-plugin/marketplace.json": "76bf683e6c3841f6e9e4bc6077d3d83ba049aebbfa2d79dbf2b6af78807ce7ce",
+    ".claude-plugin/plugin.json": "bdd49abd106b381d2e5dbe84b8b8f2412ea6f16d250ced32228bfec56f5fb3b0",
+    "NOTICE.md": "73320adda8ee441e508243628ad19497ab4b80e72e8abe7e325cfee724f034f6",
+    "README.md": "fa2b5676a1b1db8719adcb4dbd5969444907d4069c0d0a4c6e3f64aacb8bef05",
+    "README.zh.md": "dfa8bccb14909fa4dc20e2a4c94a4d5efef91e22130a95ce6528dfb6b3bb51cd",
+    "hooks/tc-quality-hook/README.md": "10880d463ed6f859a2764277e35016322726bb24f8af81cf5aac47e77c21adff",
+    "hooks/tc-quality-hook/README.zh.md": "96759bf1af818d3f8615b6537d28a31df3f9f4290ccc63cb5e48b25e3779cfe5",
+    "skills/context-hygiene/SKILL.md": "ecee6fdfeb1e6cef710483ffb22e4626f565834426198119dcc5896d8bd5434c",
+    "skills/context-hygiene/SKILL.zh.md": "09da85aba4132edd750a4445511f9722945eb94d956c708edb7c29254f9254e8",
+    "skills/distilled-caveman-lite-accuracy/SKILL.md": "7d42bf6552714e0ffe9ec7cc89a949222b8a83ab2915f1d509368364abe0d2d7",
+    "skills/distilled-caveman-lite-accuracy/SKILL.zh.md": "bcdaee3332d1d793eb959aed308d65c72ac4ff08fa2dce181c5f1c1a578c7e58",
+    "skills/first-principles/SKILL.md": "2608bea0490d92afe8df2b322af892abb3a8376e76dc5d3a3ee61b7d9d00a394",
+    "skills/first-principles/SKILL.zh.md": "1f859227834d5bce24b5a1d4197c95f0d36e4e0972fdcec31749d7a871ce030d",
+    "skills/first-principles/references/cases.md": "8a7f44bdec855849a478787308d6bb9c061ef3f917638ff5f7a21e48b2c742a6",
+    "skills/first-principles/references/cases.zh.md": "392a22ab8df937032766b89a65987cc1b6289c839fc049c46dfb180ae8d497e7",
+    "skills/karpathy-guidelines/SKILL.md": "6e22cc54cb02a5e98ae42d06d9d7292db0c1b43894831b32879beb0166b2aea7",
+    "skills/karpathy-guidelines/SKILL.zh.md": "d35d8efbd7e874d204488cf32063051800e4405afd3f00a4f184515dccbfdc56",
+    "skills/project-status-review/SKILL.md": "7cad0dead5222dcc1478a51024426391756d94e953e7b50e80807cd2c14b0bc7",
+    "skills/project-status-review/SKILL.zh.md": "168a351172b6145ccf17baa1fa9d9e48eb896f1e65ce5b507287ddaba4412a0b",
+    "skills/project-status-review/evals/evals.json": "3bdd7b046f17eacd154baac382dd89111b661fd3c61f6b7af41b35735cc028a6",
+    "skills/tc-review/SKILL.md": "7e67d286bc1b8037a4bc0ca5b60235b3671751fd5572291f2d5ba58a04625ab9",
+    "skills/tc-review/SKILL.zh.md": "9e4ae307219b3cfdf0d964496051f322f563372915788f4584c42c08545de19f",
+    "skills/triple-review/SKILL.md": "5a049696196e35b57d3f448ee5cfee3d160a8828622e67e544a33fc7e6be01e3",
+    "skills/triple-review/SKILL.zh.md": "5d78346cc1162156733155e6c058371682c23c5e2e82f170e09b44eb14ab8e79",
+    "skills/wait-what/LICENSE": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5",
+    "skills/wait-what/SKILL.md": "dbeb853ae723bddc79b81fca84959f37e4cbd4808f770488fd70c0d52fa7c7b2",
+    "skills/wait-what/SKILL.zh.md": "272279eaa65a775ac8b9c36945939d626e8c5ced2d6a22a9468c9b666eb62c15",
+    "skills/wait-what/agents/openai.yaml": "6726693e35d202a37fcd3d93902b43f1623973d87dc69a447b93ecf2300a39b0",
+    "skills/workflow-routing/SKILL.md": "b3517636d51c0c2c1f7f269bd0ae7003ef92f0e5e5dd17315fb6ce8b249d31c6",
+    "skills/workflow-routing/SKILL.zh.md": "ee0903087b8fff7cb7f9851403be57858fec9429537e8070a49dbae53af33d53",
+    "skills/worktree-hygiene/SKILL.md": "616c173d9d6bc7c2ef0f4f0aba90e5befef921e1dcf2b09c45f7562dfc649181",
+    "skills/worktree-hygiene/SKILL.zh.md": "8668c379efd28e492b7ffc2e08a439a2ed7a2e84062ba75d22bf33fadd83e73f",
+    "templates/CLAUDE.md": "39dac98476f7ca712ed38d3c4ba9624eb010892a9efde9ac7b4ab59e2f7c91dd",
+    "templates/CLAUDE.zh.md": "e92f40d395859b36bf23d7a43ba5518a6b8b2b0a682e905b75e44859876601af"
+  },
+  "generic_skill_validator": {
+    "context-hygiene": {
+      "pass": true,
+      "message": "Skill is valid!"
+    },
+    "distilled-caveman-lite-accuracy": {
+      "pass": false,
+      "message": "Unexpected key(s) in SKILL.md frontmatter: argument-hint. Allowed properties are: allowed-tools, description, license, metadata, name"
+    },
+    "first-principles": {
+      "pass": false,
+      "message": "Unexpected key(s) in SKILL.md frontmatter: argument-hint. Allowed properties are: allowed-tools, description, license, metadata, name"
+    },
+    "karpathy-guidelines": {
+      "pass": true,
+      "message": "Skill is valid!"
+    },
+    "project-status-review": {
+      "pass": false,
+      "message": "Unexpected key(s) in SKILL.md frontmatter: argument-hint, disable-model-invocation. Allowed properties are: allowed-tools, description, license, metadata, name"
+    },
+    "tc-review": {
+      "pass": false,
+      "message": "Unexpected key(s) in SKILL.md frontmatter: argument-hint. Allowed properties are: allowed-tools, description, license, metadata, name"
+    },
+    "triple-review": {
+      "pass": false,
+      "message": "Unexpected key(s) in SKILL.md frontmatter: argument-hint. Allowed properties are: allowed-tools, description, license, metadata, name"
+    },
+    "wait-what": {
+      "pass": false,
+      "message": "Unexpected key(s) in SKILL.md frontmatter: disable-model-invocation. Allowed properties are: allowed-tools, description, license, metadata, name"
+    },
+    "workflow-routing": {
+      "pass": true,
+      "message": "Skill is valid!"
+    },
+    "worktree-hygiene": {
+      "pass": false,
+      "message": "Unexpected key(s) in SKILL.md frontmatter: argument-hint. Allowed properties are: allowed-tools, description, license, metadata, name"
+    }
+  },
+  "independent_instruction_check": {
+    "role": "verifier",
+    "table": "Research",
+    "tier": "Medium",
+    "requested_model": "gpt-5.6-sol",
+    "requested_effort": "high",
+    "context": "independent native subagent",
+    "runtime_identity_limit": "The spawn surface recorded the requested model and effort; no additional backend model identity was returned.",
+    "scope": "Five instruction scenarios; no live host or effectiveness evaluation.",
+    "results": {
+      "direct_typo_without_policy": "PASS",
+      "wait_what_evidence_and_task_continuation": "PASS",
+      "empty_reviewer_not_approval": "PASS",
+      "workflow_name_is_not_invocation": "PASS",
+      "illustrative_cost_and_process_authorization": "PASS"
+    },
+    "finding": {
+      "severity": "MEDIUM",
+      "issue": "Release record had not yet included the independent scenario results.",
+      "disposition": "Resolved by adding this result and the bilingual scenario table; reviewed skill content unchanged."
+    }
+  }
+}
