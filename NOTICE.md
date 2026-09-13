@@ -64,9 +64,7 @@ on LLM coding pitfalls. Distributed under MIT License:
   mistakes (think before coding, simplicity first, surgical changes,
   goal-driven execution)
 
-The English skill matches the upstream instructions and retains their `license: MIT`
-metadata. On 2026-09-13 the upstream repository supplied no separate root LICENSE
-file; this notice does not substitute the unrelated OMC copyright statement above.
+The skill retains the upstream `license: MIT` metadata.
 See the [upstream skill](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/skills/karpathy-guidelines/SKILL.md)
 for its license declaration and original attribution.
 
@@ -77,10 +75,6 @@ for its license declaration and original attribution.
 for Taiwanese researchers and engineers. Copyright (c) 2026 Matt Pocock;
 MIT permission and warranty terms are preserved in
 [skills/wait-what/LICENSE](skills/wait-what/LICENSE).
-
-The adaptation restores missing context, uses Taiwan Traditional Chinese and
-preserves technical evidence and explicit invocation. Yao-Garyu is the maintained
-source of this adaptation; Yao-skills distributes its portable community copy.
 
 ## Author-original skills
 
@@ -96,6 +90,5 @@ The following skills are authored by Yao and distributed under the repository's
 - `distilled-caveman-lite-accuracy`
 - `tc-review`
 
-The behavioral template is also original, informed by the author's project work
-and the attributed coding guidelines. Community adaptations preserve methodology
-while replacing private paths, incidents and personal model-account assumptions.
+The behavioral template is also authored by Yao and informed by the attributed
+coding guidelines.

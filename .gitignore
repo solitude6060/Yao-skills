@@ -6,3 +6,13 @@ node_modules/
 *.local
 .idea/
 .vscode/
+
+# Local project memory and maintenance records
+/status.md
+/status.zh.md
+/tracker.md
+/tracker.zh.md
+/handover.md
+/handover.zh.md
+/docs/*-community-*
+/docs/local/
