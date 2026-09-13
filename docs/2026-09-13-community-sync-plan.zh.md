@@ -41,3 +41,8 @@ pull request（合併請求）之前；本次先完成該整合，再記錄最�
 開發流程與技能選擇為主，移除交付稽核敘述、匿名化說明、內部模型／帳號設定
 及執行環境維護指令，保留必要安裝方式及專用指南連結。本次為編輯修改，
 技能及程式不變；檢查連結、雙語涵蓋與空白差異後透過文件合併請求交付。
+
+確認範圍也包含 routing、first-principles 與 wait-what 的使用時機、依情境選用技能、
+ponytail 與 i-have-adhd 的搭配方式，以及 Claude Code、Codex、Grok Build、Cursor、
+Pi Agent 本體與本套技能的安裝。已完成雙語改寫，並核對官方來源、雙語涵蓋範圍、
+本機連結、指令呈現及 Bash／zsh 安裝範例。

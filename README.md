@@ -1,225 +1,190 @@
-# yao-skills
+# Yao-skills
 
 English | [繁體中文](README.zh.md)
 
-Reusable skills for evidence-based development, independent review, project memory,
-and clear technical explanations. **0.8.0** shares the current Yao-Garyu
-research-toolkit methodology, including the Taiwan adaptation of `wait-what`.
+Reusable skills for working with coding agents. This is the community edition of
+my Yao-Garyu toolkit, organized so you can adopt individual workflows in your own projects.
 
-## Why this repository exists
+A skill is a set of instructions an agent can load for a particular task. These
+skills grew out of my software development and research work: deciding how to
+approach a task, checking assumptions, reviewing changes, and explaining decisions.
+Start with the situation you recognize below, then [install for your agent](#installation).
 
-Yao-Garyu maintains my personal workflow. Yao-skills is the community edition:
-people should be able to adopt the decision process with their own projects,
-models and tools. The reusable parts are how we define work, verify assumptions,
-test changes, handle review findings and preserve enough context to resume.
+## When I use each skill
 
-This repository contains instructions, supporting references, a behavioral template
-and an optional Claude Code hook. It does not provision model accounts or an
-orchestration service. Configure your own execution and review tools; keep project
-contracts authoritative. Fork it, adapt it, and contribute improvements grounded in
-actual use.
+### workflow-routing — decide how to organize the work
 
-The [0.8.0 synchronization record](docs/2026-09-13-community-sync.md) records the
-source revision and community adaptations. English files are canonical instructions;
-Traditional Chinese companions support human reading and maintenance.
+I use [workflow-routing](skills/workflow-routing/SKILL.md) before substantial
+implementation or research work, when I need to decide whether to work directly,
+write a plan first, delegate independent parts, or arrange a separate review.
+It uses the project's model and tool policy to assign responsibilities.
+A typo or a small, clear edit usually needs only a direct change and a check.
 
-## My development workflow
+For example, a feature may touch an interface, its implementation and several
+independent tests. Routing decides which work must happen in sequence, what can
+run in parallel, who integrates the changes, and how completion will be checked.
 
-The following is the workflow I use across software and research projects. The
-examples summarize inspected project records; they are anonymous and contain no
-private results or account configuration. Apply the steps required by the change.
-A small, well-defined edit can be completed and checked directly.
+> Use workflow-routing for this feature: identify the dependencies, implementation
+> ownership and required checks before starting.
 
-```mermaid
-flowchart LR
-    A[Read contract and project memory] --> B[Record scope and acceptance checks]
-    B --> C[Failing check and minimal implementation]
-    C --> D[Verify results and independent review]
-    D --> E[Authorized pull request and merge]
-    E --> F[Update status, tracker and handover]
-```
+### first-principles — check the assumption behind the next action
 
-1. **Read before proposing.** Start with the specification or README, then
-   `status.md`, `tracker.md` and `handover.md`. Inspect the real input and current
-   implementation. Use `first-principles` when an inherited assumption controls the
-   next decision; ask only for material information that the records cannot resolve.
-2. **Make the work reviewable.** For non-trivial work, commit a short plan on a
-   feature branch from the project's integration branch. Record the goal, scope,
-   checks and stopping condition. An architecture or contract change gets a decision
-   record before implementation. Use `workflow-routing` when responsibility or
-   delegation needs a decision; a large file count alone does not require a team.
-3. **Implement the smallest verified change.** For a bug, reproduce it with a failing
-   regression test, make the minimal correction, then run the affected checks. Keep
-   the red/green commit history. Documentation-only changes use suitable validators.
-4. **Delegate bounded, independent work.** Keep one root responsible for integration.
-   Each child gets inputs, owned output paths, acceptance checks and an escalation
-   condition. Use qualified native subagents when available; external clients retain
-   their own permission and account boundaries. Model and effort choices live in one
-   local routing policy, with explicit fallbacks; availability does not justify
-   weakening the verification standard.
-5. **Review the exact change.** Use `triple-review` when the project requires three
-   independent reviews. Verify every finding against source and checks, record
-   accepted findings and false positives, repair accepted issues, and review the
-   affected diff again. A failed reviewer or an empty response is not approval.
-   Ordinary documentation needs validators; research-validity documents follow the
-   project's review gate. Merge and deployment stay within existing authorization.
-6. **Leave a usable continuation.** Update the three project files at relevant
-   milestones. Put changed operator instructions in the runbook. Use `context-hygiene`
-   before handing off a long session; preserve the next command and unresolved
-   condition before resetting context.
+I use [first-principles](skills/first-principles/SKILL.md) when a proposed fix or
+important conclusion depends on something we have not verified. Typical moments
+are repeated failures, a result that looks unexpectedly good, a review finding,
+or a suggestion to lower a threshold or skip a check.
 
-| Project file | What I keep there |
+For example, if a test passes on one machine and fails on another, I first inspect
+the actual inputs, environment and configuration it reads. That evidence determines
+what needs fixing. In research, I check data identity and metric calculation before
+interpreting a surprising score.
+
+> Use first-principles to check why this test fails. Identify the assumption and
+> the smallest observation that can confirm or reject it.
+
+### wait-what — explain the missing context
+
+I explicitly invoke [wait-what](skills/wait-what/SKILL.md) when I cannot follow
+an explanation: a term appeared without a definition, a conclusion skipped its
+premise, or the answer got shorter than the reasoning requires.
+
+This Taiwan adaptation rebuilds the explanation in Traditional Chinese, introduces
+technical terms with their original names and short explanations, and uses a concrete
+example before adding formal detail. It preserves evidence and uncertainty, and
+then returns to the ongoing task. It applies to the current explanation.
+
+> wait-what: Explain why these two results cannot be compared directly. Start with
+> what each result measures and the assumption that makes the comparison valid.
+
+Use the explicit command for your agent in the installation table below.
+`workflow-routing` and `first-principles` can also be selected by the agent when
+the task calls for them; `wait-what` requires my request.
+
+## What I let the agent select
+
+Once installed, I let the agent choose the following skills when their descriptions
+match the work. Selection depends on the agent and the available tools.
+
+| Skill | When it fits my workflow |
 |---|---|
-| `status.md` | Current state, evidence, decisions and risks |
-| `tracker.md` | Active tasks, dependencies, completion and stopping conditions |
-| `handover.md` | What changed, exact continuation point, commands and open questions |
+| [karpathy-guidelines](skills/karpathy-guidelines/SKILL.md) | During coding and review: make assumptions visible, keep changes focused, and define how to verify completion. |
+| [triple-review](skills/triple-review/SKILL.md) | When a project requires independent multi-model review before merge. Verify findings against the actual change, then fix accepted issues. Ordinary documentation uses validators. |
+| [worktree-hygiene](skills/worktree-hygiene/SKILL.md) | When creating, checking or retiring a Git worktree: track ownership and preserve unfinished work and results. |
+| [context-hygiene](skills/context-hygiene/SKILL.md) | When a session grows long or work moves to another session: preserve the decisions, open questions and next action. |
+| [tc-review](skills/tc-review/SKILL.md) | Before sending or publishing Traditional Chinese: check Taiwan vocabulary and technical terminology. |
 
-### How this looks in actual work
+Two more are driven by what I ask for:
 
-| Situation | Practice reflected in inspected records | Relevant skill |
+| Skill | When I request it |
+|---|---|
+| [project-status-review](skills/project-status-review/SKILL.md) | I explicitly request a status review to reconcile completed work, blockers and the next decision against repository evidence. |
+| [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.md) | I want a shorter answer while retaining necessary conditions, identifiers and uncertainty. |
+
+## How this fits my development workflow
+
+I start by reading the project specification and its current state. For substantial
+work, I record the scope and acceptance checks, then use routing if the work needs
+coordination. Bug fixes start with a failing regression test; implementation stays
+as small as the verified behavior allows. Changes go through the project's checks
+and review requirements before a pull request is merged.
+
+For research, I aim for the smallest valid experiment on real data that can change
+the decision to continue, adjust or stop. I inspect that result before expanding
+the implementation or experiment matrix. First-principles becomes useful whenever
+an assumption starts determining what we build or claim.
+
+At milestones, I keep `status.md` for current state and evidence, `tracker.md` for
+remaining work, and `handover.md` for where the next session should resume.
+`wait-what` is available at any point when I need the reasoning explained again.
+
+## Other skills I pair with these
+
+| Companion | How I use it |
+|---|---|
+| [ponytail](https://github.com/DietrichGebert/ponytail) | During implementation and review, favor existing code, standard libraries and native features; question unnecessary abstractions and keep the solution small. |
+| [i-have-adhd](https://github.com/ayghri/i-have-adhd) | Put the next action first, break work into manageable steps, and make the current state easy to follow. |
+
+These are separate projects with their own installation instructions. When a concise
+reply leaves out context I need, I use `wait-what` to expand that explanation.
+
+## Installation
+
+### Install a coding agent
+
+Choose the agent you use. These terminal commands are for macOS or Linux; the linked
+official guides cover prerequisites, sign-in and other supported platforms.
+Pi's npm command requires Node.js and npm. Cursor's command installs its terminal agent.
+
+| Agent and official guide | Install command | Start |
 |---|---|---|
-| Tests depend on configuration in the developer's home directory | Record an isolation plan, reproduce the ambient-setting failure, add a regression test and verify the correction | `first-principles`, `workflow-routing` |
-| A reviewer reports a blocking import problem | Check the actual import use and compiler result; record why a false positive is rejected | `triple-review` |
-| A feature is implemented but acceptance still needs an operator decision | Keep implementation status and the remaining acceptance condition separate in the three project files | `project-status-review` |
-| A research project could expand into a large experiment platform | Run the smallest valid real-data experiment that can decide continue, adjust or stop; inspect the result before expanding | `first-principles`, `workflow-routing` |
-| An explanation omits the premise behind a research or engineering decision | Explicitly invoke `wait-what` to restore context, mechanism, evidence and consequences | `wait-what` |
+| [Claude Code](https://code.claude.com/docs/en/setup) | `curl -fsSL https://claude.ai/install.sh \| bash` | `claude` |
+| [Codex](https://learn.chatgpt.com/docs/codex/cli) | `curl -fsSL https://chatgpt.com/codex/install.sh \| sh` | `codex` |
+| [Grok Build](https://docs.x.ai/build/overview) | `curl -fsSL https://x.ai/cli/install.sh \| bash` | `grok` |
+| [Cursor](https://prod.cursor.com/docs/cli/installation) | `curl https://cursor.com/install -fsS \| bash` | `agent` |
+| [Pi Agent](https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/quickstart.md) | `npm install -g --ignore-scripts @earendil-works/pi-coding-agent` | `pi` |
 
-The first three rows summarize recorded development cases. The research row also
-reflects the current evidence-first policy; each project's own data, metric and
-approval rules determine what can run. The explanation row describes the newly
-added skill's intended use; it is not a measured improvement in comprehension.
+### Add the skills to Claude Code
 
-For research, the first milestone is the earliest credible evidence that can change
-a decision. Preserve provenance, data identity, leakage boundaries, metric definitions
-and persistent outputs required by that project. Keep invalid or inconclusive runs
-visible. Passing a synthetic fixture alone does not establish a real-data result.
-
-Worktrees and full clones belong in persistent sibling directories, for example
-`../project-wt-fix`. The shipped `worktree-hygiene` policy puts experiment outputs in
-another persistent sibling, such as `../project-runs`, and inventories them before
-retirement. Never make temporary storage the only copy of work or evidence.
-
-## Which skill I use
-
-| Skill | Use it when | Expected result |
-|---|---|---|
-| [first-principles](skills/first-principles/SKILL.md) | A proposed fix, inherited convention or surprising result needs checking | Assumption audit tied to observable evidence |
-| [workflow-routing](skills/workflow-routing/SKILL.md) | Planning, implementation or review ownership is unclear | A workflow shape using your local routing policy |
-| [triple-review](skills/triple-review/SKILL.md) | The project requires independent multi-model review before merge | Revision-bound reviews, verified triage and a fix log |
-| [worktree-hygiene](skills/worktree-hygiene/SKILL.md) | Creating, auditing or retiring worktrees | Ownership and artifact checks before removal |
-| [project-status-review](skills/project-status-review/SKILL.md) | You need completed work, blockers and next decisions reconciled | A status report checked against repository evidence |
-| [context-hygiene](skills/context-hygiene/SKILL.md) | Context is large or work is moving to a new session | A focused compact or durable handover |
-| [wait-what](skills/wait-what/SKILL.md) | You explicitly request a clearer explanation | Taiwan Traditional Chinese explanation with the missing background and precise terms |
-| [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.md) | You want a shorter answer | Less filler while retaining conditions, identifiers and uncertainty |
-| [tc-review](skills/tc-review/SKILL.md) | Preparing Traditional Chinese text | Taiwan vocabulary and terminology checked in context |
-| [karpathy-guidelines](skills/karpathy-guidelines/SKILL.md) | Coding needs a reminder about assumptions and scope | Simple, surgical changes with observable completion criteria |
-
-Example requests after installing the corresponding skills:
-
-```text
-Use workflow-routing to choose how to implement this accepted plan.
-Use first-principles to verify the assumption behind this proposed fix.
-Use triple-review for this PR using the reviewers configured for this project.
-Use project-status-review to reconcile the current status and outstanding work.
-Use wait-what to explain the question, missing premise, mechanism and evidence again.
-Use distilled-caveman-lite-accuracy to shorten the answer without removing conditions.
-```
-
-`wait-what` is explicit-only: mentioning, installing or discussing it does not
-activate it. In Codex, invoke `$wait-what`; in Claude Code's plugin installation,
-invoke `/yao-skills:wait-what`. It changes the current explanation and preserves the
-ongoing task; it grants no permission to edit files or launch an experiment.
-
-OMC orchestration skills were removed from the source in 0.7.0 and from this
-community edition in 0.8.0. Get `plan`, `team`, `ralph`, `autopilot`, `ultrawork`
-and related workflows from [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode)
-or the runtime-specific distribution you use. Launch persistent workflows only
-through an explicit operator request with scope and a stopping condition. Reading
-a workflow name in documentation does not launch it.
-
-## Install
-
-### Claude Code
+Run these inside Claude Code:
 
 ```text
 /plugin marketplace add solitude6060/Yao-skills
 /plugin install yao-skills@yao-skills
 ```
 
-The package exposes ten skills under `/yao-skills:<skill-name>`. Reload plugins or
-start a new session after installation. See the official
-[plugin installation guide](https://code.claude.com/docs/en/discover-plugins).
+Run `/reload-plugins` or start a new session. Invoke a skill as
+`/yao-skills:wait-what`, `/yao-skills:workflow-routing` or
+`/yao-skills:first-principles`. See the [plugin guide](https://code.claude.com/docs/en/discover-plugins).
 
-### Codex and selective local installation
+### Add the skills to Codex, Grok Build, Cursor or Pi Agent
 
-Keep the checkout in a persistent location. For example, these commands install
-only `wait-what` for Codex without replacing an existing same-name directory:
+All four read local user skills from `~/.agents/skills`. With Git installed, run
+this once to make the collection available to those agents on this machine:
 
 ```bash
 mkdir -p "$HOME/Research" "$HOME/.agents/skills"
 git clone https://github.com/solitude6060/Yao-skills.git "$HOME/Research/Yao-skills"
-ln -s "$HOME/Research/Yao-skills/skills/wait-what" "$HOME/.agents/skills/wait-what"
+
+for skill in "$HOME/Research/Yao-skills/skills"/*; do
+  destination="$HOME/.agents/skills/${skill##*/}"
+  if [ ! -e "$destination" ] && [ ! -L "$destination" ]; then
+    ln -s "$skill" "$destination"
+  fi
+done
 ```
 
-If the checkout or destination already exists, inspect it and update the existing
-installation instead of overwriting it. Codex discovers user skills in
-`~/.agents/skills` and supports symlinked skill directories; restart if the skill
-has not appeared. `agents/openai.yaml` retains explicit-only invocation for
-`wait-what`. You can also ask the built-in `$skill-installer` to install selected
-folders from this repository. See [OpenAI's skill documentation](https://learn.chatgpt.com/docs/build-skills).
+If you already have the checkout, skip the clone command. Existing skill entries
+are kept. To install only selected skills, link those folders instead of running
+the loop. Start a new agent session, then select the skill:
 
-For other agents, use their documented skill discovery directory or explicitly
-reference the selected `SKILL.md` in the agent's instruction file. Check tool
-availability and invocation semantics in that runtime. The Claude marketplace
-manifest and optional hook are specific to Claude Code.
+| Agent and skill guide | Explicit invocation example |
+|---|---|
+| [Codex](https://learn.chatgpt.com/docs/build-skills) | `$wait-what`; browse with `/skills`. |
+| [Grok Build](https://docs.x.ai/build/features/skills-plugins-marketplaces) | `/wait-what`; browse with `/skills`. |
+| [Cursor](https://prod.cursor.com/docs/skills) | Type `/` in Agent chat and select `wait-what`. |
+| [Pi Agent](https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/skills.md) | `/skill:wait-what`. |
 
-### Local policy and behavioral template
+Use the same syntax with `workflow-routing` or `first-principles`. Cursor's shared
+user directory applies to local sessions; remote agents need skills installed in
+their own environment.
 
-Merge the relevant parts of [templates/CLAUDE.md](templates/CLAUDE.md) into your
-existing project `CLAUDE.md` or `AGENTS.md`; it is an example, not an installer.
-Set the specification, integration branch, verification commands and deployment
-boundary for that project.
+### Update
 
-For delegation or independent review, point that instruction file to your routing
-policy (default example: `docs/MODEL_ROUTING.md`). Record allowed clients, actual
-model identifiers, supported effort, task qualifications, review lanes, account/data
-boundaries and permitted fallbacks there. Link task-packet guidance if you maintain
-it. These files are project configuration, not bundled model tables. Direct work
-can continue without a routing registry; a review that requires unconfigured lanes
-must wait for that specific setup.
-
-### Optional hook
-
-[tc-quality-hook](hooks/tc-quality-hook/README.md) is a separately configured
-Claude Code `PreToolUse` gate for `AskUserQuestion`. Follow its README to install
-it. Installing the skills does not automatically enable the hook; the prompt-based
-self-review gate does not prove linguistic correctness.
-
-## Update and validate
-
-For a Claude marketplace install, refresh the marketplace and use the plugin
-manager's update action. For a local clone:
+For the Claude Code plugin, refresh the marketplace and update through `/plugin`.
+For the linked checkout:
 
 ```bash
 git -C "$HOME/Research/Yao-skills" pull --ff-only
 ```
 
-Symlink installations follow the updated checkout. Copies need a deliberate refresh;
-preserve local modifications and review the 0.8.0 removal list before replacing
-older skills. Keep the upstream OMC installation separate.
+The links follow the updated files. Start a new session if changes have not appeared.
 
-Maintainers can run the packaging check from the repository root:
+## Further reading
 
-```bash
-claude plugin validate .
-git diff --check
-```
-
-The [synchronization record](docs/2026-09-13-community-sync.md) lists the inventory,
-portability and bilingual checks used for this release. These checks establish
-package consistency; they do not measure skill effectiveness or verify every host.
+- [All skills](skills): instructions and references for each workflow.
+- [Project instruction template](templates/CLAUDE.md): a starting point to adapt to your project.
+- [Optional Traditional Chinese quality hook](hooks/tc-quality-hook/README.md): Claude Code integration.
 
 ## License
 
-MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md) for original skills,
-karpathy-guidelines, the wait-what adaptation and historical OMC attribution.
+MIT. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md) for authorship and upstream attribution.

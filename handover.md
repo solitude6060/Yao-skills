@@ -20,3 +20,11 @@ skill and its Traditional Chinese companion before changing instruction behavior
 The original untracked `.omc/` remains untouched. The optional hook executable is
 unchanged. No runtime configuration was installed by the community update; the
 source repository separately recorded wait-what's canonical-source transition.
+
+## README revision continuation
+
+The current README leads with skill selection and actual development practice.
+Installation covers agent binaries and the collection: Claude marketplace installation
+and shared user skills for Codex, Grok Build, local Cursor and Pi Agent. The package
+version remains 0.8.0. Preserve the distinction between explicit wait-what invocation
+and contextual workflow selection. Further setup detail belongs in focused guides.

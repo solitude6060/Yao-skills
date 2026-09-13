@@ -56,3 +56,9 @@ maintenance recipes from the README. Keep necessary installation instructions an
 links to focused guides. This is an editorial change; skills and executable files
 remain unchanged. Check local links, bilingual coverage and whitespace, then deliver
 through a documentation pull request.
+
+The accepted scope also includes when routing, first-principles and wait-what are
+used; contextual skill selection; the ponytail and i-have-adhd companions; and
+installation of Claude Code, Codex, Grok Build, Cursor and Pi Agent plus these skills.
+Completed: both READMEs now cover these topics; official sources, bilingual coverage,
+local links, rendered commands and Bash/zsh installation fixtures were checked.

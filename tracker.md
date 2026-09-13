@@ -19,3 +19,9 @@ Last updated: 2026-09-13.
 - Preserve local modifications when refreshing copied installations.
 - Treat live host installation and measured skill effectiveness as separate checks;
   neither is an acceptance claim of this content synchronization.
+
+## Reader-facing documentation
+
+- Completed: scenario-based bilingual README, companion skill links and five-agent installation.
+- Completed: official-source checks, local links, bilingual structure and command parity,
+  rendered shell commands, and fresh/existing installation fixtures in Bash and zsh.

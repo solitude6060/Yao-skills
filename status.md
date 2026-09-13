@@ -20,3 +20,10 @@ See [synchronization record](docs/2026-09-13-community-sync.md) and
 checks and content hashes. No live multi-host installation or measured explanation
 quality is claimed. The generic skill validator's unsupported metadata fields are
 recorded separately from successful runtime-aware validation.
+
+## README revision
+
+The English and Traditional Chinese READMEs now address first-time readers: when
+to use routing, first-principles and wait-what, contextual skill selection, the two
+companion projects, and installation for five coding agents. Documentation checks
+passed; plugin version 0.8.0 and skill behavior are unchanged.

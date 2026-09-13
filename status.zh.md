@@ -18,3 +18,9 @@ worktree-hygiene 及需明確呼叫的台灣版 wait-what。十四個歷史 OMC 
 [驗證收據](docs/2026-09-13-community-validation.json)。未主張已在每個執行環境
 實際安裝或量測說明品質。通用技能驗證器未支援的設定欄位，與通過的執行環境
 設定檢查分別記錄。
+
+## README 改寫
+
+中英文 README 已改為面向初次閱讀者，說明 routing、first-principles、wait-what
+的使用時機、情境選用、兩個搭配專案，以及五種 coding agent 的安裝方式。
+文件檢查已通過；套件維持 0.8.0，技能行為未變更。

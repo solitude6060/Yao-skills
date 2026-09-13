@@ -17,3 +17,10 @@
 
 原有未追蹤的 `.omc/` 未修改，選用 hook 程式也保持不變。本次社群更新未安裝
 執行環境設定；來源 repository 另有 wait-what 正典來源切換紀錄。
+
+## README 改寫交接
+
+目前 README 先說明技能選擇與實際開發方式，再提供 agent 本體與技能安裝：
+Claude marketplace，以及 Codex、Grok Build、本機 Cursor、Pi Agent 共用的
+使用者技能目錄。套件維持 0.8.0。後續應保留 wait-what 明確呼叫與其他情境選用
+的區別，詳細設定另放專門文件。
