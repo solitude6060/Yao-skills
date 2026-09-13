@@ -79,3 +79,25 @@ skill-creator 內附驗證器的允許欄位比目標執行環境少，會拒絕
 本段及 JSON 收據已補齊，未提出技能行為問題。最後一致性檢查另將狀態技能
 繁中檔殘留的個人政策標記改成「專案管理紀錄」，受審情境的輸入未變。
 只補紀錄不需要再次進行指引審查。
+
+## 面向初次閱讀者的 README 改寫
+
+兩份 README 已說明作者何時使用 workflow-routing、first-principles 與 wait-what、
+其他技能的情境選用，以及 ponytail／i-have-adhd 的搭配方式。入口頁移除內部設定
+與交付稽核敘述，補上 Claude Code、Codex、Grok Build、Cursor、Pi Agent 本體及
+技能的安裝方式；指令與技能載入／呼叫方式均連結官方文件。
+
+2026-09-13 驗證：本機 Markdown 連結、十個技能與五種 agent 的涵蓋範圍、雙語
+標題結構與程式區塊一致性，以及安裝指令呈現均通過。擷取的技能連結指令通過
+Bash 與 zsh 語法檢查，並在各自的全新與既有安裝測試目錄執行兩次。既有資料夾、
+檔案與失效連結均保留，新連結均指向預期技能目錄。未執行 agent 本體安裝或登入。
+本次僅變更 Markdown，技能內容、執行環境設定與 0.8.0 版本未變更。本次 README
+雜湊如下：
+
+先前 community-validation.json 保留為 0.8.0 釋出快照；其中 README 雜湊
+對應本次文字改寫之前的內容。
+
+| File | SHA-256 |
+|---|---|
+| README.md | `a13676e3b008f19bb3af58c964052cb1f213627d623dc34064b3826e21e0614f` |
+| README.zh.md | `333b3d8fb6f5f0223b67c1144dca7f4a4dfc7104d35b347f6af073207b742a96` |

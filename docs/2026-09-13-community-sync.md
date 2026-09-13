@@ -90,3 +90,28 @@ personal-policy label in the status skill's Chinese companion was replaced with
 "project management records" during final consistency validation; the reviewed
 scenario inputs were unchanged. Records-only completion does not require another
 instruction review.
+
+## Reader-facing README revision
+
+Both READMEs now explain the author's selection of workflow-routing, first-principles
+and wait-what, contextual selection of other skills, and the ponytail/i-have-adhd
+companions. Internal setup and release-audit narration was removed from the entry
+page. Installation covers Claude Code, Codex, Grok Build, Cursor and Pi Agent, with
+agent installers and skill discovery/invocation linked to official documentation.
+
+Validation on 2026-09-13: local Markdown links, coverage of ten skills and five
+agents, matching bilingual heading structure and code blocks, and rendered installer
+commands passed. The extracted skill-linking snippet passed Bash and zsh syntax
+checks and ran twice against fresh and existing fixtures for each shell. Existing
+directories, files and broken symlinks were preserved; new links resolved to the
+intended skill directories. Agent installers and authentication were not executed.
+The change contains Markdown only; skill files, runtime metadata and version 0.8.0
+are unchanged. README hashes for this revision:
+
+The earlier community-validation.json remains the 0.8.0 release snapshot; its
+README hashes describe the content before this editorial revision.
+
+| File | SHA-256 |
+|---|---|
+| README.md | `a13676e3b008f19bb3af58c964052cb1f213627d623dc34064b3826e21e0614f` |
+| README.zh.md | `333b3d8fb6f5f0223b67c1144dca7f4a4dfc7104d35b347f6af073207b742a96` |
