@@ -45,3 +45,14 @@ experimental metric or formal result and adds no executable feature. Documentati
 validators apply; no new test framework or multi-model review ceremony is required.
 If executable behavior changes become necessary, add a focused failing check and
 apply the code review gate before implementation and merge.
+
+
+## Reader-facing README revision
+
+The user requested README text for people discovering the project. Rewrite both
+languages around purpose, first use, workflow and skill selection. Remove release
+audit narration, anonymization notes, internal routing/account details and runtime
+maintenance recipes from the README. Keep necessary installation instructions and
+links to focused guides. This is an editorial change; skills and executable files
+remain unchanged. Check local links, bilingual coverage and whitespace, then deliver
+through a documentation pull request.
