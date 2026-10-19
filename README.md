@@ -7,7 +7,8 @@ my Yao-Garyu toolkit, organized so you can adopt individual workflows in your ow
 
 A skill is a set of instructions an agent can load for a particular task. These
 skills grew out of my software development and research work: deciding how to
-approach a task, checking assumptions, reviewing changes, and explaining decisions.
+approach a task, checking assumptions, reviewing changes, explaining decisions, and
+evaluating and writing up recommender-system research.
 Start with the situation you recognize below, then [install for your agent](#installation).
 
 ## When I use each skill
@@ -42,6 +43,53 @@ interpreting a surprising score.
 > Use first-principles to check why this test fails. Identify the assumption and
 > the smallest observation that can confirm or reject it.
 
+### recsys-evaluation — check what a recommender score means
+
+I use [recsys-evaluation](skills/recsys-evaluation/SKILL.md) before designing, auditing or
+writing up an offline recommender evaluation, and when a result changes sign between two
+protocols. It derives the split, candidate set, preprocessing and baselines from the
+research question instead of inheriting them, and states what each method may read.
+A quick sanity check in a notebook does not need it.
+
+For example, a frozen LLM ranker scores close to a trained sequential model on a sampled
+candidate list. Before I write that down, I check the split and what each method sees, the
+number of negatives against the random-ranking expectation, whether every method gets the
+same candidates and history, and how failed queries are counted.
+
+> Use recsys-evaluation on this evaluation plan: check the split, candidate protocol and
+> baselines against the research question, and list what each method may read.
+
+### paper-argument — turn results into an argument
+
+I use [paper-argument](skills/paper-argument/SKILL.md) when results exist but the paper does
+not yet explain why the method works: before an advisor meeting or a submission, or after a
+reviewer asks what a component adds. It organizes motivation, highlights, method and proof,
+and plans the mechanism evidence behind the proof.
+
+For example, a method combines a few simple terms in a weighted sum and beats its baselines.
+For each term I write what it represents, why it was chosen and why it works. Then I plan
+the analyses that test each claim, such as removing a term, swapping a user's history for
+another user's, or decomposing a score margin, and I write down before computing which
+outcome would contradict the claim.
+
+> Use paper-argument on this draft: write the four parts, an argument map from claim to
+> evidence, and a plan for the analyses that explain why the method works.
+
+### paper-writing — keep the body on one argument
+
+I use [paper-writing](skills/paper-writing/SKILL.md) when I draft, cut or restructure a
+paper's prose, tables and figures: a draft is over the page limit, reads like an experiment
+log, or a dataset or result changed and the text has to follow. It keeps one question running
+from the introduction to the conclusion, puts numbers in tables, and decides what stays in the
+body and what moves to the appendix.
+
+For example, a draft is two pages over the limit and three tables repeat the same numbers.
+I map each paragraph and table to the question it serves, merge the tables, move settings and
+secondary results to the appendix, and recheck every quantified claim against the result files.
+
+> Use paper-writing on this draft: map each paragraph and table to the question it serves,
+> propose what to cut, merge or move to the appendix, and list the quantified claims to re-verify.
+
 ### wait-what — explain the missing context
 
 I explicitly invoke [wait-what](skills/wait-what/SKILL.md) when I cannot follow
@@ -57,8 +105,9 @@ then returns to the ongoing task. It applies to the current explanation.
 > what each result measures and the assumption that makes the comparison valid.
 
 Use the explicit command for your agent in the installation table below.
-`workflow-routing` and `first-principles` can also be selected by the agent when
-the task calls for them; `wait-what` requires my request.
+`workflow-routing`, `first-principles`, `recsys-evaluation`, `paper-argument` and
+`paper-writing` can also be selected by the agent when the task calls for them;
+`wait-what` requires my request.
 
 ## What I let the agent select
 
@@ -91,7 +140,9 @@ and review requirements before a pull request is merged.
 For research, I aim for the smallest valid experiment on real data that can change
 the decision to continue, adjust or stop. I inspect that result before expanding
 the implementation or experiment matrix. First-principles becomes useful whenever
-an assumption starts determining what we build or claim.
+an assumption starts determining what we build or claim. For a recommender evaluation,
+recsys-evaluation checks the protocol first; once results exist, paper-argument organizes
+the case for why the method works and paper-writing fits that argument into the page limit.
 
 At milestones, I keep `status.md` for current state and evidence, `tracker.md` for
 remaining work, and `handover.md` for where the next session should resume.
@@ -164,7 +215,8 @@ the loop. Start a new agent session, then select the skill:
 | [Cursor](https://prod.cursor.com/docs/skills) | Type `/` in Agent chat and select `wait-what`. |
 | [Pi Agent](https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/skills.md) | `/skill:wait-what`. |
 
-Use the same syntax with `workflow-routing` or `first-principles`. Cursor's shared
+Use the same syntax with any other skill, such as `workflow-routing`,
+`first-principles` or `recsys-evaluation`. Cursor's shared
 user directory applies to local sessions; remote agents need skills installed in
 their own environment.
 
