@@ -6,7 +6,7 @@
 讓你可以挑選適合的工作流程，帶進自己的專案。
 
 Skill（技能）是一組讓 agent（代理）在特定任務中載入的指引。這些 skills 來自我的
-軟體開發與研究工作，涵蓋工作安排、假設查驗、變更審查與技術解釋。
+軟體開發與研究工作，涵蓋工作安排、假設查驗、變更審查、技術解釋，以及推薦系統研究的評估與論文寫作。
 可以先從下面的使用情境挑選，再依照[安裝方式](#安裝方式)加入你使用的 agent。
 
 ## 我什麼時候用哪個 skill
@@ -35,6 +35,44 @@ Skill（技能）是一組讓 agent（代理）在特定任務中載入的指引
 
 > 用 first-principles 查這個測試為什麼失敗：指出目前的假設，以及能確認或推翻它的最小觀察。
 
+### recsys-evaluation：確認推薦系統的分數代表什麼
+
+設計、檢查或撰寫離線推薦系統評估之前，或換了協議後結果的方向相反時，我會用
+[recsys-evaluation](skills/recsys-evaluation/SKILL.zh.md)。它依研究問題推導切分、候選集合、
+前處理與比較對象，不沿用現成設定，並寫明每個方法可以讀到什麼資訊。
+只是在 notebook 上做快速檢查時，不需要用它。
+
+例如，凍結的 LLM 排序器在抽樣候選清單上的分數，接近訓練式序列模型。寫下這個結論之前，
+我會檢查切分方式與各方法看得到的資訊、負例數量對應的隨機排序期望值、每個方法是否拿到
+相同的候選與歷史，以及失敗的查詢如何計入。
+
+> 用 recsys-evaluation 檢查這份評估計畫：對照研究問題核對切分、候選協議與比較對象，並列出每個方法可以讀到什麼。
+
+### paper-argument：把結果整理成論證
+
+已經有結果、但論文還沒說明方法為什麼有效時，我會用
+[paper-argument](skills/paper-argument/SKILL.zh.md)：和指導教授開會前、投稿前，
+或審稿人問某個元件補了什麼之後。它把動機、亮點、方法與證明整理成四個部分，
+並規劃證明所需的機制證據。
+
+例如，一個方法把幾個簡單的分數項加權相加，結果勝過基線。我會替每一項寫出它代表什麼、
+為什麼選它、為什麼有效，再規劃檢驗每項主張的分析，例如移除某一項、把使用者的歷史換成
+另一位使用者的歷史，或拆解分數差距，並在計算之前先寫下哪種結果會推翻主張。
+
+> 用 paper-argument 整理這份草稿：寫出四個部分、從主張到證據的對照表，以及解釋方法為什麼有效的分析計畫。
+
+### paper-writing：讓正文只談一個論證
+
+撰寫、刪減或重組論文的內文、表格與圖時，我會用
+[paper-writing](skills/paper-writing/SKILL.zh.md)：草稿超過頁數上限、讀起來像實驗紀錄，
+或資料集與結果有變動、文字必須跟著更新。它讓同一個問題從引言貫穿到結論，把數字放進表格，
+並決定哪些內容留在正文、哪些移到附錄。
+
+例如，草稿超出頁數上限兩頁，三張表重複同一組數字。我會標出每個段落與表格服務的問題，
+合併表格，把設定與次要結果移到附錄，最後把每個量化主張對照結果檔重新驗證。
+
+> 用 paper-writing 處理這份草稿：標出每個段落與表格服務的問題，建議哪些要刪除、合併或移到附錄，並列出需要重新驗證的量化主張。
+
 ### wait-what：補足我沒跟上的解釋
 
 當我無法跟上說明，例如術語沒有定義、結論省略了前提，或回答太短而缺少必要推理，
@@ -48,7 +86,8 @@ Skill（技能）是一組讓 agent（代理）在特定任務中載入的指引
 > 以及什麼前提成立時才可以比較。
 
 實際呼叫指令見下方各 agent 的安裝表。
-`workflow-routing` 與 `first-principles` 也可以由 agent 依任務選用；`wait-what` 需要我主動要求。
+`workflow-routing`、`first-principles`、`recsys-evaluation`、`paper-argument` 與 `paper-writing`
+也可以由 agent 依任務選用；`wait-what` 需要我主動要求。
 
 ## 哪些交給 agent 依情境選用
 
@@ -77,7 +116,8 @@ Skill（技能）是一組讓 agent（代理）在特定任務中載入的指引
 
 研究工作則先找出能影響「繼續、調整或停止」決策的最小有效真實資料實驗。
 看過結果後，再擴充實作或實驗組合。當某個假設開始決定要做什麼、能主張什麼時，
-就適合用 first-principles 查驗。
+就適合用 first-principles 查驗。做推薦系統評估時，先用 recsys-evaluation 核對協議；
+結果出來後，用 paper-argument 整理方法為什麼有效，再用 paper-writing 把論證放進頁數限制。
 
 每個里程碑會更新 `status.md` 的現況與證據、`tracker.md` 的剩餘工作，
 以及 `handover.md` 的下次接續位置。任何階段只要需要重新理解推理，我都可以用 `wait-what`。
@@ -148,7 +188,7 @@ done
 | [Cursor](https://prod.cursor.com/docs/skills) | 在 Agent 對話輸入 `/`，選取 `wait-what`。 |
 | [Pi Agent](https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/skills.md) | `/skill:wait-what`。 |
 
-`workflow-routing` 與 `first-principles` 也使用相同格式。
+其他 skill（例如 `workflow-routing`、`first-principles`、`recsys-evaluation`）也使用相同格式。
 Cursor 的共用使用者目錄適用於本機 session；遠端 agent 需要在其執行環境安裝 skills。
 
 ### 更新

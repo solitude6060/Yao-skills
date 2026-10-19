@@ -1,6 +1,6 @@
 # Third-party attribution
 
-This repository distributes eight author-original skills and two third-party
+This repository distributes eleven author-original skills and two third-party
 skills or adaptations. License notices are retained below and alongside the
 wait-what skill.
 
@@ -89,6 +89,9 @@ The following skills are authored by Yao and distributed under the repository's
 - `context-hygiene`
 - `distilled-caveman-lite-accuracy`
 - `tc-review`
+- `recsys-evaluation`
+- `paper-argument`
+- `paper-writing`
 
 The behavioral template is also authored by Yao and informed by the attributed
 coding guidelines.
