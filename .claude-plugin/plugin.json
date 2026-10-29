@@ -1,7 +1,7 @@
 {
   "name": "yao-skills",
-  "version": "0.9.0",
-  "description": "Thirteen portable development, review, project-memory, explanation and research-writing skills, including the Taiwan wait-what adaptation. Community edition of the Yao-Garyu research-toolkit methodology.",
+  "version": "0.10.0",
+  "description": "Seventeen portable development, review, project-memory, explanation, measurement, verification and research-writing skills, including the Taiwan wait-what adaptation and four skills adapted from pstack (MIT, Lauren Tan). Community edition of the Yao-Garyu research-toolkit methodology.",
   "author": {
     "name": "Yao Ma"
   },

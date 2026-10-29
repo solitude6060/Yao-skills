@@ -100,13 +100,17 @@ Skill（技能）是一組讓 agent（代理）在特定任務中載入的指引
 | [worktree-hygiene](skills/worktree-hygiene/SKILL.zh.md) | 建立、檢查或移除 Git worktree（同一 repository 的獨立工作目錄）時，確認責任歸屬並保留未完成工作與結果。 |
 | [context-hygiene](skills/context-hygiene/SKILL.zh.md) | 對話變長或需要換 session（工作階段）時，保存決策、未解問題與下一步。 |
 | [tc-review](skills/tc-review/SKILL.zh.md) | 送出或發布繁體中文前，檢查台灣用語與技術術語。 |
+| [explain-the-number](skills/explain-the-number/SKILL.zh.md) | 回報或根據量到的數字（加速比、延遲、benchmark、評估指標）做決定前：找出限制它的因素、排除量到別的東西的可能，並把次數、變異與限制因素跟數字一起記錄。改編自 pstack（MIT）。 |
+| [blast-radius](skills/blast-radius/SKILL.zh.md) | 小改動還不能信任就要上線前：找出 diff 以外會壞的地方，並用實際執行程式證明它之所以安全的那個事實。改編自 pstack（MIT）。 |
+| [formal-verification](skills/formal-verification/SKILL.zh.md) | 並行、重試、狀態機或 parser 光靠測試不夠時：用 model checker 或 verifier 驗證一個性質、示範它會失敗，並留下專案內可重跑的 skill。改編自 pstack（MIT）。 |
 
-另外兩個則依我的要求使用：
+另外三個則依我的要求使用：
 
 | Skill | 我何時要求使用 |
 |---|---|
 | [project-status-review](skills/project-status-review/SKILL.zh.md) | 我明確要求狀態檢視時，依 repository 證據核對已完成工作、阻塞與下一個決策。 |
 | [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.zh.md) | 我希望回答更短，同時保留必要條件、識別資訊與不確定性時。 |
+| [correct](skills/correct/SKILL.zh.md) | 我一直糾正 agent 犯同樣的錯時：把過去的糾正整理成錯誤類別，並用架構、型別、lint 或測試讓每一類自動失敗。改編自 pstack（MIT）。 |
 
 ## 如何放進我的開發流程
 
