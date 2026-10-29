@@ -1,8 +1,8 @@
 # Third-party attribution
 
-This repository distributes eleven author-original skills and two third-party
+This repository distributes eleven author-original skills and six third-party
 skills or adaptations. License notices are retained below and alongside the
-wait-what skill.
+wait-what and pstack-derived skills.
 
 ## Historical oh-my-claudecode attribution
 
@@ -75,6 +75,18 @@ for its license declaration and original attribution.
 for Taiwanese researchers and engineers. Copyright (c) 2026 Matt Pocock;
 MIT permission and warranty terms are preserved in
 [skills/wait-what/LICENSE](skills/wait-what/LICENSE).
+
+## Skills adapted from pstack
+
+The following skills adapt [pstack](https://github.com/cursor/plugins/tree/main/pstack)
+by Lauren Tan (`cursor/plugins` at commit `1ba91fc`). Copyright (c) 2026 Lauren Tan;
+MIT permission and warranty terms are preserved in each skill's `LICENSE`:
+
+- `explain-the-number` — from `principle-explain-the-number` and `benchmark-checklist`
+- `blast-radius` — from `blast-radius`
+- `formal-verification` — from `create-formal-verification-skill` and
+  `maintain-formal-verification-skill`
+- `correct` — from `correct`
 
 ## Author-original skills
 

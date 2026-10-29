@@ -121,13 +121,17 @@ match the work. Selection depends on the agent and the available tools.
 | [worktree-hygiene](skills/worktree-hygiene/SKILL.md) | When creating, checking or retiring a Git worktree: track ownership and preserve unfinished work and results. |
 | [context-hygiene](skills/context-hygiene/SKILL.md) | When a session grows long or work moves to another session: preserve the decisions, open questions and next action. |
 | [tc-review](skills/tc-review/SKILL.md) | Before sending or publishing Traditional Chinese: check Taiwan vocabulary and technical terminology. |
+| [explain-the-number](skills/explain-the-number/SKILL.md) | Before reporting or acting on a measured number (speedup, latency, benchmark or evaluation metric): name what limits it, rule out that it measured something else, and keep run count, spread and limiter with it. Adapted from pstack (MIT). |
+| [blast-radius](skills/blast-radius/SKILL.md) | Before shipping a small change I do not trust yet: find breakage beyond the diff and prove the one fact it is safe because of by running real code. Adapted from pstack (MIT). |
+| [formal-verification](skills/formal-verification/SKILL.md) | When concurrency, retries, state machines or parsers need more than tests: verify one property with a model checker or verifier, show it can fail, and leave a project-local skill to recheck it. Adapted from pstack (MIT). |
 
-Two more are driven by what I ask for:
+Three more are driven by what I ask for:
 
 | Skill | When I request it |
 |---|---|
 | [project-status-review](skills/project-status-review/SKILL.md) | I explicitly request a status review to reconcile completed work, blockers and the next decision against repository evidence. |
 | [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.md) | I want a shorter answer while retaining necessary conditions, identifiers and uncertainty. |
+| [correct](skills/correct/SKILL.md) | I keep correcting agents for the same mistake: mine past corrections into mistake classes and make each fail automatically through architecture, types, lint or tests. Adapted from pstack (MIT). |
 
 ## How this fits my development workflow
 
