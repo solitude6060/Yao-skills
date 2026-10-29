@@ -14,13 +14,19 @@ Answer each question with evidence from a run, not a guess about the code.
    sizes, caches as warm or cold as real use sees them, same versions and data. If one side
    runs on defaults, you compared configurations, not implementations. A limiter that is a
    setting (a commit per row, a debug build, a missing index, `OMP_NUM_THREADS` unset)
-   means that side is untuned; tune it and measure again before picking a winner.
+   means that side is untuned; tune it and measure again before picking a winner. If it
+   cannot be tuned, do not pick a winner from that run. When the user is choosing what to
+   adopt, narrowing the claim to the code as it runs today does not fix this, because they
+   adopt the option, not today's settings.
 3. **Did it break limits?** Do the arithmetic: bytes per second against disk, memory and
    network bandwidth; operations per second times cost per operation against cores; the
    time saved against the time the changed piece took. Removing a piece that takes 10% of
-   the run makes the run at most about 11% faster (Amdahl's law). A parallel speedup above
-   the core count, or a result past a limit, measured something other than the work: a
-   cache, a no-op, or a bug.
+   the run makes the run at most about 11% faster (Amdahl's law). A result past a hardware
+   limit usually measured something other than the work: a cache, a no-op, or a bug. A
+   parallel speedup above the core count (superlinear speedup) can be real when the
+   per-worker working set starts to fit in cache; confirm it by checking cache and memory
+   hierarchy counters, the per-worker problem size and the sequential baseline before
+   accepting or rejecting it. `nproc` counts logical CPUs, not physical cores.
 4. **Did it error?** Count failures and non-success responses, and check outputs are
    correct, not just present. Rejections are often fast; timeouts and retries are slow. If
    the script does not count errors, add the count.

@@ -44,11 +44,13 @@ edit product code unless the user asks. Never weaken a property or model to make
 5. **Rerun and judge.** On a pass, break the new code the way the property guards against
    and confirm the check catches it, then drop the break. On a failure, replay the
    counterexample against the real code step by step: a step that cannot happen means the
-   verification is wrong; if every step can happen, it is a bug. Name the introducing commit,
-   retell the counterexample in the code's words, and state the harm in one sentence.
+   verification is wrong; fix the verification and say what was wrong. If every step can
+   happen, it is a bug. Name the introducing commit, retell the counterexample in the code's
+   words, and state the harm in one sentence. A cheap test or reproduction against the real
+   code may go in the report as evidence; do not commit it to the product code.
 6. **Update the verify skill**: covered code, commands, bounds, assumptions and sync commit.
-   Do not move the sync commit for a blocked check. Follow the skill once to confirm its steps
-   still run.
+   Set the sync commit to the commit you checked. Do not move it for a blocked check. Follow
+   the skill once to confirm its steps still run.
 
 ## Report
 

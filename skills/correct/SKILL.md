@@ -50,8 +50,9 @@ reported without provenance; prefer a validator or test that fails on the real p
 
 - Work on a branch and follow the project's test-first and pull-request rules.
 - Fix the most frequent classes first, one commit per class.
-- Prove each new check fails on a real past mistake: check out or reconstruct the bad
-  revision, run the check, and keep the failing output.
+- Prove each new check fails on a real past mistake: reconstruct the mistake on the current
+  branch (a test fixture or a temporary commit), run the check, keep the failing output, then
+  remove the reconstruction. Do not check out an old revision in the working tree.
 - Run the same command locally and in CI.
 - Exceptions go on the offending line with a reason, an expiry date and the user's
   approval.
