@@ -22,11 +22,14 @@ Answer each question with evidence from a run, not a guess about the code.
    network bandwidth; operations per second times cost per operation against cores; the
    time saved against the time the changed piece took. Removing a piece that takes 10% of
    the run makes the run at most about 11% faster (Amdahl's law). A result past a hardware
-   limit usually measured something other than the work: a cache, a no-op, or a bug. A
-   parallel speedup above the core count (superlinear speedup) can be real when the
-   per-worker working set starts to fit in cache; confirm it by checking cache and memory
-   hierarchy counters, the per-worker problem size and the sequential baseline before
-   accepting or rejecting it. `nproc` counts logical CPUs, not physical cores.
+   limit, such as throughput above measured disk, memory or network bandwidth, usually
+   measured something other than the work: a no-op, a timing error, or a bug. A speedup
+   greater than the number of participating processing elements, under a fixed-work
+   comparison, is superlinear; it can be real when the per-worker working set starts to fit
+   in cache. Report the physical core count, the hardware-thread count (`nproc` counts
+   logical CPUs) and the number of workers actually used, then confirm it with cache and
+   memory-hierarchy counters, the per-worker problem size and the sequential baseline before
+   accepting or rejecting it.
 4. **Did it error?** Count failures and non-success responses, and check outputs are
    correct, not just present. Rejections are often fast; timeouts and retries are slow. If
    the script does not count errors, add the count.
