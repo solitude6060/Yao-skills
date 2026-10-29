@@ -14,9 +14,10 @@ say what bounds it and why it is not measuring something else.
 
 - **Write the decision first.** State the sentence you expect to ship ("training step is
   1.8x faster with 8 threads on the 1M-row set"; "Recall@20 improves by 0.012 over SASRec")
-  and the result that would change a decision. Name the noise floor you expect and the
-  comparison design (independent runs or paired by seed, user or input). Stop when the
-  uncertainty of the difference under that design is larger than the effect.
+  and the result that would change a decision, including the smallest effect that would
+  matter. Name the noise floor you expect and the comparison design (independent runs or
+  paired by seed, user or input). Stop when the uncertainty of the difference under that
+  design is larger than the effect.
 - **Read the measurement code.** Note what it times, counts, averages and ignores.
 - **Check the machine.** `uptime`, `nproc`, `nvidia-smi` when a GPU is involved. If something
   else is running and cannot be stopped, interleave the sides and say so.
@@ -44,8 +45,10 @@ say what bounds it and why it is not measuring something else.
    interval, and a paired comparison when the sides share seeds, test users or inputs.
    Judge the difference by its own uncertainty under the comparison design (for example a
    confidence interval of the paired differences), not by the spread of each side alone: a
-   paired design can resolve a gap far smaller than each side's spread. When the interval of
-   the difference includes zero, report no measurable difference or inconclusive.
+   paired design can resolve a gap far smaller than each side's spread. Report no measurable
+   difference only when the whole interval of the difference lies below the smallest effect
+   that would matter, declared before the run. When the interval includes zero but also
+   includes an effect that would change the decision, report inconclusive.
 4. **Keep the evidence with the number.** Record run count, spread, limiter, command,
    commit and data version in the notes, result table or a linked artifact.
 
@@ -63,8 +66,9 @@ project's own result-admission rules still apply.
   one core".
 - Call a performance verdict inconclusive when the limiter is unnamed, a side ran untuned,
   errors were not counted, or you could not confirm the work happened. Call an evaluation
-  verdict inconclusive when the protocol differs between sides, a side ran untuned, or the
-  difference's uncertainty was not estimated. Name the gap.
+  verdict inconclusive when the protocol differs between sides, a side ran untuned, runs did
+  not complete or errors were not counted, or the difference's uncertainty was not
+  estimated. Name the gap.
 
 For a quick ballpark the user asked for, one run is enough; still confirm it did not error
 and the work happened, and say it is one run. If that run looks wrong, do the full check. A
@@ -73,7 +77,9 @@ choice between options is never a ballpark.
 ## Signs you skipped this
 
 - A run started without the result that would change a decision.
-- A reported number has no run count, no spread, or no named limiter.
+- A reported number has no run count or no spread; a performance number has no named
+  limiter; an evaluation number has neither a named score bound nor a statement that the
+  bound is unexplained.
 - The time saved exceeds the time the changed piece took, or a metric gain exceeds what the
   changed component can affect.
 
