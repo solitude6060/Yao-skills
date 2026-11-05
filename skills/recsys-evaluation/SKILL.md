@@ -43,7 +43,7 @@ before a result enters a report.
     injected.
 11. **Identical inputs**: same users, targets, candidates, visible history and item
     text for every method, proven by per-query hashes; equal visible-history counts.
-12. **Runs**: seeds for trained or sampled methods, repeats for hosted APIs, a
+12. **Runs** for final claims: seeds for trained or sampled methods, repeats for hosted APIs, a
     determinism check before declaring one run enough; never choose among runs by test score.
 13. **Tuning users vs reporting users** are different. Prevents selection bias.
 14. **Failures**: execution failures (OOM, HTTP 5xx, crash) are rerun, never reported;

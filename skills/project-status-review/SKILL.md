@@ -12,6 +12,11 @@ Read-only health check. Output is a report in the project's document language
 (Traditional Chinese by default), cross-checked against the project's own
 status files.
 
+This template is for software products. For a research project, use the status
+view in [research-lifecycle](../research-lifecycle/SKILL.md) instead: each result's
+evidence state (planned, running, executed, verified, admitted, superseded) and the
+next decision.
+
 ## Gather (run in parallel)
 
 1. `git log --oneline -20`, `git branch -a`, `git log --oneline main..develop`

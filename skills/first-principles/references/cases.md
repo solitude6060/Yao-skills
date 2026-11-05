@@ -1,8 +1,9 @@
 # First-principles — public cases
 
-These public incidents illustrate verification habits. The suggested checks are
-engineering lessons drawn from the cited reports. Private project incidents and
-results are omitted from this community edition.
+These public incidents and one research case illustrate verification habits. The
+suggested checks are engineering lessons drawn from the cited reports. Private project
+incidents and results are omitted from this community edition; the research case is
+described without project details.
 
 ## Knight Capital — incomplete deployment
 
@@ -30,3 +31,26 @@ input against the available buffer; a library's reputation does not establish
 coverage of that specific path.
 
 Source: [OpenSSL security advisory, April 7, 2014](https://openssl-library.org/news/secadv/20140407.txt).
+
+## Research case — inherited split, deferred protocol finding
+
+- **Inherited assumption**: the project specification prescribed a user-disjoint split
+  with a shared global time cutoff "to prevent leakage", and it was implemented as
+  written.
+- **First-principles trigger**: the project lead asked why evaluated users needed
+  fold-in and why all users shared one cutoff.
+- **What the audit found**: the trained baselines never saw the evaluation users'
+  histories, so the comparison measured unseen-user (cold-start) performance, a
+  different question from the one the method answers. Later, an internal audit rated a
+  second protocol issue HIGH: the method's auxiliary terms used the time of the
+  held-out event, which the trained baselines never received. That finding was
+  deprioritized and handled by wording.
+- **What happened instead of a fix**: every result under the first protocol was rerun
+  under per-user leave-one-out. The deferred HIGH finding became the central objection
+  of an external pre-submission review and had to be answered by new experiments
+  shortly before the deadline.
+- **Root-cause fix**: the split was derived from a one-sentence research question
+  (`recsys-evaluation` checklist item 1); the HIGH finding was answered by a run that
+  applied the same global cutoff to both sides and by an information-matched control.
+- **Lesson**: an inherited protocol is an unverified assumption, and a HIGH protocol
+  finding is answered by an experiment, not by moving text.

@@ -1,6 +1,6 @@
 # 論文論證：動機、亮點、方法、證明
 
-英文 [SKILL.md](SKILL.md) 是執行規範。分析方法的文獻來源在 [references/analysis-catalog.zh.md](references/analysis-catalog.zh.md)。證據階梯、審稿人質疑與常見陷阱在 [references/evidence-ladder.zh.md](references/evidence-ladder.zh.md)。顧問的問題與作者的調整在 [references/advisor-questions.zh.md](references/advisor-questions.zh.md)。
+英文 [SKILL.md](SKILL.md) 是執行規範。分析方法的文獻來源在 [references/analysis-catalog.zh.md](references/analysis-catalog.zh.md)。證據階梯、審稿人質疑與常見陷阱在 [references/evidence-ladder.zh.md](references/evidence-ladder.zh.md)。顧問的問題與作者的調整在 [references/advisor-questions.zh.md](references/advisor-questions.zh.md)。投稿前審查的時機、審查意見的分級處理與 rebuttal（審稿答辯）預備分析在 [references/review-and-rebuttal.zh.md](references/review-and-rebuttal.zh.md)。
 
 結果只能說明方法有效。論文還要說明三件事：為什麼有效、每個部分貢獻了什麼、這樣設計為什麼合理。
 這個 skill 依照指導教授拆解論文的四個部分來整理論證，並規劃第四部分「證明」需要的證據。這一部分最常缺。
@@ -11,13 +11,13 @@
 - 和指導教授開會前、投稿前，或被問到下面這類問題之後：「這樣調合理嗎？」「個人化在哪裡？」「這個元件補了什麼？」
 - 規劃分析時，用來決定哪個分析支持哪個主張，以及哪些放正文。
 
-不適用：實驗協議本身是否有效，請先用 `recsys-evaluation`；檢查沿用下來的假設，請用 `first-principles`。
+不適用：實驗協定本身是否有效，請先用 `recsys-evaluation`；規劃實驗批次，請用 `experiment-planning`；檢查沿用下來的假設，請用 `first-principles`。
 
 ## 四個部分
 
 每部分寫一段，最後整理成論證對照表。每一段都要指出支持它的證據。
 
-1. **動機。** 成本與應用環境引出痛點，痛點引出研究問題。關鍵詞要精確定義。
+1. **動機。** 成本與應用環境引出痛點，痛點引出研究問題。關鍵詞要精確定義，並逐一對照該領域對標題用詞的定義。
    - 例如 training-free（不訓練）要寫清楚：什麼從不更新、什麼仍在驗證資料上挑選、挑選要花多久。
    - 「泛化」需要凍結設定、直接搬到新領域的測試。各領域各自挑設定，只能證明可調整性。
 2. **亮點。** 最多兩到三件讀者應該記住的事；摘要把它們列為貢獻，每項附一個數字。每個亮點對應一個結果或一個分析；沒有證據的亮點刪掉，或改列未來工作。
@@ -54,11 +54,13 @@
    - 請兩到三位互相獨立的顧問，來自不同模型家族或不同的人，提出分析計畫和審稿人最強的五個質疑。
    - 顧問一律唯讀，事後要檢查有沒有改動檔案。顧問給的預期數字只當猜測，不能當事先宣告的判讀。
 4. **先建所有分析共用的資料。** 加法分數的情況是：每個查詢、每個候選一列，含各原始項、閘門、權重、貢獻、總分與排名。必須能逐筆重現正式結果，重現不了就停下來。
-5. **先宣告判讀，再計算。** 每個分析先寫下預期結果，以及哪種結果會推翻主張。先跑便宜的 CPU 分析，小規模 GPU 介入同時進行。
+5. **先宣告判讀，再計算。** 每個分析先寫下預期結果，寫成相對於一個指名比較對象的方向，不設任意的數字門檻；同時寫下哪種結果會推翻主張。先跑便宜的 CPU 分析，小規模 GPU 介入同時進行。
 6. **照實回報。** 每項判讀標為成立、部分成立或不成立，附數字與來源。不成立的判讀不得升格為主張。
 7. **分配論文篇幅。** 正文最多一張圖（通常是內插曲線加一個介入結果）和一張小表（拆解占比、救回與失去），其餘放附錄。文字用 `paper-writing` 撰寫：閉環結構（引言提出的問題由各節回答，結論依同樣順序回答）、正文與附錄的分工、表格。
 
 ## 審稿人角度（投稿前檢查）
+
+投稿前，用分析回應 [references/evidence-ladder.zh.md](references/evidence-ladder.zh.md) 審稿人表中的每項質疑，或縮小主張，並檢查常見陷阱清單。審查時機、意見分級與 rebuttal 預備分析見 [references/review-and-rebuttal.zh.md](references/review-and-rebuttal.zh.md)。
 
 | 質疑 | 回應方式 |
 |---|---|

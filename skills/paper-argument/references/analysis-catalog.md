@@ -1,6 +1,6 @@
 # Analysis catalog: how papers explain why a simple method works
 
-Compiled on 2026-10-17 from three independent readings of the literature; "verified" means a reader read the paper
+Compiled from three independent readings of the literature; "verified" means a reader read the paper
 text, not that the result was reproduced. Items that two readers described differently are marked; check the paper
 before citing a figure number.
 
@@ -33,7 +33,7 @@ Analysis types and their precedents:
 | Fusion overlap and separation | Lee; Vogt and Cottrell |
 | Dense versus sparse data | FPMC; SASRec; Fossil |
 
-Full-text check on 2026-10-17 by a separate reader (text only, figures not viewed): all arXiv ids and venues above confirmed; the chorus
+Full-text check by a separate reader (text only, figures not viewed): all arXiv ids and venues above confirmed; the chorus
 and dark-horse effects are credited to Diamond 1998 inside Vogt and Cottrell, not to Lee. Additional precedents read in full: He et al.
 CIKM 2023 (LLM recommender input perturbation), Ji et al. SIGIR 2020 (time-aware popularity), STAR arXiv 2410.16458 (venue unverified),
 CoRRe CIKM 2026 (stepwise rank progression), PRINCE WSDM 2020 (minimal counterfactual removal).

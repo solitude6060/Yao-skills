@@ -42,7 +42,37 @@ before computing metrics.
   proposed in NCF (abstract). Include well-tuned simple baselines (popularity, item-kNN,
   EASE, BPR-MF) before claiming progress.
 
+## Selection checkpoint versus refit
+
+- Two practices exist. Selection: train on training events, keep the checkpoint or
+  setting that scores best on validation targets, and evaluate it. Refit: after
+  selection, retrain on training plus validation events with the selected setting.
+- Official sequential-recommender code and widely used libraries mostly evaluate the
+  selected checkpoint; several baseline-rigour studies refit; some official code merges
+  the validation event into training by design. Run a practice check of each source.
+- Follow each baseline's source, name the practice per baseline in the protocol, and
+  refit only where the source does. A protocol change between the two supersedes the
+  affected rows explicitly (`lessons-learned.md`, lesson 20).
+- When the official code selects on a sample of validation users, the sample contains
+  the evaluated users and every baseline reads the same sample file (lesson 21).
+
+## Official and relaxed configurations
+
+- Run every baseline first with its official configuration. When an official limit
+  binds on this data (input length, history window, step budget), add a relaxed
+  variant and label it beside the official row, for example "official" and "relaxed
+  limit".
+- Both rows stay in the tables; each claim says which one it uses. A relaxed variant
+  never replaces the official row silently.
+- For generative LLM baselines, the regeneration rounds after unparseable output and the
+  parser are declared before the run; scores before and after retries are kept
+  (lessons 28, 29).
+
 ## Seeds and repeats
+
+Screening runs during iteration may use one run per cell with point estimates or paired
+differences to choose the next experiment; the run counts below apply to confirmatory
+claims (`experiment-planning`, evidence stages).
 
 | Method type | Randomness | Runs |
 |---|---|---|
@@ -54,6 +84,9 @@ before computing metrics.
 | Candidate-order permutation | Order | Fix order seed, or average over permutations |
 
 Fix the test set (users, targets, candidates) across seeds; vary only the method seed.
+A per-user bootstrap of the paired difference covers user sampling only; a confirmatory claim
+against a method with training or decoding randomness adds these seeds or repeats, or states
+that it holds for one training run.
 LLMRank averaged at least three repeat runs ([Hou et al., §3](https://arxiv.org/pdf/2305.08845)).
 
 ## Execution failures versus method failures

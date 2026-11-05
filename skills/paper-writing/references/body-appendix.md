@@ -16,7 +16,7 @@ separate supplementary file is accepted, and whether the appendix counts toward 
 | Main comparison table | yes | per-cohort or secondary-metric versions |
 | Significance or intervals for the main claim | marks or a difference column | full interval tables |
 | Analysis answering each core question | one table or figure each | further variants, sensitivity sweeps |
-| Robustness and protocol sensitivity | one sentence per check with its key number | full tables |
+| Robustness and protocol sensitivity | one neutral sentence per check that names the condition and points to its table | numbers, intervals, full tables |
 | Cost and latency | one figure or one compact table | full cost table with all fields |
 | Case study | one compact example if it supports a core claim | further cases |
 | Limitations | named claims and their scope | — |

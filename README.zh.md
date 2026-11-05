@@ -112,6 +112,21 @@ Skill（技能）是一組讓 agent（代理）在特定任務中載入的指引
 | [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.zh.md) | 我希望回答更短，同時保留必要條件、識別資訊與不確定性時。 |
 | [correct](skills/correct/SKILL.zh.md) | 我一直糾正 agent 犯同樣的錯時：把過去的糾正整理成錯誤類別，並用架構、型別、lint 或測試讓每一類自動失敗。改編自 pstack（MIT）。 |
 
+## 研究流程集群
+
+六個 skill 涵蓋一個研究專案從第一個問題到下一個題目的過程。它們整理自一次完整的論文週期（規格、評估協定更換、比較基準、機制分析、投稿、外部審查、rebuttal（答辯）準備，以及兩個後續題目），每一條規則都是把該紀錄中的一次失誤或修正一般化。`research-lifecycle` 負責階段地圖與交接，其他各負責一個階段。
+
+| 階段 | Skill | 我什麼時候用 |
+|---|---|---|
+| 研究流程 | [research-lifecycle](skills/research-lifecycle/SKILL.zh.md) | 開始、接續、交接或結束一個專案或里程碑時：研究問題、逐字記錄的指示與決策、里程碑關卡、運算資源與預算、保存備份、新題目的起始文件。 |
+| 文獻調查 | [research-survey](skills/research-survey/SKILL.zh.md) | 決策需要來源時：領域調查、官方程式與強比較基準實際怎麼做、某來源是否支持被引用的說法、同期預印本改變了什麼。 |
+| 發想 | [research-ideation](skills/research-ideation/SKILL.zh.md) | 選定、調整或命名研究方向時：問題鏈、最接近的較簡單替代做法、在真實資料上的可行性、範圍、投稿會議契合度、附停止條件的 preliminary study（初步研究）。 |
+| 實驗規劃 | [experiment-planning](skills/experiment-planning/SKILL.zh.md) | 規劃一批實驗前：每個實驗的問題、對照組、完整實驗矩陣與追蹤表、證據階段、使用者群與曝光紀錄、資訊對等、官方比較基準、預算。 |
+| 確認實驗內容 | [experiment-contract](skills/experiment-contract/SKILL.zh.md) | 啟動前、執行中，以及結果進入表格、網頁或論文前：核對實際執行與約定內容，分類失敗，決定收錄或取代。 |
+| 驗證 | [research-verification](skills/research-verification/SKILL.zh.md) | 每完成一兩件主要工作、里程碑之前，或結果好得可疑時：在新的獨立 context（上下文）中重算數字、檢查答案路徑、核對審查意見。 |
+
+論文撰寫接著用 `paper-argument` 與 `paper-writing`；推薦系統的評估協定留在 `recsys-evaluation`。
+
 ## 如何放進我的開發流程
 
 我會先讀專案規格與現況。工作較大時，先記錄範圍與驗收方式；需要協調分工時再用 routing。

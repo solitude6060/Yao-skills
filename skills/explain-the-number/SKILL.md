@@ -14,13 +14,15 @@ say what bounds it and why it is not measuring something else.
 
 - **Write the decision first.** State the sentence you expect to ship ("training step is
   1.8x faster with 8 threads on the 1M-row set"; "Recall@20 improves by 0.012 over SASRec")
-  and the result that would change a decision, including the smallest effect that would
-  matter. Name the noise floor you expect and the comparison design (independent runs or
-  paired by seed, user or input). Stop when the uncertainty of the difference under that
-  design is larger than the effect.
+  and the result that would change a decision, as a direction against a named comparison.
+  Declare a margin (the smallest effect that would matter) only for a claim of no
+  difference. Name the noise floor, the comparison design (independent runs or paired by
+  seed, user or input) and the evidence stage. Stop when the uncertainty of the difference
+  under that design exceeds the expected effect.
 - **Read the measurement code.** Note what it times, counts, averages and ignores.
 - **Check the machine.** `uptime`, `nproc`, `nvidia-smi` when a GPU is involved. If something
-  else is running and cannot be stopped, interleave the sides and say so.
+  else is running and cannot be stopped, interleave the sides and say so. Compare latencies
+  only on one device; otherwise remeasure both sides there.
 
 ## The four obligations
 
@@ -41,45 +43,45 @@ say what bounds it and why it is not measuring something else.
    seen on only one model or dataset (say so if it is), and ask whether the scenario
    matters.
 3. **Show it reproduces.** Performance: at least five alternating runs per side
-   (A, B, A, B), median and range. Evaluation: several seeds, mean with spread or an
-   interval, and a paired comparison when the sides share seeds, test users or inputs.
-   Judge the difference by its own uncertainty under the comparison design (for example a
-   confidence interval of the paired differences), not by the spread of each side alone: a
-   paired design can resolve a gap far smaller than each side's spread. Report no measurable
-   difference only when the whole interval of the difference lies below the smallest effect
-   that would matter, declared before the run. When the interval includes zero but also
-   includes an effect that would change the decision, report inconclusive.
-4. **Keep the evidence with the number.** Record run count, spread, limiter, command,
-   commit and data version in the notes, result table or a linked artifact.
+   (A, B, A, B), median and range. Evaluation has two stages.
+   Screening: one run, point estimates or paired differences, no intervals; it may choose
+   the next experiment but cannot support a robustness or superiority claim. Confirmatory,
+   for final claims: the uncertainty of the paired difference over the shared test units
+   (for example a per-user bootstrap), plus several seeds or repeats for a method with
+   training or decoding randomness, or a claim scoped to one training run. Judge the
+   difference by its own uncertainty, not by each side's spread. Report no measurable
+   difference only when the whole interval lies inside the margin declared before the run; an interval that includes zero otherwise means inconclusive: no
+   significant difference at this sample size. Determinism is observed under a stated
+   runtime, never assumed.
+4. **Keep the evidence with the number.** Record the exact result row (method,
+   configuration, cohort, filters; the admitted row, never the best of several), run count,
+   spread, limiter, command, commit and data version.
 
-For a performance number, answer the seven questions in
-`references/benchmark-checklist.md`. For a recommender metric, apply `recsys-evaluation`
-for split, candidates and baselines. For any number that will support a claim, the
-project's own result-admission rules still apply.
+Performance numbers: answer the seven questions in `references/benchmark-checklist.md`.
+Recommender metrics: apply `recsys-evaluation`. A number that supports a claim also passes
+the project's result admission (`experiment-contract`).
 
 ## Report
 
 - Lead with the verdict: faster, slower, better, worse, no measurable difference, or
-  inconclusive.
+  inconclusive; label a screening result as one run.
 - Give the number with unit, run or seed count, range, and limiter, for example
   "p50 41 ms → 33 ms, median of 7 runs per side, range 32–35 ms, bound by JSON parsing on
   one core".
-- Call a performance verdict inconclusive when the limiter is unnamed, a side ran untuned,
-  errors were not counted, or you could not confirm the work happened. Call an evaluation
-  verdict inconclusive when the protocol differs between sides, a side ran untuned, runs did
-  not complete or errors were not counted, or the difference's uncertainty was not
-  estimated. Name the gap.
+- Call a verdict inconclusive when a side ran untuned or errors were not counted; for
+  performance, also when the limiter is unnamed or the work was not confirmed; for evaluation,
+  when the protocol differs between sides, runs did not complete, or a confirmatory claim
+  lacks the difference's uncertainty. Name the gap.
 
-For a quick ballpark the user asked for, one run is enough; still confirm it did not error
-and the work happened, and say it is one run. If that run looks wrong, do the full check. A
-choice between options is never a ballpark.
+A ballpark or screening run still needs proof that it did not error and the work happened;
+if it looks wrong, do the full check.
 
 ## Signs you skipped this
 
 - A run started without the result that would change a decision.
-- A reported number has no run count or no spread; a performance number has no named
-  limiter; an evaluation number has neither a named score bound nor a statement that the
-  bound is unexplained.
+- A reported number has no run count, or a claim lacks the uncertainty its stage requires;
+  a performance number has no named limiter; an evaluation number has neither a named score
+  bound nor a statement that the bound is unexplained.
 - The time saved exceeds the time the changed piece took, or a metric gain exceeds what the
   changed component can affect.
 
