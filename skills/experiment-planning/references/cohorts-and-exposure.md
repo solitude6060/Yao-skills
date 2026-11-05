@@ -21,8 +21,9 @@ draw) and its role. Give each cohort a neutral descriptive name at first use and
   ones and the study reports one population. Report the users that were added separately from the
   development users.
 - When a baseline's official code selects on a sample of users (some sequential-recommender code samples a
-  fixed number of users for validation on large datasets), draw that sample so it contains the evaluated
-  users, and let every baseline read the same sample file.
+  fixed number of users for validation on large datasets), let every baseline read the same sample file. Under a
+  protocol whose selection may read the evaluated users' validation events (per-user leave-one-out), the sample
+  contains the evaluated users; when the question needs unseen users (a user-disjoint protocol), it excludes them.
 - Expand in a ladder and stop at the size the decision needs; record which size each result used.
 
 ## Exposure history
@@ -32,7 +33,7 @@ Before calling a cohort held out or fresh, list every earlier contact with its t
 | Contact | Example |
 |---|---|
 | Method design | Variants compared on these users' test targets |
-| Selection | Coefficients or checkpoints chosen with their test targets (selection on their validation targets is not a contact) |
+| Selection | Coefficients or checkpoints chosen with their test targets (selection on their validation targets is not a contact when the protocol permits it, as per-user leave-one-out does; under a user-disjoint protocol it is a contact) |
 | Analysis | Mechanism analyses, case studies, error inspection that read their targets |
 | Sibling projects | Another project that reused the same users or targets |
 | Earlier protocols | Runs under a superseded split that used these events as targets |

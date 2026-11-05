@@ -34,7 +34,7 @@ Write one short paragraph per part, then the argument map (below). Each part nam
    selection takes). A generalization claim needs a frozen-transfer test; separately selected settings per
    domain show adaptability, not generalization.
 2. **Highlights.** At most two or three things a reader should remember; the abstract lists them as
-   contributions with one number each. Each highlight points to one result or one analysis. A highlight with no evidence is removed or turned into future work.
+   contributions, each tied to one result, with at most one or two numbers in the abstract. Each highlight points to one result or one analysis. A highlight with no evidence is removed or turned into future work.
 3. **Method.** For each component: the information it carries, its data source and time scale, and what it
    adds that the others lack ("what I add"). Classify components on two axes, global (population) versus local
    (anchored on the user or query), and static versus dynamic (time-decayed, order-dependent). State which

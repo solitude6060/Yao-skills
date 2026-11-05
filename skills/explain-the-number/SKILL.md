@@ -17,8 +17,9 @@ say what bounds it and why it is not measuring something else.
   and the result that would change a decision, as a direction against a named comparison.
   Declare a margin (the smallest effect that would matter) only for a claim of no
   difference. Name the noise floor, the comparison design (independent runs or paired by
-  seed, user or input) and the evidence stage. Stop when the uncertainty of the difference
-  under that design exceeds the expected effect.
+  seed, user or input) and the evidence stage. Confirmatory: stop when the difference's
+  uncertainty under that design exceeds the expected effect; screening reports labelled point
+  differences.
 - **Read the measurement code.** Note what it times, counts, averages and ignores.
 - **Check the machine.** `uptime`, `nproc`, `nvidia-smi` when a GPU is involved. If something
   else is running and cannot be stopped, interleave the sides and say so. Compare latencies
@@ -33,7 +34,7 @@ say what bounds it and why it is not measuring something else.
    cannot say why the number is not twice as good, you do not know what you measured. For an
    evaluation metric, name what bounds the score instead: data coverage (for example items
    absent from training), the metric's ceiling under the protocol, candidate-set size, label
-   noise, or the protocol itself. Profilers do not answer this. If the mechanism is not
+   noise, or the protocol itself. If the mechanism is not
    established, report the measured result and the unexplained bound separately.
 2. **List what else the number could measure, and rule out each with evidence.** Usual
    suspects: errors or skipped work, cached results, code that never ran, an untuned side,

@@ -35,8 +35,8 @@ and baseline rules ([recsys-evaluation](../recsys-evaluation/SKILL.md)).
    scoring scripts. An endpoint alias is not a model identity.
 3. Smoke run. The real configuration at full size (largest candidate set, longest input) on real data for
    a few units: memory, ports, parsing, output paths, cost fields written.
-4. Parity. Compared models receive identical inputs and readouts: per-unit input hashes, and token counts
-   as a quick check.
+4. Parity. Compared models receive the inputs the protocol says they share (per-unit input hashes);
+   readouts follow each source unless the experiment controls them.
 5. Rerun map. For any change to inputs, prompts or boundaries, list the runs to rerun, or write why none is
    needed.
 6. Approved specification. For a costly rerun the owner confirms the full specification, then it launches

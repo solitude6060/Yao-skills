@@ -214,8 +214,10 @@ pre-submission review and follow-up topics.
   subset of users. The project drew that sample so that it contained the evaluated users,
   so baseline selection covered the users whose results are reported, and shared one
   sample file across baselines.
-- Rule: when a validation sample is drawn, it contains the evaluated users; every
-  baseline reads the same sample file, recorded with its hash and seed.
+- Rule: under a protocol whose selection may read the evaluated users' validation events
+  (per-user leave-one-out), a drawn validation sample contains the evaluated users; under a
+  user-disjoint protocol it excludes them. Every baseline reads the same sample file,
+  recorded with its hash and seed.
 
 ### 22. A high-severity protocol finding was deferred
 

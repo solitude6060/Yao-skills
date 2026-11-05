@@ -51,7 +51,7 @@ checks of numbers and claims (`research-verification`), or checking an inherited
    must-keep list after each rewrite.
 7. **Text sources.** Author-approved text is versioned and never reverted silently. Another model's rewrite
    is an idea source; check its facts against the result files before adopting any of it. Key terms
-   follow the field's definition; no sentence implies the method's own components are harmful; bilingual
+   follow the field's definition; no untested aside against the method's own components, while measured adverse effects are reported; bilingual
    editions change together.
 
 ## Body versus appendix

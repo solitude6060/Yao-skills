@@ -23,8 +23,9 @@ and on which hardware.
 ## Runtime from measured throughput
 
 1. Run the real configuration on a small slice of real inputs (the largest candidate set, the longest input).
-2. Measure units per hour and peak memory; add model loading and final ranking.
-3. Multiply by the planned units; label the result as an estimate until the batch confirms it.
+2. Measure units per hour and peak memory.
+3. Divide the planned units by the measured units per hour, then add model loading and final ranking; label
+   the result as an estimate until the batch confirms it.
 4. Run independent jobs in parallel when the measured memory allows it; declare each job's memory need.
 
 An estimate that comes from scaling a different dataset or input length is marked as such, with the reason

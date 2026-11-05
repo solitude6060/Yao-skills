@@ -28,7 +28,7 @@ question prevents and the check for each red flag. Questions 18 onward extend th
 | 18 | Are negatives drawn by a seeded uniform generator (or a rule the target also satisfies), and does no function of the sampling rule rank the target above random? | A sampler that identifies the target (lesson 18) |
 | 19 | Are item identifiers kept out of every model request, and does an identifier-only rule score near random? | Shortcuts through identifier order (lesson 19) |
 | 20 | Does each trained baseline follow its source's selection-versus-refit practice, named in the protocol? | Refit rows that the sources never produce (lesson 20) |
-| 21 | When validation users are sampled, does the sample contain the evaluated users, with one shared sample file? | Baselines selected on a different population (lesson 21) |
+| 21 | When validation users are sampled, does the sample follow the protocol (contains the evaluated users under per-user leave-one-out, excludes them under a user-disjoint protocol), with one shared sample file? | Baselines selected on a different population, or evaluated users entering selection (lesson 21) |
 | 22 | Is every high-severity protocol finding from an audit answered by an experiment before claims freeze? | A late central objection from reviewers (lesson 22) |
 | 23 | If a method reads request-time cross-user information: is there a global-cutoff check that removes post-cutoff events from every method, and at least one time-aware trained baseline? | Information asymmetry credited to the method (lessons 23, 24) |
 | 24 | Has the exposure of the reporting cohort been scanned across earlier runs and sibling projects? | A "held-out" cohort that shaped earlier choices (lesson 25) |

@@ -9,10 +9,10 @@ author gives a new one.
 | Rule | Prevents |
 |---|---|
 | The introduction asks one main question and two or three sub-questions; the conclusion answers them in the same order and wording. | A paper that reports results but never says what they answer. |
-| Every section opens with the question it serves and ends with its answer, a one-sentence take-away in bold or as the paragraph's last sentence. | Sections that read as lists of numbers. |
+| Every section opens with the purpose or the evidence it serves, never a self-posed question, and ends with its answer as the plain last sentence, not in bold (check how strong papers at the target venue write results paragraphs: few open with a question or set the finding in bold). | Sections that read as lists of numbers, or as a dialogue with the author. |
 | Each point runs reason, description, analysis, conclusion. | Description without analysis ("only describes, never concludes"). |
 | At most two or three highlights in the abstract and introduction; secondary findings become evidence under them. | Several claims of equal weight that dilute each other. |
-| The abstract lists the contributions explicitly, each with one number. | An abstract that narrates the method and leaves the reader to guess the contribution. |
+| The abstract lists the contributions explicitly and states the main result in words; at most one or two numbers, each naming the comparison or dataset it applies to (check the abstracts of strong papers at the target venue). | An abstract that narrates the method and leaves the reader to guess the contribution, or one that reads as a result table. |
 | Contributions map one-to-one to sections, and the mapping is stated. | Contributions that no section supports. |
 
 ## Sentences
@@ -48,7 +48,7 @@ author gives a new one.
 | Keep a must-keep list of procedure disclosures: development users and what they were used for, selection rules and the data they read, and the exposure of the evaluated users. Check the list after every rewrite; these sentences may be shortened or moved to the appendix, never removed. | A disclosure deleted in a rewrite and then reported by a reviewer as a concealed procedure. |
 | Process claims are literally true. Write what the procedure did ("test targets were never used for selection"), not a broader assurance that a record contradicts ("the test set was never seen", when development users' test targets were inspected). | A false statement about the procedure. |
 | Check each headline term against the definition the venue's literature uses, and against the advisor's definition when the advisor will judge the paper; if they differ, define the term in the paper (for example, a method that gives the same output for the same history may be called per-user or history-conditioned rather than personalized when the readers expect user-level parameters). | A definitional objection to the main claim. |
-| No sentence implies that the method's own components are harmful: no comparison phrased against a part the method adds, no aside suggesting that one of its signals has a bias the paper does not test. | Self-inflicted objections. |
+| No untested aside against the method's own components: no comparison phrased against a part the method adds, no aside suggesting that one of its signals has a bias the paper does not test. A measured adverse effect of a component (an ablation in which adding it lowers a metric) is still reported, with its condition and evidence stage. | Self-inflicted objections, or negative evidence left out of the paper. |
 | Disclose any selection among repeated runs; better, never choose among runs by test score. | Test-set selection presented as a result. |
 | When a dataset is replaced after its results were seen, state the reason that holds independently of the results (for example, timestamps that record rating entry rather than consumption), or keep its results in the appendix. | An objection that datasets were chosen after the fact. |
 | Hosted models without public weights are named as such; the main claims rest on reproducible models where possible. | Reproducibility objections against the headline result. |

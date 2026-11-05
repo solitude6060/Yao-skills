@@ -55,7 +55,10 @@ For models that are compared with each other:
 
 - per-unit hashes of the evidence, the rendered request and the candidate list match where the protocol
   says they match; keep these three hashes separate so a mismatch points to its cause;
-- token counts per unit are a quick check: a large gap means one side received more or different text;
+- readouts follow each model's source unless the experiment controls the readout;
+- token counts per unit are a quick check between models that share a tokenizer; across tokenizers compare
+  the rendered-text hash or character counts, and inspect a large gap before concluding that one side
+  received more or different text;
 - visible-history counts per unit match, or the difference is a labelled condition.
 
 ## Rerun map

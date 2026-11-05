@@ -47,8 +47,9 @@ retriever's list), and could the method do the task directly?
 
 ## Utility bar and method shape
 
-- The headline needs competitive accuracy against named strong baselines before secondary advantages (cost,
-  latency, analysis) can carry the paper.
+- When the contribution is a method whose headline is accuracy, it needs competitive accuracy against named
+  strong baselines before secondary advantages (cost, latency, analysis) can carry the paper. An efficiency,
+  analysis or resource paper states the accuracy trade-off its question accepts.
 - When the method runs on pretrained models, state it as a procedure over a model class, with a model
   portfolio: one or two main models, a few size or training variants, one or two closed models.
 - Prefer explainable structure (hierarchy, evidence, memory) over unexplained ensembles. Fold every component

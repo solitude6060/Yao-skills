@@ -53,8 +53,9 @@ before computing metrics.
 - Follow each baseline's source, name the practice per baseline in the protocol, and
   refit only where the source does. A protocol change between the two supersedes the
   affected rows explicitly (`lessons-learned.md`, lesson 20).
-- When the official code selects on a sample of validation users, the sample contains
-  the evaluated users and every baseline reads the same sample file (lesson 21).
+- When the official code selects on a sample of validation users, every baseline reads
+  the same sample file; under per-user leave-one-out the sample contains the evaluated
+  users, under a user-disjoint protocol it excludes them (lesson 21).
 
 ## Official and relaxed configurations
 

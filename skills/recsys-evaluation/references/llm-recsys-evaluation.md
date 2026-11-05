@@ -56,7 +56,8 @@ model that scores candidates from text.
 | Empty or truncated history | Dependence on history length |
 | Stratification by target popularity | Reliance on popular targets |
 
-Report correct-minus-swapped differences with paired intervals.
+Report correct-minus-swapped differences; a confirmatory claim adds paired intervals, a screening run
+reports labelled point differences.
 
 ## Latency, tokens and cost
 
