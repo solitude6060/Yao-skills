@@ -38,7 +38,7 @@ It is not the full experiment matrix; that is built in `experiment-planning` aft
 |---|---|---|
 | After stage A | The adjusted output beats the unadjusted output of the same model on validation targets, on both datasets | Keep stage A as an analysis only |
 | After stage B1 | The new model class reaches the accuracy of the strong baseline it starts from, on validation targets | One pre-declared adjustment, then stop direction B |
-| After stage B2 | Guidance beats late fusion and feature injection of the same signals on validation targets | Record "guidance did not beat late fusion on validation targets at this stage"; stop direction B |
+| After stage B2 | Guidance beats late fusion and feature injection of the same signals on validation targets | Record "guidance did not meet the predeclared validation condition at this stage" with each control's result; stop direction B |
 | Decision date | The owner chooses a direction and a venue from the results above | Next venue in the fallback list, or stop |
 
 Generic case: a preliminary gate passed on one dataset and failed on the other; by the pre-declared rule the

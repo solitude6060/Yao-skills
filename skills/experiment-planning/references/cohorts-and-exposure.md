@@ -8,8 +8,8 @@ the first result and keep the history with the cohort file.
 | Role | Used for | Rule |
 |---|---|---|
 | Development | Method design, variant comparison, debugging | Any use is allowed; results from it support no generalization claim |
-| Selection or calibration | Choosing coefficients, checkpoints or settings on validation targets | Validation targets only (under leave-one-out these may belong to the reporting users); the selection rule is written before it runs |
-| Reporting | Scoring the frozen configuration once on test targets | Reserved before the first result; never used to choose a variant; only its validation targets may select settings |
+| Selection or calibration | Choosing coefficients, checkpoints or settings on validation targets | Validation targets only (under per-user leave-one-out these may belong to the reporting users; under a user-disjoint protocol they never do); the selection rule is written before it runs |
+| Reporting | Scoring the frozen configuration once on test targets | Reserved before the first result; never used to choose a variant; under per-user leave-one-out only its validation targets may select settings, under a user-disjoint protocol none of its targets do |
 | Confirmation | Users added later to check that a result holds on users who shaped nothing | Drawn after the configuration is frozen; reported separately |
 
 Write each cohort as a file of identifiers with a hash, the rule that drew it (for example a seeded random

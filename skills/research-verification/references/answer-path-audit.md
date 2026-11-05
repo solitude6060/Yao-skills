@@ -24,8 +24,9 @@ Compute and record the size of each intersection; the expected value is stated b
 
 - Evaluated targets ∩ training events of any fitted component.
 - Evaluated targets ∩ memory, index or statistics the method reads at inference.
-- Reporting users' test targets ∩ targets used for development or selection (the same users may supply
-  validation targets; their test targets must not), in this project and in sibling projects that share
+- Reporting users' test targets ∩ targets used for development or selection (under per-user
+  leave-one-out the same users may supply validation targets, under a user-disjoint protocol they supply
+  none; their test targets never do), in this project and in sibling projects that share
   data.
 - Cached outputs reused ∩ runs with a changed dependency.
 

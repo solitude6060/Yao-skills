@@ -28,8 +28,8 @@ before a result enters a report.
    cross-layer comparisons.
 3. **Split**: per-user leave-one-out (LOO), global temporal (GTS), user-disjoint or
    random — and which leak it allows for which methods.
-4. **Does any method fit across users?** If none, a global cutoff protects nothing and
-   only removes valid history. If some do, disclose cross-user future data and plan a
+4. **Does any method fit across users?** If none, a global cutoff only removes valid
+   history. If some do, disclose cross-user future data and plan a
    GTS sensitivity check. Never assert the leak's direction without measuring it.
 5. **User-disjoint only if unseen users are the question**; state how ID-embedding
    models fold in new users. Prevents accidental cold-start evaluation.
@@ -45,7 +45,7 @@ before a result enters a report.
     text for every method, proven by per-query hashes; equal visible-history counts.
 12. **Runs** for final claims: seeds for trained or sampled methods, repeats for hosted APIs, a
     determinism check before declaring one run enough; never choose among runs by test score.
-13. **Tuning users vs reporting users** are different. Prevents selection bias.
+13. **Development and reporting users differ**; reporting users' validation targets select only under LOO.
 14. **Failures**: execution failures (OOM, HTTP 5xx, crash) are rerun, never reported;
     method failures (invalid output, no ranking by design) stay in the denominator
     with utility 0 and are counted.
