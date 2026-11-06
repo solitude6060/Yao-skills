@@ -63,7 +63,8 @@ When a gain looks large, audit before writing about it:
 
 - Data-path proof per component: which fields reach the score, under which time boundary.
 - Set intersections between evaluated targets and everything a component reads (training data, memory,
-  selection targets, caches).
+  selection targets, caches); under a user-disjoint protocol, also reporting user identities against
+  users whose targets were used for selection.
 - Independent recomputation of the headline number from raw outputs.
 - At least one reviewer from another model family.
 - Sampled negatives: a selection rule applied to negatives but not to the target can identify the target.

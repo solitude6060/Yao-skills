@@ -55,8 +55,8 @@ This section is a synthesis from the methodology papers above, not a measured su
    full ranking or a two-stage end-to-end evaluation for the main claim.
 3. Strong, tuned simple baselines (popularity, item-kNN, EASE, BPR-MF) and the
    standard sequential models (SASRec, BERT4Rec), run from official code.
-4. Same candidates and inputs for every method; seeds/repeats; significance or
-   intervals.
+4. Same candidates for every method and the inputs the protocol declares shared;
+   seeds/repeats; significance or intervals for confirmatory claims.
 5. For LLM methods: cost and latency, position-bias handling, invalid-output counts,
    and a discussion of pretraining exposure.
 6. Dataset versions and preprocessing stated precisely (release year, k-core, dedupe,

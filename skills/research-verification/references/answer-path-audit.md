@@ -27,7 +27,8 @@ Compute and record the size of each intersection; the expected value is stated b
 - Reporting users' test targets ∩ targets used for development or selection (their test targets never
   select), in this project and in sibling projects that share data.
 - Under a user-disjoint protocol, also reporting user identities ∩ users whose targets of any kind
-  (validation included) were used for development or selection; expected zero. Under per-user
+  (validation included) were used for development or selection, in this project and in sibling projects
+  that share data; expected zero. Under per-user
   leave-one-out their validation targets may select, so this intersection is not required.
 - Cached outputs reused ∩ runs with a changed dependency.
 
