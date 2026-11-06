@@ -24,10 +24,11 @@ Compute and record the size of each intersection; the expected value is stated b
 
 - Evaluated targets ∩ training events of any fitted component.
 - Evaluated targets ∩ memory, index or statistics the method reads at inference.
-- Reporting users' test targets ∩ targets used for development or selection (under per-user
-  leave-one-out the same users may supply validation targets, under a user-disjoint protocol they supply
-  none; their test targets never do), in this project and in sibling projects that share
-  data.
+- Reporting users' test targets ∩ targets used for development or selection (their test targets never
+  select), in this project and in sibling projects that share data.
+- Under a user-disjoint protocol, also reporting user identities ∩ users whose targets of any kind
+  (validation included) were used for development or selection; expected zero. Under per-user
+  leave-one-out their validation targets may select, so this intersection is not required.
 - Cached outputs reused ∩ runs with a changed dependency.
 
 ## 3. Independent recomputation

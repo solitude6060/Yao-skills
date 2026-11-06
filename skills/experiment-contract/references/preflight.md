@@ -13,7 +13,7 @@ evidence stage). A run with a missing field is not ready.
 | Field | Content | Failure it prevents |
 |---|---|---|
 | Question | The research question the run answers, by identifier and in words | A run that answers no question |
-| Cohorts | Development, reporting and calibration units; which earlier runs saw each | Selection on the reporting cohort |
+| Cohorts | Development, reporting and calibration units; which earlier runs saw each | Selection on the reporting cohort's test targets (on any of its targets under a user-disjoint protocol) |
 | Candidates | Candidate rule, size and hash | Comparisons on different candidate sets |
 | Inputs | Fields each method reads, history length, time boundary | One method reading more than its competitor |
 | Readouts | Output format, parser, how a score or rank is read | Two models compared through different readouts |

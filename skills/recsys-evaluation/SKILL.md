@@ -41,8 +41,8 @@ before a result enters a report.
    retrieve-then-rerank. Sampled claims are conditional on that distribution.
 10. **Two-stage**: fixed retriever, end-to-end metrics, misses counted, target never
     injected.
-11. **Identical inputs**: same users, targets, candidates, visible history and item
-    text for every method, proven by per-query hashes; equal visible-history counts.
+11. **Shared inputs**: same users, targets and candidates; history and item text equal
+    where the protocol shares them (per-query hashes); differences labelled.
 12. **Runs** for final claims: seeds for trained or sampled methods, repeats for hosted APIs, a
     determinism check before declaring one run enough; never choose among runs by test score.
 13. **Development and reporting users differ**; reporting users' validation targets select only under LOO.

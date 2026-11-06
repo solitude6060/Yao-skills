@@ -57,8 +57,8 @@ Write one short paragraph per part, then the argument map (below). Each part nam
    different people, for an analysis program and the five strongest reviewer objections. Advisors stay read-only;
    check afterwards that no files changed. Treat their expected numbers as guesses, never as pre-declared readings.
 4. Build the data slice every analysis needs first (for additive scores: one row per query and candidate with each
-   raw term, gate, weight, contribution, score and rank), with an exact-reproduction check against the already
-   reported results as a stop condition.
+   raw term, gate, weight, contribution, score and rank), with an exact-reproduction check against the admitted
+   results as a stop condition.
 5. Pre-declare the reading of each analysis before computing: a direction against a named comparison, never
    an arbitrary numeric bar, plus the outcome that would contradict the claim. Run the cheap CPU analyses
    first and the small GPU interventions in parallel.

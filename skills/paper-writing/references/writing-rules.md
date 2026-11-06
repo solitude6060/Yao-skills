@@ -52,6 +52,8 @@ author gives a new one.
 | Disclose any selection among repeated runs; better, never choose among runs by test score. | Test-set selection presented as a result. |
 | When a dataset is replaced after its results were seen, state the reason that holds independently of the results (for example, timestamps that record rating entry rather than consumption), or keep its results in the appendix. | An objection that datasets were chosen after the fact. |
 | Hosted models without public weights are named as such; the main claims rest on reproducible models where possible. | Reproducibility objections against the headline result. |
+| No internal chronology in the body: which dataset or model was added when, development order, query dates, extra seeds on one dataset. The paper describes the final study; procedure details go to the appendix. | A reader who takes development history for a protocol choice. |
+| No speculative doubts: a possible difference with no mechanism or evidence is not stated as a limitation. A check that a main claim depends on and that was not run is stated once as the claim's scope, or the check is run. | Self-inflicted objections with no number behind them; a validity gap hidden from the reader. |
 
 ## Sources of text
 
@@ -72,7 +74,8 @@ author gives a new one.
 ## Final checks
 
 1. Search the source for every quantified word and every dataset name; re-verify each against the result files.
-2. Search for dashes, banned adjectives, metaphors and "not X but Y" constructions.
+2. Search for dashes, banned adjectives, metaphors, "not X but Y" constructions, sentence-initial questions and bold
+   spans inside results paragraphs.
 3. Compile and look at every page: overfull lines, float placement, table widths, figure fonts.
 4. Two independent language passes (different model families or people), then the author.
 5. Verify every reference: it exists, its metadata are correct, and the cited claim is in the source. A

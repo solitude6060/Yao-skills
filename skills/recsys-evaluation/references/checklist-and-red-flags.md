@@ -18,8 +18,8 @@ question prevents and the check for each red flag. Questions 18 onward extend th
 | 8 | Duplicate (user, item) rule, timestamp tie rule (row order, never item ID), k-core order — written down? | Repeat-item shortcuts; false sequences from ID-sorted ties |
 | 9 | Candidates: full ranking, sampled 1+n (uniform or popularity), or retrieve-then-rerank? Is the claim conditional on that distribution? | Sampled metrics that reverse model order (Krichene & Rendle 2020; Hidasi & Czapp 2023 §2.4) |
 | 10 | For two-stage evaluation: fixed retriever, end-to-end metrics, retrieval misses counted, target never injected? | Inflated rerank scores |
-| 11 | Do all methods receive identical users, targets, candidate sets, visible history and item text, verified by per-query hashes? | Unequal evidence hidden by aggregate tables |
-| 12 | Is the visible-history count per query equal across methods (catalogue filters can drop history items for ID models only)? | One method seeing history another cannot |
+| 11 | Do all methods receive identical users, targets and candidate sets, and the visible history and item text the protocol declares shared, verified by per-query hashes; is every other input difference a labelled condition? | Unequal evidence hidden by aggregate tables |
+| 12 | Is the visible-history count per query equal across methods (catalogue filters can drop history items for ID models only), or is the difference declared and labelled? | One method seeing history another cannot |
 | 13 | Seeds and repeats per method type for confirmatory claims (screening may use one run to choose the next experiment); determinism check for "deterministic" methods? | Single-run noise reported as differences |
 | 14 | Where are prompt or method variants tuned, and are the reporting users fresh? | Selection bias (winner's curse) |
 | 15 | Failure policy: execution failures rerun; method failures kept as utility 0 and counted? | Crashes reported as results, or dropped failures inflating scores |

@@ -22,7 +22,7 @@ Outputs:              <per-unit result files, metrics, cost fields, location>
 Evidence stage:       screening | confirmatory
 Expected reading:     <direction against a named comparison>; contradicting result: <what would refute the claim>
 Failure policy:       <execution failures rerun until they succeed; method failures counted; retry rounds declared>
-Cost:                 <measured throughput x units, money, device; "estimate" until measured>
+Cost:                 <planned units / measured units per hour + loading and ranking time, money, device; "estimate" until measured>
 Decision it changes:  <outcome -> next action, for each outcome>
 Status:               planned | running | executed | verified | admitted | superseded
 ```

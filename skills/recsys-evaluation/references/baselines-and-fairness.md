@@ -98,6 +98,8 @@ LLMRank averaged at least three repeat runs ([Hou et al., §3](https://arxiv.org
 - Method failure: the method returns unparseable or invalid output, or by design cannot
   rank this input (e.g. a trained model with no in-catalogue history for this user). It
   stays in the denominator with utility 0 and is reported as a separate count.
+- Over-limit input: apply the declared truncation rule first; a unit still over the limit is counted and kept
+  with utility 0, or every method reports the common units (`experiment-contract`, admission reference).
 - Every results table shows the failure count next to the score.
 
 ## Selection bias from tuning on reporting users
@@ -105,7 +107,8 @@ LLMRank averaged at least three repeat runs ([Hou et al., §3](https://arxiv.org
 Trying many prompt, readout or method variants and reporting the best one on the same
 users inflates the reported score (winner's curse). Rules:
 
-1. Tune on a development user set; freeze the configuration; report on fresh users.
+1. Tune variants on a development user set; freeze the configuration; report on fresh users
+   (settings may still be fitted on the reporting users' validation targets under per-user leave-one-out).
 2. When the user sample grows for the final run, the added users are fresh; report on
    them, or on the full set with the development subset reported separately.
 3. Report how many variants were tried.

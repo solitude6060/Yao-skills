@@ -22,7 +22,8 @@ evidence. A literature citation enters the paper only after its quoted claim was
 
 - The introduction states the main question and the sub-questions; each analysis subsection answers one
   sub-question; the conclusion answers them in the same order and words.
-- Each results or analysis paragraph runs question, design, table or figure, observation, mechanism, take-away.
+- Each results or analysis paragraph runs purpose or evidence pointer, design, table or figure, observation, mechanism,
+  and a plain closing sentence that answers the sub-question; it never opens with a self-posed question.
 - Limitations scope named claims; they do not introduce new results.
 
 ## Highlights and presentation (colleague and author)

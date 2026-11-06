@@ -50,8 +50,8 @@ from what a released checkpoint used; record which one the claim rests on.
 
 Generic cases: in one recorded check, the official code of a sequential recommender and a widely used
 library both reported the best validation checkpoint without refitting, which settled a refit question that
-had already produced many superseded rows; a validation sample drawn without the evaluated users had to be
-redrawn so that the larger sample contained them.
+had already produced many superseded rows; under per-user leave-one-out, a validation sample drawn without the
+evaluated users had to be redrawn so that it contained them (under a user-disjoint protocol it excludes them).
 
 ## Rules
 

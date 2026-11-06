@@ -28,7 +28,7 @@ much progress?" (Ferrari Dacrema et al., RecSys 2019, 1907.06902), sampled metri
 ## Section by section
 
 **Abstract.** Problem, idea, one result in words or one number, one implication. Contribution lists are rare in abstracts
-(none of the classic four); when a venue or co-author wants them, keep one number per item.
+(none of the classic four); when a venue or co-author wants them, the abstract still carries at most one or two numbers.
 
 **Introduction.** Problem, limits of the existing paradigms, the key idea, the result in words, what the analyses show.
 Contribution bullets, when present, are short and carry no numbers (LightGCN §1, three bullets) or are numbered implications
@@ -53,7 +53,7 @@ analyses use one metric or one dataset (SASRec Table IV, gSASRec §6.2.3). Signi
 (TALLRec, gSASRec) or one stated threshold (HSTU); no exemplar adds a second body table that restates the main comparison as
 paired differences.
 
-**Analysis.** Each probe opens with its question or purpose, runs one test and ends with one implication; the section closes
+**Analysis.** Each probe opens with its purpose, runs one test and ends with one implication; the section closes
 with a short numbered answer to the hypothesis (kNN-LM §6). An explanatory quantity gets one small table or figure (LightGCN
 §4.4.3, EASE §5.2).
 

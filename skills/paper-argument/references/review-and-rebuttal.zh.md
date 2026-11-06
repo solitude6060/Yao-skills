@@ -44,7 +44,7 @@
 ## 同期預印本
 
 出現同期的預印本（concurrent preprint）時，在投稿前與 rebuttal 前各用 `research-survey` 的比較表比對一次
-（[../../research-survey/references/concurrent-work.md](../../research-survey/references/concurrent-work.md)）。為了 rebuttal，
+（[../../research-survey/references/concurrent-work.zh.md](../../research-survey/references/concurrent-work.zh.md)）。為了 rebuttal，
 在該預印本那一列加兩欄：它會引發的審稿問題（「這和……有什麼不同？」），以及回答每個問題的預備分析；把這些分析加進
 預備分析清單。把預印本引為相關研究或對照；它不會重新定義本文的研究問題。追蹤同期研究本身屬於 `research-survey`
 （[../../research-survey/SKILL.zh.md](../../research-survey/SKILL.zh.md)）。

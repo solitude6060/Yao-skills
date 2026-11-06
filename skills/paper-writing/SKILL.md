@@ -39,7 +39,8 @@ checks of numbers and claims (`research-verification`), or checking an inherited
    quoted difference. An interval that includes zero is reported as no significant difference, never as
    "on par". No recitation of ranges and cell lists.
 4. **Plain register.** Short sentences, few parentheses, no dashes as sentence connectors, standard terms, no
-   metaphors or self-praise adjectives. Confident and factual; a human tone.
+   metaphors or self-praise adjectives, no self-posed questions, no bold take-aways. Confident and factual; a
+   human tone.
 5. **Claims hold where they are stated.** Quantified claims ("at most", "never", "on all datasets") are
    rechecked against the result files whenever data, models or cohorts change. Prefer a range with the
    datasets named over a universal bound. Process claims are literally true. The paper never prints

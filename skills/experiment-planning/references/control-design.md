@@ -27,7 +27,7 @@ The rule decides whether a variant is the same method or a cascade that needs it
 
 | Claim | Evidence it needs |
 |---|---|
-| The method beats a baseline (system) | The main comparison on identical users, candidates and inputs |
+| The method beats a baseline (system) | The main comparison on identical users and candidates and the inputs the protocol declares shared |
 | A component causes part of the gain (component) | A removal or replacement of that component with everything else fixed, plus the information controls above |
 | A component carries a specific signal | An input intervention that removes, swaps or permutes that signal |
 
@@ -62,5 +62,5 @@ For each planned claim, list the explanations a reviewer would offer and the con
 |---|---|---|
 | <claim> | More information, not a better model | Matched-information control |
 | <claim> | The baseline is untuned or not the official configuration | Official configuration plus a labelled relaxed variant |
-| <claim> | Selection on the reporting users | Fresh reporting cohort; exposure scan |
+| <claim> | Selection on the reporting users' test targets (any of their targets under a user-disjoint protocol) | Fresh reporting cohort; exposure scan |
 | <claim> | A shortcut through identifiers or the candidate sampler | Identifier-free inputs; sampler audit (`research-verification`) |

@@ -1,6 +1,6 @@
 # 第一原理稽核
 
-英文 [SKILL.md](SKILL.md) 是執行規範。案例在 `references/cases.md`。
+英文 [SKILL.md](SKILL.md) 是執行規範。案例在 `references/cases.zh.md`。
 
 用在「這個 session 沒驗證過就要照著做」的時刻：使用者提的解法、沿用的慣例、
 reviewer 的指控、子代理給的數字、好到不合理的結果，以及任何「降門檻、跳過檢查、
@@ -15,4 +15,4 @@ reviewer 的指控、子代理給的數字、好到不合理的結果，以及�
 5. 在 PR 說明或計畫檔留下五行稽核紀錄；出現「沿用」「未驗證」「無 ADR 的繞過」即不可合併。
 6. 動手前先讀專案 `CLAUDE.md`／`AGENTS.md`、專案的回饋與教訓紀錄（記憶筆記、lessons 檔），
    以及過往 `_FIX_LOG.md`，研究專案再加 `docs/audits/` 中的相關稽核文件。結果會決定主張時，
-   讀 `references/cases.md` 的一個研究案例與三個公開事故。
+   讀 `references/cases.zh.md` 的一個研究案例與三個公開事故。

@@ -72,8 +72,8 @@ baseline on validation data, in plain words. Declare a margin, before the run, o
 ## 5. Cohorts, exposure, information parity
 
 - Reserve development, reporting and, when needed, selection cohorts before the first result. Choose
-  variants on development users; select settings on validation targets (under leave-one-out, possibly
-  the reporting users'); score reporting users' test targets once. An expanded sample contains the users
+  variants on development users; select settings on validation targets (the reporting users' only
+  under leave-one-out); score reporting users' test targets once. An expanded sample contains the users
   already evaluated; report the added users separately.
 - Before calling a cohort held out, scan its exposure: every earlier run, analysis and sibling project that
   read these users' targets.

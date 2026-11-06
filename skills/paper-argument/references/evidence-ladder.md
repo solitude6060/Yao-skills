@@ -33,7 +33,8 @@ For each objection, name the analysis that answers it, or narrow the claim.
 ## Pitfalls
 
 - Raw weights are not importance: terms have different scales and per-query standardization.
-- Weights selected on the same users as the test are optimistic; cite held-out users and folds.
+- Weights selected on test targets are invalid. Weights selected on the same users' validation targets (allowed
+  under per-user leave-one-out) can still be optimistic for new users; cite a cohort that shaped nothing, or folds.
 - Tie-breaking can carry a removed component (for example a model's confidence); remove it with the component.
 - Visible dates reveal chronology, so reversing the list tests list position only.
 - An input that already contains collaborative evidence mixes sources; isolate it before attributing the effect.
