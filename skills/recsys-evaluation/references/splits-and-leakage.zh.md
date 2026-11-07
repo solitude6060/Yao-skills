@@ -36,7 +36,7 @@ TOIS 2023](https://arxiv.org/pdf/2010.11060) 固定測試實例（使用者在�
 [Meng et al., "Exploring Data Splitting Strategies for the Evaluation of
 Recommendation Models", RecSys 2020](https://arxiv.org/pdf/2007.13237) 比較 leave-one-last、
 依使用者的時間切分與全域時間切分；摘要指出切分方式 "can markedly alter the ranking of state-of-the-art recommender systems"，
-§1 指出 leave-one-last 與依使用者的時間切分會 "leak" 未來證據。確切的候選協議：**未查證**。
+§1 指出 leave-one-last 與依使用者的時間切分會 "leak" 未來證據。確切的候選協定：**未查證**。
 
 [Hidasi & Czapp, "Widespread Flaws in Offline Evaluation of Recommender Systems",
 RecSys 2023](https://arxiv.org/pdf/2307.14951) 把 "information leaking through time" 列為四項缺陷之一（§2.3），並建議採用依時間的切分。
@@ -44,7 +44,7 @@ RecSys 2023](https://arxiv.org/pdf/2307.14951) 把 "information leaking through 
 ## 全域截止點何時重要
 
 - 重要：任何在跨使用者共用的訓練集上擬合參數或統計量的方法（MF、SASRec、EASE、熱門度計數、協同記憶、由其他使用者建立的檢索索引）。它們的訓練資料可能含有測試目標之後的資訊。
-- 對洩漏不重要：凍結、免訓練的方法，其輸入只有目標使用者自己嚴格較早的事件、商品文字與候選清單。不存在跨使用者的管道。凍結模型的預訓練曝露是另一個問題，必須揭露（見 `llm-recsys-evaluation.zh.md`）。
+- 對洩漏不重要：凍結、免訓練的方法，其輸入只有目標使用者自己嚴格較早的事件、商品文字與候選清單。不存在跨使用者的管道。凍結模型的預訓練曝光是另一個問題，必須揭露（見 `llm-recsys-evaluation.zh.md`）。
 - 對這種凍結方法套用全域截止點，只會刪掉有效的個人歷史。這會改變問題，無法消除洩漏。
 
 ## 全域截止點之後的目標選擇

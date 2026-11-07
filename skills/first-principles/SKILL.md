@@ -94,8 +94,9 @@ Any "inherited", "unverified", or "workaround without ADR" means not ready.
 ## Read before acting
 
 - The project's `CLAUDE.md` / `AGENTS.md` — SPEC pointers and invariants
-- Project memory files covering ground-truth verification protocols
+- The project's feedback and lessons records (memory notes, lessons files) — verification
+  rules learned from earlier corrections
 - Past `_FIX_LOG.md` files — failure patterns from prior bugs
 - Research projects: relevant documents under `docs/audits/`
-- `references/cases.md` — three near-misses and three public incidents; read
+- `references/cases.md` — one research case and three public incidents; read
   when the result is load-bearing or the incident is in production

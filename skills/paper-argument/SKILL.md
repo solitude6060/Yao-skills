@@ -20,19 +20,21 @@ Chinese explanation: [SKILL.zh.md](SKILL.zh.md). Analysis precedents with source
   "where is the personalization?", "what does this component add?".
 - When planning analyses: to decide which analyses support which claim, and what goes into the body.
 
-Not for: protocol validity of the experiments themselves (use `recsys-evaluation`), or checking an inherited
-assumption (use `first-principles`). Use them first if the numbers themselves are in doubt.
+Not for: protocol validity of the experiments themselves (use `recsys-evaluation`), planning an experiment
+batch (use `experiment-planning`), or checking an inherited assumption (use `first-principles`). Use them
+first if the numbers themselves are in doubt.
 
 ## The four parts
 
 Write one short paragraph per part, then the argument map (below). Each part names the evidence that supports it.
 
 1. **Motivation.** Cost and deployment setting lead to a pain point; the pain point leads to the question.
-   Define the key terms precisely (for a "training-free" method: what is never updated, what is still selected on
-   validation data, how long selection takes). A generalization claim needs a frozen-transfer test; separately
-   selected settings per domain show adaptability, not generalization.
+   Define the key terms precisely and check each headline term against the field's definition (for a
+   "training-free" method: what is never updated, what is still selected on validation data, how long
+   selection takes). A generalization claim needs a frozen-transfer test; separately selected settings per
+   domain show adaptability, not generalization.
 2. **Highlights.** At most two or three things a reader should remember; the abstract lists them as
-   contributions with one number each. Each highlight points to one result or one analysis. A highlight with no evidence is removed or turned into future work.
+   contributions, each tied to one result, with at most one or two numbers in the abstract. Each highlight points to one result or one analysis. A highlight with no evidence is removed or turned into future work.
 3. **Method.** For each component: the information it carries, its data source and time scale, and what it
    adds that the others lack ("what I add"). Classify components on two axes, global (population) versus local
    (anchored on the user or query), and static versus dynamic (time-decayed, order-dependent). State which
@@ -55,10 +57,11 @@ Write one short paragraph per part, then the argument map (below). Each part nam
    different people, for an analysis program and the five strongest reviewer objections. Advisors stay read-only;
    check afterwards that no files changed. Treat their expected numbers as guesses, never as pre-declared readings.
 4. Build the data slice every analysis needs first (for additive scores: one row per query and candidate with each
-   raw term, gate, weight, contribution, score and rank), with an exact-reproduction check against the already
-   reported results as a stop condition.
-5. Pre-declare the reading of each analysis (expected outcome and the outcome that would contradict the claim)
-   before computing; run the cheap CPU analyses first and the small GPU interventions in parallel.
+   raw term, gate, weight, contribution, score and rank), with an exact-reproduction check against the admitted
+   results as a stop condition.
+5. Pre-declare the reading of each analysis before computing: a direction against a named comparison, never
+   an arbitrary numeric bar, plus the outcome that would contradict the claim. Run the cheap CPU analyses
+   first and the small GPU interventions in parallel.
 6. Report every reading as held, partly held or not held, with numbers and sources. A reading that failed is not
    promoted into a claim.
 7. Allocate the paper: the body gets at most one figure (usually the interpolation curve plus one intervention
@@ -66,7 +69,8 @@ Write one short paragraph per part, then the argument map (below). Each part nam
    Write the text with `paper-writing` (closed loop, body versus appendix, tables).
 
 Before submission, answer each objection in the reviewer table of [references/evidence-ladder.md](references/evidence-ladder.md)
-with an analysis, or narrow the claim; check its pitfalls list.
+with an analysis, or narrow the claim; check its pitfalls list. Review timing, finding triage and the rebuttal
+reserve: [references/review-and-rebuttal.md](references/review-and-rebuttal.md).
 
 ## Output
 

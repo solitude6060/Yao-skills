@@ -11,7 +11,8 @@ Answer each question with evidence from a run, not a guess about the code.
    the limiter explains why; find it before calling the change useless.
 2. **Was it tuned?** Run every side the way it runs for real: release or optimized builds,
    production flags and environment, batching and transaction settings, thread and pool
-   sizes, caches as warm or cold as real use sees them, same versions and data. If one side
+   sizes, caches as warm or cold as real use sees them, same versions and data, same device
+   (latencies from different devices are not compared; remeasure both sides on one). If one side
    runs on defaults, you compared configurations, not implementations. A limiter that is a
    setting (a commit per row, a debug build, a missing index, `OMP_NUM_THREADS` unset)
    means that side is untuned; tune it and measure again before picking a winner. If it
@@ -36,6 +37,17 @@ Answer each question with evidence from a run, not a guess about the code.
 5. **Does it reproduce?** Run each side at least five times, alternating, so warmup, lazy
    initialization, caches and thermal drift favor neither. Report median and range. When
    the call is close, use a rank-sum test or the harness's own statistics.
+   For evaluation metrics, state the evidence stage. Screening: one run, point estimates or
+   paired differences, no intervals; it may choose the next experiment but cannot support a
+   robustness or superiority claim. Confirmatory, for final claims: the uncertainty of the
+   paired difference over the shared test units (for example a per-user bootstrap); when a
+   compared method has training or decoding randomness, add several seeds or repeats, or state
+   that the claim holds for one training run. A per-unit bootstrap covers unit sampling only,
+   not seed variance. An interval that includes zero means no significant difference at this sample size;
+   equivalence needs the whole interval inside a margin declared before the run. Call a method
+   deterministic only after observing identical repeats under a stated runtime (same server
+   session, device and software versions); answers that repeat within one session can differ
+   across sessions.
 6. **Does it matter?** Next to any micro result, measure the end-to-end path a user or
    experiment waits on, with realistic sizes and concurrency, and report the micro result
    as a share of the whole.

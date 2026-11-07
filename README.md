@@ -133,6 +133,25 @@ Three more are driven by what I ask for:
 | [distilled-caveman-lite-accuracy](skills/distilled-caveman-lite-accuracy/SKILL.md) | I want a shorter answer while retaining necessary conditions, identifiers and uncertainty. |
 | [correct](skills/correct/SKILL.md) | I keep correcting agents for the same mistake: mine past corrections into mistake classes and make each fail automatically through architecture, types, lint or tests. Adapted from pstack (MIT). |
 
+## The research-lifecycle cluster
+
+Six skills cover a research project from the first question to the next topic. They grew out of one
+complete paper cycle (specification, protocol change, baselines, mechanism analysis, submission, external
+review, rebuttal preparation and two follow-up topics); each rule generalizes a failure or a correction
+from that record. `research-lifecycle` holds the stage map and the hand-offs; the others own one stage each.
+
+| Stage | Skill | When I use it |
+|---|---|---|
+| Lifecycle | [research-lifecycle](skills/research-lifecycle/SKILL.md) | Starting, resuming, handing over or closing a project or milestone: research questions, verbatim instruction and decision logs, milestone gates, compute and budget, preservation, new-topic start documents. |
+| Survey | [research-survey](skills/research-survey/SKILL.md) | A decision needs sources: a field survey, what official code and strong baselines actually do, whether a source supports a cited claim, or what a concurrent preprint changes. |
+| Ideation | [research-ideation](skills/research-ideation/SKILL.md) | Choosing, reshaping or naming a direction: question chain, closest simpler alternative, feasibility on the real data, scope, venue fit, a preliminary study with stop conditions. |
+| Planning | [experiment-planning](skills/experiment-planning/SKILL.md) | Before an experiment batch: a question per experiment, controls, the full matrix and tracker, evidence stage, cohorts and exposure, information parity, official baselines, budget. |
+| Confirmation | [experiment-contract](skills/experiment-contract/SKILL.md) | Before launch, during the run and before a result enters a table, page or paper: check what ran against what was agreed, classify failures, admit or supersede. |
+| Verification | [research-verification](skills/research-verification/SKILL.md) | After one or two major work items, before a milestone, or when a result looks too good: recompute numbers, audit answer paths and verify review findings in a fresh context. |
+
+Writing continues with `paper-argument` and `paper-writing`; recommender protocols stay in
+`recsys-evaluation`.
+
 ## How this fits my development workflow
 
 I start by reading the project specification and its current state. For substantial

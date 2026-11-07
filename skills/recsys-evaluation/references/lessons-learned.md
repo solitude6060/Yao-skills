@@ -1,9 +1,10 @@
 # Lessons learned
 
 Generalized from one research project that compared frozen, training-free language-model
-recommenders with trained recommenders and LLM rankers on public e-commerce and rating
-datasets. Each lesson names the inherited assumption, how it surfaced, and the
-rule it produced.
+recommenders with trained recommenders and LLM rankers on public e-commerce, rating and
+game-platform datasets. Each lesson names the inherited assumption, how it surfaced, and
+the rule it produced. Lessons 18 to 29 come from the project's later audits, external
+pre-submission review and follow-up topics.
 
 ### 1. An inherited split was not checked against the research question
 
@@ -141,7 +142,8 @@ rule it produced.
   negatives had no interaction before the request day, which request-time counts
   reject easily.
 - Rule: report the default protocol with its reason, the anchor and matched-negative
-  sensitivity in the body, and measure the opposite exposure too (how much of the
+  sensitivity in the body (one neutral body sentence that points to the appendix table;
+  `paper-writing` principle 6), and measure the opposite exposure too (how much of the
   trained baselines' training data lies after the request time under leave-one-out).
 
 ### 15. A model input carried cross-user information
@@ -170,3 +172,130 @@ rule it produced.
   reproduction check against a repeat-noise floor showed a different model.
 - Rule: store the returned model identifier with every response, check identity before
   each new batch, rerun all cells under the new model and disclose the change.
+
+### 18. The negative sampler identified the target
+
+- Assumption: a deterministic, reproducible rule for drawing negatives is as good as a
+  random draw.
+- How it surfaced: an answer-path audit found that negatives were the catalogue items
+  with the smallest salted hash, a rule applied to negatives but not to the target.
+  Ranking candidates by the reversed rule put the target first for every audited user on
+  one dataset. No method read the hash, but any future scorer that saw it could.
+- Rule: draw negatives with a seeded uniform random generator (or a rule the target also
+  satisfies), store the candidate file with its hash, and test whether any function of
+  the sampling rule ranks the target above random.
+
+### 19. Item identifiers in model requests carried an ordering signal
+
+- Assumption: an item identifier in a request is a neutral label.
+- How it surfaced: in a follow-up study a verifier ranked new-item candidate pools by
+  identifier order alone and scored well above random, because identifiers were
+  assigned in time order.
+- Rule: never put item identifiers in model requests; use them only as keys and as the
+  documented tie order. Run an identifier-only rule as a shortcut check when candidates
+  differ in age.
+
+### 20. A refit step that the sources do not use
+
+- Assumption: after selecting hyperparameters on validation data, retraining on
+  training plus validation events ("refit") is the standard protocol.
+- How it surfaced: a collaborator asked which source used refit; refit was dropped and every
+  refit row was superseded in an exceptions record. A later practice check of the official
+  sequential-recommender code and a widely used library confirmed that they evaluate the
+  best validation checkpoint without refit; some baseline-rigour studies refit and one
+  official implementation merges the validation event into training.
+- Rule: follow each baseline source's selection-versus-refit practice, name it in the
+  protocol, and refit only where the source does.
+
+### 21. A validation sample that excluded the evaluated users
+
+- Assumption: a baseline's validation users can be any random sample.
+- How it surfaced: on a large dataset the official baseline code selects on a sampled
+  subset of users. The project drew that sample so that it contained the evaluated users,
+  so baseline selection covered the users whose results are reported, and shared one
+  sample file across baselines.
+- Rule: under a protocol whose selection may read the evaluated users' validation events
+  (for example per-user leave-one-out or a global temporal split), a drawn validation sample contains the evaluated users; under a
+  user-disjoint protocol it excludes them. Every baseline reads the same sample file,
+  recorded with its hash and seed.
+
+### 22. A high-severity protocol finding was deferred
+
+- Assumption: a finding from an internal audit can wait until after the paper text is
+  drafted.
+- How it surfaced: an audit rated as high severity that the method's statistics used the
+  request time while trained baselines did not. It was deprioritized; the external
+  pre-submission review made it the central objection, and the answering experiments
+  (lessons 23 and 24) were run late.
+- Rule: answer a high-severity protocol finding with an experiment before the claims
+  freeze; a limitation sentence alone does not answer it.
+
+### 23. Fairness under a global cutoff has to remove events on both sides
+
+- Assumption: the request-time advantage of the method is measured by changing only
+  the method's inputs.
+- How it surfaced: under leave-one-out, trained baselines learn from other users' events
+  after a test user's request time, while the method's statistics see events up to that
+  time. A run that applied one global time cutoff to both, removing later events from
+  the method's statistics and from the baselines' training data, showed that every
+  method dropped and that most of the drop came from targets that did not exist before
+  the cutoff.
+- Rule: when the method reads request-time cross-user information, run a global-cutoff
+  sensitivity check that removes post-cutoff events from every method, and report which
+  targets the cutoff makes unseen.
+
+### 24. Time-aware baselines are needed when the method reads time
+
+- Assumption: order-only sequential baselines are a fair comparison for a method whose
+  inputs carry dates and time-decayed statistics.
+- How it surfaced: the external review asked for an information-equal comparison;
+  time-aware trained baselines (a temporal linear item-item model and a time-interval
+  self-attention model) were added from their official code.
+- Rule: when the method reads timestamps, include at least one time-aware trained
+  baseline from its official source, and state the remaining asymmetries.
+
+### 25. A sibling project reused exposed users
+
+- Assumption: users that are fresh for one study are fresh for its follow-up.
+- How it surfaced: a follow-up project's cohort overlapped the users that a sibling
+  project had drawn for its own study; an exposure scan found the overlap before any
+  result and the overlapping users were removed.
+- Rule: before calling a cohort held out, scan every earlier run and every sibling
+  project that used the same data for contact with its targets.
+
+### 26. A cold-item premise failed its definitional count
+
+- Assumption: targets that are new at the request time are cold items.
+- How it surfaced: in a follow-up topic, counting showed that most targets labelled new
+  at the request time already had interactions before the request, so the planned
+  cold-start claim had few qualifying targets.
+- Rule: before a cold-start or new-item claim, count the qualifying targets under the
+  exact time and tie rule the protocol uses, and report the count with the claim.
+
+### 27. Uniform negatives were easier for a time-aware method
+
+- Assumption: uniform negatives are neutral across methods.
+- How it surfaced: an internal audit noted that uniform negatives include items with no
+  interaction before the request time, which request-time statistics reject easily but
+  order-only baselines do not (lesson 14).
+- Rule: when any method reads request-time activity, report a time-matched negative
+  variant (negatives drawn from items active before the request) beside the uniform one.
+
+### 28. One configuration of an LLM baseline was not enough
+
+- Assumption: running an LLM-based baseline with its official settings settles the
+  comparison.
+- How it surfaced: the official input limit truncated part of the users' histories;
+  the project ran the official configuration and a variant with a relaxed limit and
+  reported them side by side.
+- Rule: run the official configuration and, where its limits bind, a relaxed variant;
+  label both, keep both in the tables, and say which one each claim uses.
+
+### 29. Regeneration rounds were decided after seeing scores
+
+- Assumption: retrying unparseable LLM outputs until they parse is harmless.
+- How it surfaced: method failures of generative baselines were retried in several
+  reruns; the protocol later fixed the number of regeneration rounds, kept the parser
+  unchanged, and skipped an update after the declared rounds all failed.
+- Rule: declare the regeneration rounds and the parser before the run, record the scores
+  before and after retries, and count outputs that fail every round as method failures.

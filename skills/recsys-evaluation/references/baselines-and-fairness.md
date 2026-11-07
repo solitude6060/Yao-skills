@@ -42,7 +42,38 @@ before computing metrics.
   proposed in NCF (abstract). Include well-tuned simple baselines (popularity, item-kNN,
   EASE, BPR-MF) before claiming progress.
 
+## Selection checkpoint versus refit
+
+- Two practices exist. Selection: train on training events, keep the checkpoint or
+  setting that scores best on validation targets, and evaluate it. Refit: after
+  selection, retrain on training plus validation events with the selected setting.
+- Official sequential-recommender code and widely used libraries mostly evaluate the
+  selected checkpoint; several baseline-rigour studies refit; some official code merges
+  the validation event into training by design. Run a practice check of each source.
+- Follow each baseline's source, name the practice per baseline in the protocol, and
+  refit only where the source does. A protocol change between the two supersedes the
+  affected rows explicitly (`lessons-learned.md`, lesson 20).
+- When the official code selects on a sample of validation users, every baseline reads
+  the same sample file; when selection may read the evaluated users' validation events
+  (for example per-user leave-one-out or a global temporal split) the sample contains them, under a user-disjoint protocol it excludes them (lesson 21).
+
+## Official and relaxed configurations
+
+- Run every baseline first with its official configuration. When an official limit
+  binds on this data (input length, history window, step budget), add a relaxed
+  variant and label it beside the official row, for example "official" and "relaxed
+  limit".
+- Both rows stay in the tables; each claim says which one it uses. A relaxed variant
+  never replaces the official row silently.
+- For generative LLM baselines, the regeneration rounds after unparseable output and the
+  parser are declared before the run; scores before and after retries are kept
+  (lessons 28, 29).
+
 ## Seeds and repeats
+
+Screening runs during iteration may use one run per cell with point estimates or paired
+differences to choose the next experiment; the run counts below apply to confirmatory
+claims (`experiment-planning`, evidence stages).
 
 | Method type | Randomness | Runs |
 |---|---|---|
@@ -54,6 +85,9 @@ before computing metrics.
 | Candidate-order permutation | Order | Fix order seed, or average over permutations |
 
 Fix the test set (users, targets, candidates) across seeds; vary only the method seed.
+A per-user bootstrap of the paired difference covers user sampling only; a confirmatory claim
+against a method with training or decoding randomness adds these seeds or repeats, or states
+that it holds for one training run.
 LLMRank averaged at least three repeat runs ([Hou et al., §3](https://arxiv.org/pdf/2305.08845)).
 
 ## Execution failures versus method failures
@@ -64,6 +98,8 @@ LLMRank averaged at least three repeat runs ([Hou et al., §3](https://arxiv.org
 - Method failure: the method returns unparseable or invalid output, or by design cannot
   rank this input (e.g. a trained model with no in-catalogue history for this user). It
   stays in the denominator with utility 0 and is reported as a separate count.
+- Over-limit input: apply the declared truncation rule first; a unit still over the limit is counted and kept
+  with utility 0, or every method reports the common units (`experiment-contract`, admission reference).
 - Every results table shows the failure count next to the score.
 
 ## Selection bias from tuning on reporting users
@@ -71,7 +107,9 @@ LLMRank averaged at least three repeat runs ([Hou et al., §3](https://arxiv.org
 Trying many prompt, readout or method variants and reporting the best one on the same
 users inflates the reported score (winner's curse). Rules:
 
-1. Tune on a development user set; freeze the configuration; report on fresh users.
+1. Tune variants on a development user set; freeze the configuration; report on fresh users
+   (settings may still be fitted on the reporting users' validation targets except under a user-disjoint
+   protocol, for example per-user leave-one-out or a global temporal split).
 2. When the user sample grows for the final run, the added users are fresh; report on
    them, or on the full set with the development subset reported separately.
 3. Report how many variants were tried.

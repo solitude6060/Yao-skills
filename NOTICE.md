@@ -1,6 +1,6 @@
 # Third-party attribution
 
-This repository distributes eleven author-original skills and six third-party
+This repository distributes seventeen author-original skills and six third-party
 skills or adaptations. License notices are retained below and alongside the
 wait-what and pstack-derived skills.
 
@@ -104,6 +104,12 @@ The following skills are authored by Yao and distributed under the repository's
 - `recsys-evaluation`
 - `paper-argument`
 - `paper-writing`
+- `research-lifecycle`
+- `research-survey`
+- `research-ideation`
+- `experiment-planning`
+- `experiment-contract`
+- `research-verification`
 
 The behavioral template is also authored by Yao and informed by the attributed
 coding guidelines.
