@@ -215,7 +215,7 @@ pre-submission review and follow-up topics.
   so baseline selection covered the users whose results are reported, and shared one
   sample file across baselines.
 - Rule: under a protocol whose selection may read the evaluated users' validation events
-  (per-user leave-one-out), a drawn validation sample contains the evaluated users; under a
+  (for example per-user leave-one-out or a global temporal split), a drawn validation sample contains the evaluated users; under a
   user-disjoint protocol it excludes them. Every baseline reads the same sample file,
   recorded with its hash and seed.
 

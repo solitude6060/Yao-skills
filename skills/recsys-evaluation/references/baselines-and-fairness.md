@@ -54,8 +54,8 @@ before computing metrics.
   refit only where the source does. A protocol change between the two supersedes the
   affected rows explicitly (`lessons-learned.md`, lesson 20).
 - When the official code selects on a sample of validation users, every baseline reads
-  the same sample file; under per-user leave-one-out the sample contains the evaluated
-  users, under a user-disjoint protocol it excludes them (lesson 21).
+  the same sample file; when selection may read the evaluated users' validation events
+  (for example per-user leave-one-out or a global temporal split) the sample contains them, under a user-disjoint protocol it excludes them (lesson 21).
 
 ## Official and relaxed configurations
 
@@ -108,7 +108,8 @@ Trying many prompt, readout or method variants and reporting the best one on the
 users inflates the reported score (winner's curse). Rules:
 
 1. Tune variants on a development user set; freeze the configuration; report on fresh users
-   (settings may still be fitted on the reporting users' validation targets under per-user leave-one-out).
+   (settings may still be fitted on the reporting users' validation targets except under a user-disjoint
+   protocol, for example per-user leave-one-out or a global temporal split).
 2. When the user sample grows for the final run, the added users are fresh; report on
    them, or on the full set with the development subset reported separately.
 3. Report how many variants were tried.

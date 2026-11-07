@@ -13,7 +13,7 @@ Climb only as far as the claims need. Interventions outrank correlations; label 
 | 3 Information | What information does a component use? | Input interventions: no input, another matched user's input, truncation (latest k vs earliest k), order reversal; replace a component by a simpler one that carries only one factor (Xu et al. 2023) |
 | 4 Decomposition | How much of each decision comes from each part? | For additive scores, the margin of the target over a negative is exactly the sum of per-term differences; report scale-free shares (pairwise contrast primary, standard-deviation share as robustness) and group them by information source |
 | 5 Balance | Why this weighting? | Interpolation curve between two parts with the deployed point marked, on validation and test (kNN-LM Fig. 5); per-weight multipliers; width of the plateau |
-| 6 Complementarity | Why a sum and not one part? | Hit contingency (both, only A, only B, neither), rescues and losses, oracle rate; relevant versus non-relevant overlap (Lee 1997); separation d per term (Vogt and Cottrell 1999) |
+| 6 Complementarity | Why a sum and not one part? | Hit contingency (both, only A, only B, neither), rescues and losses, oracle rate (an upper bound for source switching only); relevant versus non-relevant overlap (Lee 1997); separation d per term (Vogt and Cottrell 1999) |
 | 7 Conditions | Where does it help? | Stratify by a pre-declared property (item frequency, history length, evidence support); keep post-hoc groups descriptive (kNN-LM rare patterns, Drozdov et al. 2022 similarity bins) |
 | 8 Stability | Are the selected settings meaningful? | Selection folds, users never used for selection, alternative candidate samplers; claim stability of effects, not of raw weights |
 | 9 Cases | Can a reader follow one decision? | Cases chosen by a rule fixed in advance (for example nearest the median of the positive, zero and negative change strata), failures included, every term's contribution shown |
@@ -34,7 +34,7 @@ For each objection, name the analysis that answers it, or narrow the claim.
 
 - Raw weights are not importance: terms have different scales and per-query standardization.
 - Weights selected on test targets are invalid. Weights selected on the same users' validation targets (allowed
-  under per-user leave-one-out) can still be optimistic for new users; cite a cohort that shaped nothing, or folds.
+  except under a user-disjoint protocol) can still be optimistic for new users; cite a cohort that shaped nothing, or folds.
 - Tie-breaking can carry a removed component (for example a model's confidence); remove it with the component.
 - Visible dates reveal chronology, so reversing the list tests list position only.
 - An input that already contains collaborative evidence mixes sources; isolate it before attributing the effect.

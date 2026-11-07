@@ -8,8 +8,8 @@ the first result and keep the history with the cohort file.
 | Role | Used for | Rule |
 |---|---|---|
 | Development | Method design, variant comparison, debugging | Any use is allowed; results from it support no generalization claim |
-| Selection or calibration | Choosing coefficients, checkpoints or settings on validation targets | Validation targets only (under per-user leave-one-out these may belong to the reporting users; under a user-disjoint protocol they never do); the selection rule is written before it runs |
-| Reporting | Scoring the frozen configuration once on test targets | Reserved before the first result; never used to choose a variant; under per-user leave-one-out only its validation targets may select settings, under a user-disjoint protocol none of its targets do |
+| Selection or calibration | Choosing coefficients, checkpoints or settings on validation targets | Validation targets only (these may belong to the reporting users, for example per-user leave-one-out or a global temporal split; under a user-disjoint protocol they never do); the selection rule is written before it runs |
+| Reporting | Scoring the frozen configuration once on test targets | Reserved before the first result; never used to choose a variant; only its validation targets may select settings (for example per-user leave-one-out or a global temporal split); under a user-disjoint protocol none of its targets do |
 | Confirmation | Users added later to check that a result holds on users who shaped nothing | Drawn after the configuration is frozen; reported separately |
 
 Write each cohort as a file of identifiers with a hash, the rule that drew it (for example a seeded random
@@ -22,7 +22,7 @@ draw) and its role. Give each cohort a neutral descriptive name at first use and
   development users.
 - When a baseline's official code selects on a sample of users (some sequential-recommender code samples a
   fixed number of users for validation on large datasets), let every baseline read the same sample file. Under a
-  protocol whose selection may read the evaluated users' validation events (per-user leave-one-out), the sample
+  protocol whose selection may read the evaluated users' validation events (for example per-user leave-one-out or a global temporal split), the sample
   contains the evaluated users; when the question needs unseen users (a user-disjoint protocol), it excludes them.
 - Expand in a ladder and stop at the size the decision needs; record which size each result used.
 
