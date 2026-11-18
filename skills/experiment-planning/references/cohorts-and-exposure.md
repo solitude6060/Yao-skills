@@ -33,7 +33,7 @@ Before calling a cohort held out or fresh, list every earlier contact with its t
 | Contact | Example |
 |---|---|
 | Method design | Variants compared on these users' test targets |
-| Selection | Coefficients or checkpoints chosen with their test targets (selection on their validation targets is not a contact when the protocol permits it, as per-user leave-one-out does; under a user-disjoint protocol it is a contact) |
+| Selection | Coefficients or checkpoints chosen with their test targets (selection on their validation targets is not a contact when the protocol permits it, as per-user leave-one-out or a global temporal split does; under a user-disjoint protocol it is a contact) |
 | Analysis | Mechanism analyses, case studies, error inspection that read their targets |
 | Sibling projects | Another project that reused the same users or targets |
 | Earlier protocols | Runs under a superseded split that used these events as targets |

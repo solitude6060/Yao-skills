@@ -16,3 +16,4 @@ node_modules/
 /handover.zh.md
 /docs/*-community-*
 /docs/local/
+.omc/

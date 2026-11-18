@@ -108,8 +108,9 @@ Trying many prompt, readout or method variants and reporting the best one on the
 users inflates the reported score (winner's curse). Rules:
 
 1. Tune variants on a development user set; freeze the configuration; report on fresh users
-   (settings may still be fitted on the reporting users' validation targets except under a user-disjoint
-   protocol, for example per-user leave-one-out or a global temporal split).
+   (under per-user leave-one-out or a global temporal split, settings may still be fitted on the reporting
+   users' validation targets, and under a user-disjoint protocol none of their targets may be used for development or
+   selection).
 2. When the user sample grows for the final run, the added users are fresh; report on
    them, or on the full set with the development subset reported separately.
 3. Report how many variants were tried.

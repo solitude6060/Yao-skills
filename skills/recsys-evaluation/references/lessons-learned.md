@@ -89,9 +89,12 @@ pre-submission review and follow-up topics.
 
 - Out-of-memory crashes and server errors appeared as zero-utility queries in early
   tables.
-- Rule: rerun execution failures until they succeed; only method failures (invalid or
-  unparseable output, or no ranking by design) stay in the denominator with utility 0;
-  show the failure count beside each score.
+- Rule: rerun execution failures until they succeed. Keep method failures (invalid or
+  unparseable output, or no ranking by design) in the denominator with utility 0 and
+  show the failure count beside each score. After applying the declared truncation,
+  label inputs still over the limit as over-limit, report their count beside the score,
+  and either keep them in that method's denominator at utility 0 or report all methods
+  on common units without method-specific exclusions.
 
 ### 10. Repeated runs of a "deterministic" method differed
 

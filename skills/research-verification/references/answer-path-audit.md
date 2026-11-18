@@ -29,7 +29,7 @@ Compute and record the size of each intersection; the expected value is stated b
 - Under a user-disjoint protocol, also reporting user identities ∩ users whose targets of any kind
   (validation included) were used for development or selection, in this project and in sibling projects
   that share data; expected zero. Under per-user
-  leave-one-out their validation targets may select, so this intersection is not required.
+  leave-one-out or a global temporal split, their validation targets may select, so this intersection is not required.
 - Cached outputs reused ∩ runs with a changed dependency.
 
 ## 3. Independent recomputation
