@@ -82,10 +82,10 @@ pre-submission review and follow-up topics.
 - Prompt, readout and history-length variants were all scored on the same users. The
   per-user oracle over variants (choosing the best variant per user using the target)
   produced large gains that a deployable selector did not reproduce.
-- Rule: tune on development users (or, where the protocol permits, on the reporting
-  users' validation targets), freeze, report on fresh users or on test targets that
-  shaped nothing; report the number of variants tried; never report per-user oracle
-  selection as a method result.
+- Rule: tune variants on development users, freeze, and report on test targets that
+  shaped nothing; the reporting users' validation targets may select settings only where
+  the protocol permits (never under a user-disjoint protocol); report the number of
+  variants tried; never report per-user oracle selection as a method result.
 
 ### 9. Execution failures mixed with method failures
 
