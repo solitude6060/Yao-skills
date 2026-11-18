@@ -82,8 +82,10 @@ pre-submission review and follow-up topics.
 - Prompt, readout and history-length variants were all scored on the same users. The
   per-user oracle over variants (choosing the best variant per user using the target)
   produced large gains that a deployable selector did not reproduce.
-- Rule: tune on development users, freeze, report on fresh users; report the number
-  of variants tried; never report per-user oracle selection as a method result.
+- Rule: tune on development users (or, where the protocol permits, on the reporting
+  users' validation targets), freeze, report on fresh users or on test targets that
+  shaped nothing; report the number of variants tried; never report per-user oracle
+  selection as a method result.
 
 ### 9. Execution failures mixed with method failures
 
@@ -91,10 +93,11 @@ pre-submission review and follow-up topics.
   tables.
 - Rule: rerun execution failures until they succeed. Keep method failures (invalid or
   unparseable output, or no ranking by design) in the denominator with utility 0 and
-  show the failure count beside each score. After applying the declared truncation,
-  label inputs still over the limit as over-limit, report their count beside the score,
-  and either keep them in that method's denominator at utility 0 or report all methods
-  on common units without method-specific exclusions.
+  show the failure count beside each score. After applying the declared truncation
+  (oldest history first; record the kept events and tokens), label inputs still over the
+  limit as over-limit, report their count beside the score, and either keep them in that
+  method's denominator at utility 0 or report all methods on common units without
+  method-specific exclusions.
 
 ### 10. Repeated runs of a "deterministic" method differed
 
