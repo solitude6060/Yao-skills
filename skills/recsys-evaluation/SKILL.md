@@ -45,7 +45,7 @@ before a result enters a report.
     where the protocol shares them (per-query hashes); differences labelled.
 12. **Runs** for final claims: seeds for trained or sampled methods, repeats for hosted APIs, a
     determinism check before declaring one run enough; never choose among runs by test score.
-13. **Reporting targets**: test targets never develop/select; validation targets only select settings, unless user-disjoint.
+13. **Reporting targets**: test targets never develop/select; validation targets only select settings, never under user-disjoint.
 14. **Failures**: execution failures (OOM, HTTP 5xx, crash) are rerun, never reported;
     method failures (invalid output, no ranking by design) stay in the denominator
     with utility 0 and are counted.
